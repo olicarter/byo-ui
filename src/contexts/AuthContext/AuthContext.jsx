@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     netlifyIdentity.on('login', authenticatedUser => {
       setIsAuthenticated(true);
       setUser(authenticatedUser);
-      callback(authenticatedUser);
+      if (typeof callback === 'function') callback(authenticatedUser);
     });
   };
 
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     netlifyIdentity.on('logout', () => {
       setIsAuthenticated(false);
       setUser(null);
-      callback();
+      if (typeof callback === 'function') callback();
     });
   };
 
