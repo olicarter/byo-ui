@@ -14,18 +14,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = callback => {
-    setIsAuthenticated(true);
     netlifyIdentity.open();
     netlifyIdentity.on('login', authenticatedUser => {
+      setIsAuthenticated(true);
       setUser(authenticatedUser);
       callback(authenticatedUser);
     });
   };
 
   const logout = callback => {
-    setIsAuthenticated(false);
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
+      setIsAuthenticated(false);
       setUser(null);
       callback();
     });

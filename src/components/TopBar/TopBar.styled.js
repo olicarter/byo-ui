@@ -5,7 +5,13 @@ export const TopBar = styled.div(() => ({
   alignItems: 'center',
   backdropFilter: 'blur(5px)',
   display: 'flex',
+  justifyContent: 'space-between',
   userSelect: 'none',
+}));
+
+export const Group = styled.div(() => ({
+  alignItems: 'center',
+  display: 'flex',
 }));
 
 export const Logo = styled.img(() => ({
