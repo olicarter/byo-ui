@@ -10,8 +10,6 @@ export const TagBar = () => {
 
   const { data: { tags = [] } = {} } = useQuery(GET_TAGS_QUERY);
 
-  console.log(tagSlug);
-
   return (
     <Styled.TagBar className="TagBar">
       <Styled.Nav>

@@ -3,6 +3,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
+import { AuthProvider } from '../../contexts';
 import { Products } from '../Products';
 import { TagBar } from '../TagBar';
 import { TopBar } from '../TopBar';
@@ -47,16 +48,18 @@ const client = new ApolloClient({
 });
 
 export const App = () => (
-  <ThemeProvider theme={theme}>
-    <Global />
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <TopBar />
-        <Route path="/products/:tagSlug">
-          <TagBar />
-          <Products />
-        </Route>
-      </BrowserRouter>
-    </ApolloProvider>
-  </ThemeProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <Global />
+        <ApolloProvider client={client}>
+          <TopBar />
+          <Route path="/products/:tagSlug">
+            <TagBar />
+            <Products />
+          </Route>
+        </ApolloProvider>
+      </ThemeProvider>
+    </AuthProvider>
+  </BrowserRouter>
 );
