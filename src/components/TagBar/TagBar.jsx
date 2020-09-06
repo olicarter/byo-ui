@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { GET_TAGS_QUERY } from './TagBar.queries';
+import { GET_TAGS_QUERY } from './TagBar.gql';
 import * as Styled from './TagBar.styled';
 
 export const TagBar = () => {

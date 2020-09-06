@@ -2,10 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import {
-  GET_ALL_PRODUCTS_QUERY,
-  GET_TAG_PRODUCTS_QUERY,
-} from './Products.queries';
+import { GET_ALL_PRODUCTS_QUERY, GET_TAG_PRODUCTS_QUERY } from './Products.gql';
 import * as Styled from './Products.styled';
 import { Product } from '../Product';
 

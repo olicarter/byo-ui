@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
-import { GET_PRODUCT_QUERY } from './Product.queries';
+import { GET_PRODUCT_QUERY } from './Product.gql';
 import * as Styled from './Product.styled';
 import { AddToOrderButton } from '../AddToOrderButton';
 
