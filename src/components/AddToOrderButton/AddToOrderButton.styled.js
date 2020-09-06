@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const AddToOrderButton = styled.button(
   ({
     theme: {
-      palette: { orange },
+      palette: { green },
     },
   }) => ({
     background: 'none',
@@ -17,7 +17,7 @@ export const AddToOrderButton = styled.button(
     width: 'auto',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: orange,
+        color: green,
       },
     },
   }),

@@ -15,7 +15,7 @@ export const Product = ({ id }) => {
 
   return (
     <Styled.Product className="Product">
-      <Styled.Image src={`https://source.unsplash.com/300x300/?${name}`} />
+      <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
       <Styled.Header>
         <span>{name}</span>
         <span>£{(price / 100).toFixed(2)}</span>

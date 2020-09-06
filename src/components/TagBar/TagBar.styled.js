@@ -5,6 +5,7 @@ export const TagBar = styled.div(() => ({
   alignItems: 'center',
   backdropFilter: 'blur(5px)',
   display: 'flex',
+  overflowX: 'scroll',
 }));
 
 export const Nav = styled.nav(() => ({}));
@@ -16,6 +17,7 @@ export const NavItems = styled.ul(() => ({
 }));
 
 export const NavItem = styled.li(() => ({
+  flexShrink: 0,
   listStyle: 'none',
   margin: 0,
   padding: 0,
@@ -23,12 +25,17 @@ export const NavItem = styled.li(() => ({
 
 export const Tag = styled(RouterLink)(
   ({
+    active,
     theme: {
       palette: { black, grey, orange },
     },
     to,
   }) => ({
-    color: to ? black : grey,
+    get color() {
+      if (active) return orange;
+      if (to) return black;
+      return grey;
+    },
     display: 'flex',
     fontSize: '1rem',
     fontWeight: 700,

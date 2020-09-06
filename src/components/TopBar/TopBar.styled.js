@@ -28,11 +28,12 @@ export const NavItem = styled.li(() => ({
 
 export const Link = styled(RouterLink)(
   ({
+    active,
     theme: {
       palette: { black, orange },
     },
   }) => ({
-    color: black,
+    color: active ? orange : black,
     display: 'flex',
     fontSize: '1rem',
     fontWeight: 700,
