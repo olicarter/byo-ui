@@ -9,10 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    netlifyIdentity.init();
-  }, []);
-
   const login = callback => {
     netlifyIdentity.open();
     netlifyIdentity.on('login', authenticatedUser => {
@@ -30,6 +26,13 @@ export const AuthProvider = ({ children }) => {
       if (typeof callback === 'function') callback();
     });
   };
+
+  useEffect(() => {
+    netlifyIdentity.on('init', user => {
+      setIsAuthenticated(!!user);
+    });
+    netlifyIdentity.init();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
