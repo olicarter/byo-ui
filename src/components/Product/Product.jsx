@@ -8,7 +8,7 @@ import { AddToOrderButton } from '../AddToOrderButton';
 
 export const Product = ({ id }) => {
   const {
-    data: { product: { increments, name, price = 0, slug, unit } = {} } = {},
+    data: { Product: { increments, name, price = 0, slug, unit } = {} } = {},
   } = useQuery(GET_PRODUCT_QUERY, {
     variables: { id },
   });
@@ -16,11 +16,9 @@ export const Product = ({ id }) => {
   return (
     <Styled.Product className="Product">
       <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
-      {/* <Styled.Header> */}
       <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
-      {/* </Styled.Header> */}
       <Styled.Price>
-        £{price.toFixed(2)}
+        £{Number(price).toFixed(2)}
         <span>
           {' '}
           /{increments}

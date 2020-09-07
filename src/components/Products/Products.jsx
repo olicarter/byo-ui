@@ -9,7 +9,7 @@ import { Product } from '../Product';
 export const Products = () => {
   const { tagSlug } = useParams();
 
-  const { data: { products = [] } = {} } = useQuery(
+  const { data: { allProducts = [] } = {} } = useQuery(
     tagSlug === 'all' ? GET_ALL_PRODUCTS_QUERY : GET_TAG_PRODUCTS_QUERY,
     {
       variables: { tagSlug },
@@ -18,7 +18,7 @@ export const Products = () => {
 
   return (
     <Styled.Products className="Products">
-      {products.map(({ id }) => (
+      {allProducts.map(({ id }) => (
         <Product key={id} id={id} />
       ))}
     </Styled.Products>

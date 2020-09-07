@@ -8,7 +8,7 @@ import * as Styled from './TagBar.styled';
 export const TagBar = () => {
   const { tagSlug } = useParams();
 
-  const { data: { tags = [] } = {} } = useQuery(GET_TAGS_QUERY);
+  const { data: { allTags = [] } = {} } = useQuery(GET_TAGS_QUERY);
 
   return (
     <Styled.TagBar className="TagBar">
@@ -22,7 +22,7 @@ export const TagBar = () => {
               all
             </Styled.Tag>
           </Styled.NavItem>
-          {tags.map(({ id, name, slug }) => (
+          {allTags.map(({ id, name, slug }) => (
             <Styled.NavItem key={id}>
               <Styled.Tag active={tagSlug === slug} to={`/products/${slug}`}>
                 {name.toLowerCase()}
