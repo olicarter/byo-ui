@@ -8,8 +8,8 @@ import { TopBar } from '../TopBar';
 
 export const App = () => (
   <BrowserRouter>
-    <AuthProvider>
-      <GQLProvider>
+    <GQLProvider>
+      <AuthProvider>
         <ThemeProvider>
           <TopBar />
           <Route path="/products/:tagSlug">
@@ -17,7 +17,7 @@ export const App = () => (
             <Products />
           </Route>
         </ThemeProvider>
-      </GQLProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </GQLProvider>
   </BrowserRouter>
 );
