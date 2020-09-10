@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
+import { Avatar } from '../Avatar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
@@ -37,9 +38,14 @@ export const TopBar = () => {
 
       <Styled.Nav>
         <Styled.NavItems>
-          <Styled.NavItem>
+          {/* <Styled.NavItem>
             <Styled.Link as="button" onClick={isAuthenticated ? logout : login}>
               {isAuthenticated ? 'logout' : 'login'}
+            </Styled.Link>
+          </Styled.NavItem> */}
+          <Styled.NavItem>
+            <Styled.Link>
+              <Avatar />
             </Styled.Link>
           </Styled.NavItem>
         </Styled.NavItems>

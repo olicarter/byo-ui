@@ -27,6 +27,9 @@ export const NavItems = styled.ul(() => ({
 }));
 
 export const NavItem = styled.li(() => ({
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'center',
   listStyle: 'none',
   margin: 0,
   padding: 0,
