@@ -20,14 +20,14 @@ export const TopBar = () => {
           <Styled.NavItems>
             <Styled.NavItem>
               <Styled.Link
-                active={pathname.includes('products')}
+                selected={pathname.includes('products')}
                 to="/products/all"
               >
                 shop
               </Styled.Link>
             </Styled.NavItem>
             <Styled.NavItem>
-              <Styled.Link active={pathname.includes('blog')} to="/blog">
+              <Styled.Link selected={pathname.includes('blog')} to="/blog">
                 blog
               </Styled.Link>
             </Styled.NavItem>
@@ -38,7 +38,7 @@ export const TopBar = () => {
       <Styled.Nav>
         <Styled.NavItems>
           <Styled.NavItem>
-            <Styled.Link onClick={isAuthenticated ? logout : login}>
+            <Styled.Link as="button" onClick={isAuthenticated ? logout : login}>
               {isAuthenticated ? 'logout' : 'login'}
             </Styled.Link>
           </Styled.NavItem>

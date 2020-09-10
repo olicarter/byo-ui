@@ -28,11 +28,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    netlifyIdentity.on('init', user => {
-      setIsAuthenticated(!!user);
-    });
+    netlifyIdentity.on('init', user => setIsAuthenticated(!!user));
     netlifyIdentity.init();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) setUser(netlifyIdentity.currentUser());
+  }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>

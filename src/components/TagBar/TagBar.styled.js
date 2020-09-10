@@ -25,14 +25,14 @@ export const NavItem = styled.li(() => ({
 
 export const Tag = styled(RouterLink)(
   ({
-    active,
+    selected,
     theme: {
       palette: { black, grey, orange },
     },
     to,
   }) => ({
     get color() {
-      if (active) return orange;
+      if (selected) return orange;
       if (to) return black;
       return grey;
     },

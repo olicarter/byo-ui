@@ -4,12 +4,13 @@ import { useAuth } from '../../contexts';
 import * as Styled from './AddToOrderButton.styled';
 
 export const AddToOrderButton = () => {
-  const { isAuthenticated, login } = useAuth();
+  const x = useAuth();
+  const { isAuthenticated, login } = x;
 
   useEffect(() => {}, []);
 
   const handleClick = () => {
-    if (!isAuthenticated) login();
+    if (!isAuthenticated) return login();
   };
 
   return (

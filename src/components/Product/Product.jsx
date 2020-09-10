@@ -4,7 +4,9 @@ import { parseUnit } from '../../helpers';
 import * as Styled from './Product.styled';
 import { AddToOrderButton } from '../AddToOrderButton';
 
-export const Product = ({ increments, name, price = 0, slug, unit }) => (
+export const Product = ({
+  product: { increments, name, price = 0, slug, unit },
+}) => (
   <Styled.Product className="Product">
     <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
     <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>

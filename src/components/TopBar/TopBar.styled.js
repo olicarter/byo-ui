@@ -34,15 +34,19 @@ export const NavItem = styled.li(() => ({
 
 export const Link = styled(RouterLink)(
   ({
-    active,
+    selected,
     theme: {
       palette: { black, orange },
     },
   }) => ({
-    color: active ? orange : black,
+    background: 'none',
+    border: 'none',
+    color: selected ? orange : black,
+    cursor: 'pointer',
     display: 'flex',
     fontSize: '1rem',
     fontWeight: 700,
+    outline: 'none',
     padding: '1rem',
     textDecoration: 'none',
     '@media (hover: hover) and (pointer: fine)': {

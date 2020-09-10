@@ -18,13 +18,13 @@ export const TagBar = () => {
             <Styled.Tag as="span">tags</Styled.Tag>
           </Styled.NavItem>
           <Styled.NavItem>
-            <Styled.Tag active={tagSlug === 'all'} to="/products/all">
+            <Styled.Tag selected={tagSlug === 'all'} to="/products/all">
               all
             </Styled.Tag>
           </Styled.NavItem>
           {allTags.map(({ id, name, slug }) => (
             <Styled.NavItem key={id}>
-              <Styled.Tag active={tagSlug === slug} to={`/products/${slug}`}>
+              <Styled.Tag selected={tagSlug === slug} to={`/products/${slug}`}>
                 {name.toLowerCase()}
               </Styled.Tag>
             </Styled.NavItem>
