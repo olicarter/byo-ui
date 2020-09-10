@@ -18,8 +18,8 @@ export const Products = () => {
 
   return (
     <Styled.Products className="Products">
-      {allProducts.map(({ id }) => (
-        <Product key={id} id={id} />
+      {allProducts.map(product => (
+        <Product key={product.id} product={product} />
       ))}
     </Styled.Products>
   );
