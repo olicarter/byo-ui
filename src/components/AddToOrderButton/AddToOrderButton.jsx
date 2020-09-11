@@ -119,14 +119,20 @@ export const AddToOrderButton = ({
       {!!quantity && (
         <>
           <Styled.DecrementButton onClick={decrement}>-</Styled.DecrementButton>
-          <Styled.Quantity>
+          <Styled.Text>
             {`${quantity * increments}${getAbbreviatedUnit(unit)}`} in basket
-          </Styled.Quantity>
+          </Styled.Text>
         </>
       )}
-      <Styled.IncrementButton onClick={increment}>
-        {quantity ? '+' : 'Add to order'}
-      </Styled.IncrementButton>
+      {quantity ? (
+        <Styled.IncrementButton onClick={increment}>
+          {quantity ? '+' : 'Add to order'}
+        </Styled.IncrementButton>
+      ) : (
+        <Styled.NewOrderItemButton onClick={increment}>
+          Add to order
+        </Styled.NewOrderItemButton>
+      )}
     </Styled.Buttons>
   );
 };

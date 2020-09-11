@@ -27,12 +27,12 @@ export const Tag = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, grey, orange },
+      palette: { black, grey, red },
     },
     to,
   }) => ({
     get color() {
-      if (selected) return orange;
+      if (selected) return red;
       if (to) return black;
       return grey;
     },
@@ -44,7 +44,7 @@ export const Tag = styled(RouterLink)(
     userSelect: 'none',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: to ? orange : grey,
+        color: to ? red : grey,
       },
     },
   }),

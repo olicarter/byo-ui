@@ -39,12 +39,12 @@ export const Link = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, orange },
+      palette: { black, red },
     },
   }) => ({
     background: 'none',
     border: 'none',
-    color: selected ? orange : black,
+    color: selected ? red : black,
     cursor: 'pointer',
     display: 'flex',
     fontSize: '1rem',
@@ -54,7 +54,7 @@ export const Link = styled(RouterLink)(
     textDecoration: 'none',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: orange,
+        color: red,
       },
     },
   }),
