@@ -3,8 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 export const TagBar = styled.div(() => ({
   alignItems: 'center',
-  backdropFilter: 'blur(5px)',
   display: 'flex',
+  height: '3rem',
   overflowX: 'scroll',
 }));
 
@@ -12,8 +12,9 @@ export const Nav = styled.nav(() => ({}));
 
 export const NavItems = styled.ul(() => ({
   display: 'flex',
+  height: '100%',
   margin: 0,
-  padding: '0.5rem',
+  padding: '0 0.5rem',
 }));
 
 export const NavItem = styled.li(() => ({

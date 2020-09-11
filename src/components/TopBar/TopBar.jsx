@@ -1,55 +1,66 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Route, useLocation, useRouteMatch } from 'react-router-dom';
+import Icon from '@mdi/react';
+import { mdiAccountCircle } from '@mdi/js';
 
-import { useAuth } from '../../contexts';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
-import { Avatar } from '../Avatar';
+import { BasketIcon } from '../BasketIcon';
+import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
-  const { isAuthenticated, login, logout } = useAuth();
+  const tagBarVisible = useRouteMatch('/products/:tagSlug');
 
   return (
-    <Styled.TopBar className="TopBar">
-      <Styled.Group>
-        <Styled.Link to="/">
-          <Styled.Logo src={logo} />
-        </Styled.Link>
-
-        <Styled.Nav>
-          <Styled.NavItems>
-            <Styled.NavItem>
-              <Styled.Link
-                selected={pathname.includes('products')}
-                to="/products/all"
-              >
-                shop
-              </Styled.Link>
-            </Styled.NavItem>
-            <Styled.NavItem>
-              <Styled.Link selected={pathname.includes('blog')} to="/blog">
-                blog
-              </Styled.Link>
-            </Styled.NavItem>
-          </Styled.NavItems>
-        </Styled.Nav>
-      </Styled.Group>
-
-      <Styled.Nav>
-        <Styled.NavItems>
-          {/* <Styled.NavItem>
-            <Styled.Link as="button" onClick={isAuthenticated ? logout : login}>
-              {isAuthenticated ? 'logout' : 'login'}
+    <>
+      <Styled.Spacer tagBarVisible={tagBarVisible} />
+      <Styled.Wrapper>
+        <Styled.TopBar className="TopBar">
+          <Styled.Group>
+            <Styled.Link to="/">
+              <Styled.Logo src={logo} />
             </Styled.Link>
-          </Styled.NavItem> */}
-          <Styled.NavItem>
-            <Styled.Link as="button" onClick={isAuthenticated ? logout : login}>
-              <Avatar />
-            </Styled.Link>
-          </Styled.NavItem>
-        </Styled.NavItems>
-      </Styled.Nav>
-    </Styled.TopBar>
+
+            <Styled.Nav>
+              <Styled.NavItems>
+                <Styled.NavItem>
+                  <Styled.Link
+                    selected={pathname.includes('products')}
+                    to="/products/all"
+                  >
+                    shop
+                  </Styled.Link>
+                </Styled.NavItem>
+                <Styled.NavItem>
+                  <Styled.Link selected={pathname.includes('blog')} to="/blog">
+                    blog
+                  </Styled.Link>
+                </Styled.NavItem>
+              </Styled.NavItems>
+            </Styled.Nav>
+          </Styled.Group>
+
+          <Styled.Nav>
+            <Styled.NavItems>
+              <Styled.NavItem>
+                <Styled.LinkIcon to="/basket">
+                  <BasketIcon />
+                </Styled.LinkIcon>
+              </Styled.NavItem>
+              <Styled.NavItem>
+                <Styled.LinkIcon to="/account">
+                  <Icon path={mdiAccountCircle} size={1} title="Account" />
+                </Styled.LinkIcon>
+              </Styled.NavItem>
+            </Styled.NavItems>
+          </Styled.Nav>
+        </Styled.TopBar>
+
+        <Route path="/products/:tagSlug">
+          <TagBar />
+        </Route>
+      </Styled.Wrapper>
+    </>
   );
 };

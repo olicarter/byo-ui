@@ -6,11 +6,6 @@ export const Product = styled.div(({ theme: { palette: { grey } } }) => ({
   display: 'flex',
   flexDirection: 'column',
   transitionDuration: '150ms',
-  '@media (hover: hover) and (pointer: fine)': {
-    ':hover': {
-      boxShadow: '0.2rem 0.2rem 0 0 rgba(0, 0, 0, 0.3)',
-    },
-  },
 }));
 
 export const AspectRatio = styled.div(() => ({

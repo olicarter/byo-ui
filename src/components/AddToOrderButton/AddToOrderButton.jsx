@@ -130,7 +130,7 @@ export const AddToOrderButton = ({
         </Styled.IncrementButton>
       ) : (
         <Styled.NewOrderItemButton onClick={increment}>
-          Add to order
+          Add to basket
         </Styled.NewOrderItemButton>
       )}
     </Styled.Buttons>
