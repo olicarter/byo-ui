@@ -2,28 +2,15 @@ import React, { useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
+import { getAbbreviatedUnit } from '../../helpers';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
+import { GET_UNPAID_ORDER_ITEMS_COUNT } from '../BasketIcon';
 import * as Styled from './AddToOrderButton.styled';
-
-const getAbbreviatedUnit = unit => {
-  switch (unit) {
-    case 'grams':
-      return 'g';
-    case 'kilograms':
-      return 'kg';
-    case 'millilitres':
-      return 'ml';
-    case 'litres':
-      return 'L';
-    case 'items':
-      return 'items';
-  }
-};
 
 export const AddToOrderButton = ({
   product: { id: productId, increments, unit },
@@ -59,6 +46,12 @@ export const AddToOrderButton = ({
      * unecessary api calls but this is quick and simple for now
      */
     onCompleted: refetchGetUser,
+    refetchQueries: [
+      {
+        query: GET_UNPAID_ORDER_ITEMS_COUNT,
+        variables: { netlifyId },
+      },
+    ],
   });
 
   const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
@@ -75,6 +68,12 @@ export const AddToOrderButton = ({
      * unecessary api calls but this is quick and simple for now
      */
     onCompleted: refetchGetUser,
+    refetchQueries: [
+      {
+        query: GET_UNPAID_ORDER_ITEMS_COUNT,
+        variables: { netlifyId },
+      },
+    ],
   });
 
   const handleCreateOrderItem = () => {
