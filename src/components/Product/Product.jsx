@@ -7,7 +7,7 @@ import { AddToOrderButton } from '../AddToOrderButton';
 export const Product = ({
   product: { id, increments, name, price = 0, slug, unit },
 }) => {
-  const [quantity, setQuantity] = useState(null);
+  const [quantity, setQuantity] = useState(0);
 
   return (
     <Styled.Product className="Product">

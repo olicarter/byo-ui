@@ -1,27 +1,46 @@
-import React from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useEffect } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
-import { CREATE_ORDER_ITEM } from './AddToOrderButton.gql';
+import { fragments, CREATE_ORDER_ITEM, GET_USER } from './AddToOrderButton.gql';
 import * as Styled from './AddToOrderButton.styled';
 
 export const AddToOrderButton = ({ productId, quantity }) => {
-  const { login, user } = useAuth();
+  const { isAuthenticated, login, user: authUser } = useAuth();
+  const { id: netlifyId } = authUser || {};
 
-  const { id: userId, unpaidOrderId } = user || {};
+  const [
+    getUser,
+    { data: { allUsers } = {}, refetch: refetchGetUser },
+  ] = useLazyQuery(GET_USER, {
+    variables: { netlifyId },
+  });
 
-  const [createOrderItem] = useMutation(CREATE_ORDER_ITEM);
+  const user = Array.isArray(allUsers) ? allUsers[0] : {};
+  const { id: userId, orders: [{ id: unpaidOrderId } = {}] = [] } = user;
+
+  useEffect(() => {
+    if (netlifyId) getUser();
+  }, [netlifyId, getUser]);
+
+  const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
+    /**
+     * @todo would ideally specify cache update function to avoid
+     * unecessary api calls but this is quick and simple for now
+     */
+    onCompleted: refetchGetUser,
+  });
 
   const handleClick = () => {
-    if (!userId) return login();
+    if (!isAuthenticated) return login();
     const data = {
       order: {
         ...(unpaidOrderId
           ? { connect: { id: unpaidOrderId } }
-          : { create: { user: { connect: userId } } }),
+          : { create: { user: { connect: { id: userId } } } }),
       },
       product: { connect: { id: productId } },
-      quantity,
+      quantity: quantity || 1,
     };
     createOrderItem({ variables: { data } });
   };

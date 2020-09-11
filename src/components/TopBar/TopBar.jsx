@@ -44,7 +44,7 @@ export const TopBar = () => {
             </Styled.Link>
           </Styled.NavItem> */}
           <Styled.NavItem>
-            <Styled.Link>
+            <Styled.Link as="button" onClick={isAuthenticated ? logout : login}>
               <Avatar />
             </Styled.Link>
           </Styled.NavItem>
