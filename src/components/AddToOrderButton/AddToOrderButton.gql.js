@@ -1,30 +1,32 @@
 import { gql } from '@apollo/client';
 
-const UnpaidOrder = gql`
-  fragment UnpaidOrder on User {
-    id
-    orders(where: { paid_not: true }) {
-      id
-      paid
-    }
-  }
-`;
-
-export const fragments = { UnpaidOrder };
-
 export const GET_USER = gql`
-  query($netlifyId: String!) {
+  query($netlifyId: String!, $productId: ID!) {
     allUsers(where: { netlifyId: $netlifyId }) {
       id
-      ...UnpaidOrder
+      orders(where: { paid_not: true }) {
+        id
+        paid
+        orderItems(where: { product: { id: $productId } }) {
+          id
+          quantity
+        }
+      }
     }
   }
-  ${fragments.UnpaidOrder}
 `;
 
 export const CREATE_ORDER_ITEM = gql`
   mutation($data: OrderItemCreateInput!) {
     createOrderItem(data: $data) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_ORDER_ITEM = gql`
+  mutation($id: ID!, $quantity: Int!) {
+    updateOrderItem(id: $id, data: { quantity: $quantity }) {
       id
     }
   }
