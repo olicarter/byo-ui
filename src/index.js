@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
+import { AuthProvider, GQLProvider, ThemeProvider } from './contexts';
 import { App } from './components';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <GQLProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </AuthProvider>
+      </GQLProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),
 );
