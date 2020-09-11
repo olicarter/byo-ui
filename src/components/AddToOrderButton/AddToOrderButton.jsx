@@ -4,10 +4,26 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import { useAuth } from '../../contexts';
 import {
   CREATE_ORDER_ITEM,
+  DELETE_ORDER_ITEM,
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
 import * as Styled from './AddToOrderButton.styled';
+
+const getAbbreviatedUnit = unit => {
+  switch (unit) {
+    case 'grams':
+      return 'g';
+    case 'kilograms':
+      return 'kg';
+    case 'millilitres':
+      return 'ml';
+    case 'litres':
+      return 'L';
+    case 'items':
+      return 'items';
+  }
+};
 
 export const AddToOrderButton = ({
   product: { id: productId, increments, unit },
@@ -53,13 +69,16 @@ export const AddToOrderButton = ({
     onCompleted: refetchGetUser,
   });
 
-  const handleClick = () => {
+  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
+    /**
+     * @todo would ideally specify cache update function to avoid
+     * unecessary api calls but this is quick and simple for now
+     */
+    onCompleted: refetchGetUser,
+  });
+
+  const handleCreateOrderItem = () => {
     if (!isAuthenticated) return login();
-    if (quantity) {
-      return updateOrderItem({
-        variables: { id: orderItemId, quantity: quantity + 1 },
-      });
-    }
     createOrderItem({
       variables: {
         data: {
@@ -75,9 +94,39 @@ export const AddToOrderButton = ({
     });
   };
 
+  const handleUpdateOrderItem = newQuantity => {
+    if (!isAuthenticated) return login();
+    updateOrderItem({ variables: { id: orderItemId, quantity: newQuantity } });
+  };
+
+  const handleDeleteOrderItem = () => {
+    if (!isAuthenticated) return login();
+    deleteOrderItem({ variables: { id: orderItemId } });
+  };
+
+  const increment = () => {
+    if (!!quantity) handleUpdateOrderItem(quantity + 1);
+    else handleCreateOrderItem();
+  };
+
+  const decrement = () => {
+    if (quantity > 1) handleUpdateOrderItem(quantity - 1);
+    else handleDeleteOrderItem();
+  };
+
   return (
-    <Styled.AddToOrderButton onClick={handleClick}>
-      {quantity ? `${quantity * increments}${unit}` : 'Add to order'}
-    </Styled.AddToOrderButton>
+    <Styled.Buttons>
+      {!!quantity && (
+        <>
+          <Styled.DecrementButton onClick={decrement}>-</Styled.DecrementButton>
+          <Styled.Quantity>
+            {`${quantity * increments}${getAbbreviatedUnit(unit)}`} in basket
+          </Styled.Quantity>
+        </>
+      )}
+      <Styled.IncrementButton onClick={increment}>
+        {quantity ? '+' : 'Add to order'}
+      </Styled.IncrementButton>
+    </Styled.Buttons>
   );
 };

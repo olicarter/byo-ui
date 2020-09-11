@@ -31,3 +31,11 @@ export const UPDATE_ORDER_ITEM = gql`
     }
   }
 `;
+
+export const DELETE_ORDER_ITEM = gql`
+  mutation($id: ID!) {
+    deleteOrderItem(id: $id) {
+      id
+    }
+  }
+`;
