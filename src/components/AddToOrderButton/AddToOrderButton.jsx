@@ -9,6 +9,7 @@ import {
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
+import { GET_ORDER_ITEMS_QUERY } from '../Basket';
 import { GET_UNPAID_ORDER_ITEMS_COUNT } from '../BasketIcon';
 import * as Styled from './AddToOrderButton.styled';
 
@@ -51,6 +52,10 @@ export const AddToOrderButton = ({
         query: GET_UNPAID_ORDER_ITEMS_COUNT,
         variables: { netlifyId },
       },
+      {
+        query: GET_ORDER_ITEMS_QUERY,
+        variables: { netlifyId },
+      },
     ],
   });
 
@@ -71,6 +76,10 @@ export const AddToOrderButton = ({
     refetchQueries: [
       {
         query: GET_UNPAID_ORDER_ITEMS_COUNT,
+        variables: { netlifyId },
+      },
+      {
+        query: GET_ORDER_ITEMS_QUERY,
         variables: { netlifyId },
       },
     ],

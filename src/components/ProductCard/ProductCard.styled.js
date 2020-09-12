@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const Product = styled.div(({ theme: { palette: { grey } } }) => ({
+export const ProductCard = styled.div(({ theme: { palette: { grey } } }) => ({
   boxShadow: '0.2rem 0.2rem 0 0 rgba(0, 0, 0, 0.2)',
   display: 'flex',
   flexDirection: 'column',
