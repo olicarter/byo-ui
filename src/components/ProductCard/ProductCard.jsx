@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { parseUnit } from '../../helpers';
-import * as Styled from './Product.styled';
+import * as Styled from './ProductCard.styled';
 import { AddToOrderButton } from '../AddToOrderButton';
 
-export const Product = ({
+export const ProductCard = ({
   product,
   product: { increments, name, price = 0, slug, unit },
 }) => (
-  <Styled.Product className="Product">
+  <Styled.ProductCard className="Product">
     <Styled.AspectRatio>
       <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
     </Styled.AspectRatio>
@@ -26,5 +26,5 @@ export const Product = ({
     <Styled.Buttons>
       <AddToOrderButton product={product} />
     </Styled.Buttons>
-  </Styled.Product>
+  </Styled.ProductCard>
 );
