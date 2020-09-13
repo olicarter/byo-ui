@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { parseUnit } from '../../helpers';
 import * as Styled from './ProductCard.styled';
 import { AddToOrderButton } from '../AddToOrderButton';
 
@@ -18,8 +17,8 @@ export const ProductCard = ({
         £{Number(price).toFixed(2)}
         <span>
           {' '}
-          /{increments}
-          {parseUnit(unit).abbreviated}
+          /{unit.singular === 'item' ? '' : increments}
+          {unit.singularAbbreviated}
         </span>
       </Styled.Price>
     </Styled.Content>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import {
   mdiBasketPlusOutline,
   mdiLoading,
@@ -8,23 +8,37 @@ import {
 } from '@mdi/js';
 
 import { useAuth } from '../../contexts';
-import { getAbbreviatedUnit } from '../../helpers';
 import { OrderItems } from '../../fragments';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
+  GET_UNITS,
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
 import * as Styled from './AddToOrderButton.styled';
 
-const getQuantity = ({ increments, quantity, unit }) => {
-  if (unit === 'items') return `${quantity * increments} ${unit}`;
-  if (quantity * increments < 1000)
-    return `${quantity * increments}${getAbbreviatedUnit(unit)}`;
-  let largeUnit = 'kilograms';
-  if (unit === 'millilitres') largeUnit = 'litres';
-  return `${(quantity * increments) / 1000}${getAbbreviatedUnit(largeUnit)}`;
+const getQuantity = ({ increments, quantity, unit, units = [] }) => {
+  const isItem = unit.singular === 'item';
+  const quantityNeedsDividing = !isItem && quantity * increments >= 1000;
+  const computedQuantity = quantityNeedsDividing
+    ? (quantity * increments) / 1000
+    : quantity * increments;
+  let computedUnit = {};
+  if (quantityNeedsDividing) {
+    if (unit.singular === 'gram')
+      computedUnit =
+        units.find(({ singular }) => singular === 'kilogram') || {};
+    if (unit.singular === 'millilitre')
+      computedUnit = units.find(({ singular }) => singular === 'litre') || {};
+  } else {
+    computedUnit = unit;
+  }
+  return `${computedQuantity}${isItem ? ' ' : ''}${
+    computedUnit[
+      computedQuantity === 1 ? 'singularAbbreviated' : 'pluralAbbreviated'
+    ]
+  }`;
 };
 
 export const AddToOrderButton = ({
@@ -42,12 +56,12 @@ export const AddToOrderButton = ({
   }, [netlifyId, getUser]);
 
   const [{ id: userId, orders = [] } = {}] = allUsers || [];
-
   const unpaidOrder = orders.find(({ paid }) => !paid) || {};
   const { id: unpaidOrderId, orderItems = [] } = unpaidOrder;
-
   const { id: orderItemId, quantity } =
     orderItems.find(({ product: { id } }) => id === productId) || {};
+
+  const { data: { allUnits } = {} } = useQuery(GET_UNITS);
 
   const [createOrderItem, { loading: createOrderItemLoading }] = useMutation(
     CREATE_ORDER_ITEM,
@@ -165,7 +179,7 @@ export const AddToOrderButton = ({
             />
           </Styled.DecrementButton>
           <Styled.Quantity>
-            {getQuantity({ increments, quantity, unit })}
+            {getQuantity({ increments, quantity, unit, units: allUnits })}
           </Styled.Quantity>
           <Styled.IncrementButton onClick={increment}>
             <Styled.Icon

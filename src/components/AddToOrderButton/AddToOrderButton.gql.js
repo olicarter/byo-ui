@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { OrderItem, Orders } from '../../fragments';
+import { OrderItem, Orders, Unit } from '../../fragments';
 
 export const GET_USER = gql`
   query AddToOrderButtonGetUserOrders($netlifyId: String!) {
@@ -10,6 +10,15 @@ export const GET_USER = gql`
     }
   }
   ${Orders}
+`;
+
+export const GET_UNITS = gql`
+  query AddToOrderButtonGetUnits {
+    allUnits {
+      ...Unit
+    }
+  }
+  ${Unit}
 `;
 
 export const CREATE_ORDER_ITEM = gql`

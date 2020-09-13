@@ -1,18 +1,42 @@
 import { gql } from '@apollo/client';
 
+export const Unit = gql`
+  fragment Unit on Unit {
+    id
+    singular
+    plural
+    singularAbbreviated
+    pluralAbbreviated
+  }
+`;
+
+export const Product = gql`
+  fragment Product on Product {
+    id
+    increments
+    name
+    price
+    slug
+    tags {
+      id
+      slug
+    }
+    unit {
+      ...Unit
+    }
+  }
+  ${Unit}
+`;
+
 export const OrderItem = gql`
   fragment OrderItem on OrderItem {
     id
     product {
-      id
-      increments
-      name
-      price
-      slug
-      unit
+      ...Product
     }
     quantity
   }
+  ${Product}
 `;
 
 export const OrderItems = gql`
