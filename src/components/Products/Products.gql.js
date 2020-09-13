@@ -1,27 +1,34 @@
 import { gql } from '@apollo/client';
 
+import { OrderItems } from '../../fragments';
+
 export const GET_ALL_PRODUCTS_QUERY = gql`
-  query {
+  query GetAllProducts {
     allProducts {
       id
       increments
       name
       price
       slug
+      tags {
+        id
+        slug
+      }
       unit
     }
   }
 `;
 
-export const GET_TAG_PRODUCTS_QUERY = gql`
-  query($tagSlug: String!) {
-    allProducts(where: { tags_some: { slug: $tagSlug } }) {
+export const GET_AUTH_DATA = gql`
+  query GetUserUnpaidOrder($netlifyId: String!) {
+    allUsers(where: { netlifyId: $netlifyId }) {
       id
-      increments
-      name
-      price
-      slug
-      unit
+      orders {
+        id
+        paid
+        ...OrderItems
+      }
     }
   }
+  ${OrderItems}
 `;

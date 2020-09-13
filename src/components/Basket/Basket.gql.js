@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_ORDER_ITEMS_QUERY = gql`
-  query($netlifyId: String!) {
+  query GetUnpaidOrderItems($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
       id
       orders(where: { paid_not: true }) {

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { darken, readableColor } from 'polished';
+import { default as MdiIcon } from '@mdi/react';
 
 const height = 'calc(1.5rem + 1vw)';
 
@@ -81,3 +82,9 @@ export const NewOrderItemButton = styled(Quantity)(
     },
   }),
 );
+
+export const Icon = styled(MdiIcon)(() => ({
+  g: {
+    animationDuration: '1s !important',
+  },
+}));
