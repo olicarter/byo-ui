@@ -17,29 +17,7 @@ import {
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
 import * as Styled from './AddToOrderButton.styled';
-
-const getQuantity = ({ increments, quantity, unit, units = [] }) => {
-  const isItem = unit.singular === 'item';
-  const quantityNeedsDividing = !isItem && quantity * increments >= 1000;
-  const computedQuantity = quantityNeedsDividing
-    ? (quantity * increments) / 1000
-    : quantity * increments;
-  let computedUnit = {};
-  if (quantityNeedsDividing) {
-    if (unit.singular === 'gram')
-      computedUnit =
-        units.find(({ singular }) => singular === 'kilogram') || {};
-    if (unit.singular === 'millilitre')
-      computedUnit = units.find(({ singular }) => singular === 'litre') || {};
-  } else {
-    computedUnit = unit;
-  }
-  return `${computedQuantity}${isItem ? ' ' : ''}${
-    computedUnit[
-      computedQuantity === 1 ? 'singularAbbreviated' : 'pluralAbbreviated'
-    ]
-  }`;
-};
+import { getQuantity } from './helpers';
 
 export const AddToOrderButton = ({
   product: { id: productId, increments, unit },
@@ -85,7 +63,9 @@ export const AddToOrderButton = ({
     },
   );
 
-  const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM);
+  const [updateOrderItem, { loading: updateOrderItemLoading }] = useMutation(
+    UPDATE_ORDER_ITEM,
+  );
 
   const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
     update: (
