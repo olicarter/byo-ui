@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
+import Icon from '@mdi/react';
+import {
+  mdiBasketPlusOutline,
+  mdiMinusCircleOutline,
+  mdiPlusCircleOutline,
+} from '@mdi/js';
 
 import { useAuth } from '../../contexts';
 import { getAbbreviatedUnit } from '../../helpers';
@@ -12,6 +18,15 @@ import {
 import { GET_ORDER_ITEMS_QUERY } from '../Basket';
 import { GET_UNPAID_ORDER_ITEMS_COUNT } from '../BasketIcon';
 import * as Styled from './AddToOrderButton.styled';
+
+const getQuantity = ({ increments, quantity, unit }) => {
+  if (unit !== 'items' && quantity * increments < 1000)
+    return `${quantity * increments}${getAbbreviatedUnit(unit)}`;
+  let largeUnit = 'items';
+  if (unit === 'grams') largeUnit = 'kilograms';
+  if (unit === 'millilitres') largeUnit = 'litres';
+  return `${(quantity * increments) / 1000}${getAbbreviatedUnit('kilograms')}`;
+};
 
 export const AddToOrderButton = ({
   product: { id: productId, increments, unit },
@@ -124,21 +139,21 @@ export const AddToOrderButton = ({
 
   return (
     <Styled.Buttons>
-      {!!quantity && (
-        <>
-          <Styled.DecrementButton onClick={decrement}>-</Styled.DecrementButton>
-          <Styled.Text>
-            {`${quantity * increments}${getAbbreviatedUnit(unit)}`} in basket
-          </Styled.Text>
-        </>
-      )}
       {quantity ? (
-        <Styled.IncrementButton onClick={increment}>
-          {quantity ? '+' : 'Add to order'}
-        </Styled.IncrementButton>
+        <>
+          <Styled.DecrementButton onClick={decrement}>
+            <Icon path={mdiMinusCircleOutline} size={1} title="Decrement" />
+          </Styled.DecrementButton>
+          <Styled.Quantity>
+            {getQuantity({ increments, quantity, unit })}
+          </Styled.Quantity>
+          <Styled.IncrementButton onClick={increment}>
+            <Icon path={mdiPlusCircleOutline} size={1} title="Increment" />
+          </Styled.IncrementButton>
+        </>
       ) : (
         <Styled.NewOrderItemButton onClick={increment}>
-          Add to basket
+          <Icon path={mdiBasketPlusOutline} size={1} title="Increment" />
         </Styled.NewOrderItemButton>
       )}
     </Styled.Buttons>

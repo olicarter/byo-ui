@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
 import { GET_ORDER_ITEMS_QUERY } from './Basket.gql';
-import * as Styled from './Basket.styled';
+import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
 
 export const Basket = () => {
@@ -24,10 +24,10 @@ export const Basket = () => {
   const [{ orders: [{ orderItems = [] } = {}] = [] } = {}] = allUsers || [];
 
   return (
-    <Styled.Basket>
+    <Grid>
       {orderItems.map(({ id, product }) => (
         <ProductCard key={id} product={product} />
       ))}
-    </Styled.Basket>
+    </Grid>
   );
 };
