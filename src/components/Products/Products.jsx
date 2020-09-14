@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 
 import { GET_ALL_PRODUCTS_QUERY, GET_TAG_PRODUCTS_QUERY } from './Products.gql';
 import * as Styled from './Products.styled';
-import { Product } from '../Product';
+import { ProductCard } from '../ProductCard';
 
 export const Products = () => {
   const { tagSlug } = useParams();
@@ -19,7 +19,7 @@ export const Products = () => {
   return (
     <Styled.Products className="Products">
       {allProducts.map(product => (
-        <Product key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </Styled.Products>
   );
