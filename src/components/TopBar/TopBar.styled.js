@@ -7,7 +7,7 @@ export const Spacer = styled.div(({ tagBarVisible }) => ({
 }));
 
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
-  background: transparentize(0.5, white),
+  background: transparentize(0.2, white),
   backdropFilter: 'blur(20px)',
   left: 0,
   position: 'fixed',
@@ -55,12 +55,12 @@ export const Link = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, green },
+      palette: { black, primary },
     },
   }) => ({
     background: 'none',
     border: 'none',
-    color: selected ? green : black,
+    color: selected ? primary : black,
     cursor: 'pointer',
     display: 'flex',
     fontSize: '1rem',
@@ -70,7 +70,7 @@ export const Link = styled(RouterLink)(
     textDecoration: 'none',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: green,
+        color: primary,
       },
     },
   }),
