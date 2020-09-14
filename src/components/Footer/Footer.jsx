@@ -5,7 +5,7 @@ import * as Styled from './Footer.styled';
 export const Footer = () => (
   <Styled.Footer>
     <Styled.MadeWithText>
-      made with <Styled.Heart>♥︎</Styled.Heart> by{' '}
+      made with <Styled.Heart>♥︎</Styled.Heart> and ☕️ by{' '}
       <Styled.Anchor href="https://github.com/olicarter" target="_blank">
         Oli
       </Styled.Anchor>{' '}
