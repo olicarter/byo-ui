@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Route } from 'react-router-dom';
 
 import { Basket } from '../Basket';
+import { Footer } from '../Footer';
 import { PageHeader } from '../PageHeader';
 import { Products } from '../Products';
 import { SubTitle, Title } from '../Typography';
@@ -30,5 +31,7 @@ export const App = () => (
       </PageHeader>
       <Products />
     </Route>
+
+    <Footer />
   </>
 );

@@ -26,7 +26,7 @@ export const AddToOrderButton = ({
   const { id: netlifyId } = authUser || {};
 
   const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { netlifyId, productId },
+    variables: { netlifyId },
   });
 
   useEffect(() => {
@@ -63,37 +63,38 @@ export const AddToOrderButton = ({
     },
   );
 
-  const [updateOrderItem, { loading: updateOrderItemLoading }] = useMutation(
-    UPDATE_ORDER_ITEM,
-  );
+  const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM);
 
-  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    update: (
-      cache,
-      {
-        data: {
-          deleteOrderItem: { id: deletedOrderItemId },
+  const [deleteOrderItem, { loading: deleteOrderItemLoading }] = useMutation(
+    DELETE_ORDER_ITEM,
+    {
+      update: (
+        cache,
+        {
+          data: {
+            deleteOrderItem: { id: deletedOrderItemId },
+          },
         },
+      ) => {
+        const id = cache.identify(unpaidOrder);
+        const { orderItems: currentOrderItems } = cache.readFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+        });
+        cache.writeFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+          data: {
+            orderItems: currentOrderItems.filter(
+              ({ id: orderItemId }) => orderItemId !== deletedOrderItemId,
+            ),
+          },
+        });
       },
-    ) => {
-      const id = cache.identify(unpaidOrder);
-      const { orderItems: currentOrderItems } = cache.readFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-      });
-      cache.writeFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-        data: {
-          orderItems: currentOrderItems.filter(
-            ({ id: orderItemId }) => orderItemId !== deletedOrderItemId,
-          ),
-        },
-      });
     },
-  });
+  );
 
   const handleCreateOrderItem = () => {
     if (!isAuthenticated) return login();
@@ -132,7 +133,7 @@ export const AddToOrderButton = ({
     else handleDeleteOrderItem();
   };
 
-  if (createOrderItemLoading)
+  if (createOrderItemLoading || deleteOrderItemLoading)
     return (
       <Styled.Buttons>
         <Styled.Quantity>

@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const ProductCard = styled.div(() => ({
   borderRadius: '1rem',
-  boxShadow: '0 0 0.2rem 0 rgba(0, 0, 0, 0.3)',
+  boxShadow: '0 0 0.3rem 0.05rem rgba(0, 0, 0, 0.1)',
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden',
-  transitionDuration: '150ms',
+  transitionDuration: '200ms',
   '@media (hover: hover) and (pointer: fine)': {
     ':hover': {
-      boxShadow: '0 0 0.4rem 0 rgba(0, 0, 0, 0.3)',
+      boxShadow: '0 0 0.5rem 0.05rem rgba(0, 0, 0, 0.15)',
     },
   },
 }));
@@ -32,13 +31,14 @@ export const Image = styled.img(() => ({
 }));
 
 export const Content = styled.div(() => ({
+  cursor: 'default',
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
   padding: '0.5rem',
 }));
 
-export const Name = styled(Link)(({ theme: { palette: { black, red } } }) => ({
+export const Name = styled.span(({ theme: { palette: { black } } }) => ({
   color: black,
   fontSize: '1rem',
   fontWeight: 700,
@@ -46,16 +46,9 @@ export const Name = styled(Link)(({ theme: { palette: { black, red } } }) => ({
   paddingBottom: '0.5rem',
   textTransform: 'capitalize',
   textDecoration: 'none',
-  userSelect: 'none',
-  '@media (hover: hover) and (pointer: fine)': {
-    ':hover': {
-      color: red,
-    },
-  },
 }));
 
 export const Price = styled.span(() => ({
-  cursor: 'default',
   fontSize: '0.8rem',
   fontWeight: 500,
   paddingBottom: '0.5rem',

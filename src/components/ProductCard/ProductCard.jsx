@@ -9,10 +9,10 @@ export const ProductCard = ({
 }) => (
   <Styled.ProductCard className="Product">
     <Styled.AspectRatio>
-      <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
+      <Styled.Image src={`https://source.unsplash.com/300x200/?${slug}`} />
     </Styled.AspectRatio>
     <Styled.Content>
-      <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
+      <Styled.Name>{name}</Styled.Name>
       <Styled.Price>
         £{Number(price).toFixed(2)}
         <span>
