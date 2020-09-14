@@ -6,6 +6,7 @@ import { mdiAccountCircle } from '@mdi/js';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
+//import { UserPaidOrders } from '../UserPaidOrders';
 import { TagBar } from '../TagBar';
 
 export const TopBar = () => {

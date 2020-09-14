@@ -7,6 +7,7 @@ import { PageHeader } from '../PageHeader';
 import { Products } from '../Products';
 import { SubTitle, Title } from '../Typography';
 import { TopBar } from '../TopBar';
+import { UserPaidOrders } from '../UserPaidOrders';
 
 export const App = () => (
   <>
@@ -17,6 +18,10 @@ export const App = () => (
         <SubTitle>Some deep quote</SubTitle>
       </PageHeader>
       <Products />
+    </Route>
+
+    <Route path="/account">
+      <UserPaidOrders />
     </Route>
 
     <Route path="/basket">
