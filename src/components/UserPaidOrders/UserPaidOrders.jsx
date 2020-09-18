@@ -11,11 +11,9 @@ export const UserPaidOrders = () => {
     variables: { netlifyId },
   });
   const [{ orders = [] } = {}] = allUsers || [];
-  console.log(allUsers);
   useEffect(() => {
     if (netlifyId) getOrder();
   }, [netlifyId, getOrder]);
-  debugger;
   return (
     <div>
       {orders.map(({ orderItems, id, paidAt }) => (

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { parseUnit } from '../../helpers';
 import * as Styled from './ProductCard.styled';
 import { AddToOrderButton } from '../AddToOrderButton';
 
@@ -10,16 +9,16 @@ export const ProductCard = ({
 }) => (
   <Styled.ProductCard className="Product">
     <Styled.AspectRatio>
-      <Styled.Image src={`https://source.unsplash.com/300x200/?${name}`} />
+      <Styled.Image src={`https://source.unsplash.com/300x200/?${slug}`} />
     </Styled.AspectRatio>
     <Styled.Content>
-      <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
+      <Styled.Name>{name}</Styled.Name>
       <Styled.Price>
         £{Number(price).toFixed(2)}
         <span>
           {' '}
-          /{increments}
-          {parseUnit(unit).abbreviated}
+          /{unit.singular === 'item' ? '' : increments}
+          {unit.singularAbbreviated}
         </span>
       </Styled.Price>
     </Styled.Content>

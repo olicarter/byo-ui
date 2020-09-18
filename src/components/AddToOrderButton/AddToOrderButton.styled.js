@@ -1,8 +1,14 @@
 import styled from 'styled-components';
+import { darken, readableColor } from 'polished';
+import { default as MdiIcon } from '@mdi/react';
 
-export const Buttons = styled.div(() => ({
-  background: '',
+const height = 'calc(1.5rem + 1vw)';
+
+export const Buttons = styled.div(({ theme: { palette: { lightGrey } } }) => ({
+  alignItems: 'center',
+  background: lightGrey,
   display: 'flex',
+  height,
   justifyContent: 'space-between',
 }));
 
@@ -13,13 +19,13 @@ const SquareButton = styled.button(() => ({
   cursor: 'pointer',
   display: 'flex',
   fontSize: '1.5rem',
-  fontWeight: 600,
-  height: '2rem',
+  fontWeight: 500,
   justifyContent: 'center',
+  lineHeight: height,
   outline: 'none',
   padding: 0,
   textAlign: 'left',
-  width: '2rem',
+  width: height,
 }));
 
 export const DecrementButton = styled(SquareButton)(
@@ -50,28 +56,35 @@ export const IncrementButton = styled(SquareButton)(
   }),
 );
 
-export const Text = styled.div(() => ({
+export const Quantity = styled.div(() => ({
   alignItems: 'center',
   display: 'flex',
   flex: 1,
-  fontSize: '1rem',
+  fontSize: 'inherit',
   fontWeight: 600,
-  height: '2rem',
+  height: '100%',
   justifyContent: 'center',
   userSelect: 'none',
 }));
 
-export const NewOrderItemButton = styled(Text)(
+export const NewOrderItemButton = styled(Quantity)(
   ({
     theme: {
-      palette: { green },
+      palette: { black, green },
     },
   }) => ({
+    color: black,
+    cursor: 'pointer',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         color: green,
-        cursor: 'pointer',
       },
     },
   }),
 );
+
+export const Icon = styled(MdiIcon)(() => ({
+  g: {
+    animationDuration: '1s !important',
+  },
+}));

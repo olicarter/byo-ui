@@ -15,11 +15,24 @@ export const GQLProvider = ({ children }) => {
   } = useAuth();
 
   const client = new ApolloClient({
-    uri: REACT_APP_KEYSTONE_GRAPHQL_URI,
     cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'cache-first',
+        errorPolicy: 'ignore',
+      },
+      query: {
+        fetchPolicy: 'cache-first',
+        errorPolicy: 'all',
+      },
+      mutate: {
+        errorPolicy: 'all',
+      },
+    },
     headers: {
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     },
+    uri: REACT_APP_KEYSTONE_GRAPHQL_URI,
   });
 
   return (

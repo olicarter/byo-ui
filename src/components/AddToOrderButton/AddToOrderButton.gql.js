@@ -1,41 +1,49 @@
 import { gql } from '@apollo/client';
 
+import { OrderItem, Orders, Unit } from '../../fragments';
+
 export const GET_USER = gql`
-  query($netlifyId: String!, $productId: ID!) {
+  query AddToOrderButtonGetUserOrders($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
       id
-      orders(where: { paid_not: true }) {
-        id
-        paid
-        orderItems(where: { product: { id: $productId } }) {
-          id
-          quantity
-        }
-      }
+      ...Orders
     }
   }
+  ${Orders}
+`;
+
+export const GET_UNITS = gql`
+  query AddToOrderButtonGetUnits {
+    allUnits {
+      ...Unit
+    }
+  }
+  ${Unit}
 `;
 
 export const CREATE_ORDER_ITEM = gql`
-  mutation($data: OrderItemCreateInput!) {
+  mutation CreateOrderItem($data: OrderItemCreateInput!) {
     createOrderItem(data: $data) {
-      id
+      ...OrderItem
     }
   }
+  ${OrderItem}
 `;
 
 export const UPDATE_ORDER_ITEM = gql`
-  mutation($id: ID!, $quantity: Int!) {
+  mutation UpdateOrderItem($id: ID!, $quantity: Int!) {
     updateOrderItem(id: $id, data: { quantity: $quantity }) {
-      id
+      ...OrderItem
     }
   }
+  ${OrderItem}
 `;
 
 export const DELETE_ORDER_ITEM = gql`
-  mutation($id: ID!) {
+  mutation DeleteOrderItem($id: ID!) {
     deleteOrderItem(id: $id) {
-      id
+      ...OrderItem
     }
   }
+  ${OrderItem}
 `;

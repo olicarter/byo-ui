@@ -1,17 +1,23 @@
 import React, { useEffect } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import {
+  mdiBasketPlusOutline,
+  mdiLoading,
+  mdiMinusCircleOutline,
+  mdiPlusCircleOutline,
+} from '@mdi/js';
 
 import { useAuth } from '../../contexts';
-import { getAbbreviatedUnit } from '../../helpers';
+import { OrderItems } from '../../fragments';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
+  GET_UNITS,
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './AddToOrderButton.gql';
-import { GET_ORDER_ITEMS_QUERY } from '../Basket';
-import { GET_UNPAID_ORDER_ITEMS_COUNT } from '../BasketIcon';
 import * as Styled from './AddToOrderButton.styled';
+import { getQuantity } from './helpers';
 
 export const AddToOrderButton = ({
   product: { id: productId, increments, unit },
@@ -19,71 +25,76 @@ export const AddToOrderButton = ({
   const { isAuthenticated, login, user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
-  const [
-    getUser,
-    { data: { allUsers } = {}, refetch: refetchGetUser },
-  ] = useLazyQuery(GET_USER, {
-    variables: { netlifyId, productId },
+  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
+    variables: { netlifyId },
   });
-
-  const user = Array.isArray(allUsers) ? allUsers[0] : {};
-  const {
-    id: userId,
-    orders: [
-      {
-        id: unpaidOrderId,
-        orderItems: [{ id: orderItemId, quantity } = {}] = [],
-      } = {},
-    ] = [],
-  } = user;
 
   useEffect(() => {
     if (netlifyId) getUser();
   }, [netlifyId, getUser]);
 
-  const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
-    /**
-     * @todo would ideally specify cache update function to avoid
-     * unecessary api calls but this is quick and simple for now
-     */
-    onCompleted: refetchGetUser,
-    refetchQueries: [
-      {
-        query: GET_UNPAID_ORDER_ITEMS_COUNT,
-        variables: { netlifyId },
-      },
-      {
-        query: GET_ORDER_ITEMS_QUERY,
-        variables: { netlifyId },
-      },
-    ],
-  });
+  const [{ id: userId, orders = [] } = {}] = allUsers || [];
+  const unpaidOrder = orders.find(({ paid }) => !paid) || {};
+  const { id: unpaidOrderId, orderItems = [] } = unpaidOrder;
+  const { id: orderItemId, quantity } =
+    orderItems.find(({ product: { id } }) => id === productId) || {};
 
-  const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    /**
-     * @todo would ideally specify cache update function to avoid
-     * unecessary api calls but this is quick and simple for now
-     */
-    onCompleted: refetchGetUser,
-  });
+  const { data: { allUnits } = {} } = useQuery(GET_UNITS);
 
-  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    /**
-     * @todo would ideally specify cache update function to avoid
-     * unecessary api calls but this is quick and simple for now
-     */
-    onCompleted: refetchGetUser,
-    refetchQueries: [
-      {
-        query: GET_UNPAID_ORDER_ITEMS_COUNT,
-        variables: { netlifyId },
+  const [createOrderItem, { loading: createOrderItemLoading }] = useMutation(
+    CREATE_ORDER_ITEM,
+    {
+      update: (cache, { data: { createOrderItem } }) => {
+        const id = cache.identify(unpaidOrder);
+        const { orderItems: currentOrderItems } = cache.readFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+        });
+        cache.writeFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+          data: {
+            orderItems: [...currentOrderItems, createOrderItem],
+          },
+        });
       },
-      {
-        query: GET_ORDER_ITEMS_QUERY,
-        variables: { netlifyId },
+    },
+  );
+
+  const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM);
+
+  const [deleteOrderItem, { loading: deleteOrderItemLoading }] = useMutation(
+    DELETE_ORDER_ITEM,
+    {
+      update: (
+        cache,
+        {
+          data: {
+            deleteOrderItem: { id: deletedOrderItemId },
+          },
+        },
+      ) => {
+        const id = cache.identify(unpaidOrder);
+        const { orderItems: currentOrderItems } = cache.readFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+        });
+        cache.writeFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
+          data: {
+            orderItems: currentOrderItems.filter(
+              ({ id: orderItemId }) => orderItemId !== deletedOrderItemId,
+            ),
+          },
+        });
       },
-    ],
-  });
+    },
+  );
 
   const handleCreateOrderItem = () => {
     if (!isAuthenticated) return login();
@@ -122,23 +133,46 @@ export const AddToOrderButton = ({
     else handleDeleteOrderItem();
   };
 
+  if (createOrderItemLoading || deleteOrderItemLoading)
+    return (
+      <Styled.Buttons>
+        <Styled.Quantity>
+          <Styled.Icon
+            path={mdiLoading}
+            rotate={90}
+            spin
+            size={1}
+            title="Loading"
+          />
+        </Styled.Quantity>
+      </Styled.Buttons>
+    );
+
   return (
     <Styled.Buttons>
-      {!!quantity && (
-        <>
-          <Styled.DecrementButton onClick={decrement}>-</Styled.DecrementButton>
-          <Styled.Text>
-            {`${quantity * increments}${getAbbreviatedUnit(unit)}`} in basket
-          </Styled.Text>
-        </>
-      )}
       {quantity ? (
-        <Styled.IncrementButton onClick={increment}>
-          {quantity ? '+' : 'Add to order'}
-        </Styled.IncrementButton>
+        <>
+          <Styled.DecrementButton onClick={decrement}>
+            <Styled.Icon
+              path={mdiMinusCircleOutline}
+              size={1}
+              title="Decrement"
+            />
+          </Styled.DecrementButton>
+          <Styled.Quantity>
+            {getQuantity({ increments, quantity, unit, units: allUnits })}
+          </Styled.Quantity>
+          <Styled.IncrementButton onClick={increment}>
+            <Styled.Icon
+              path={mdiPlusCircleOutline}
+              size={1}
+              title="Increment"
+            />
+          </Styled.IncrementButton>
+        </>
       ) : (
         <Styled.NewOrderItemButton onClick={increment}>
-          Add to basket
+          <Styled.Icon path={mdiBasketPlusOutline} size={1} title="Increment" />
         </Styled.NewOrderItemButton>
       )}
     </Styled.Buttons>
