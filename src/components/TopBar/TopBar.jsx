@@ -7,12 +7,12 @@ import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
 import { CategoryBar } from '../CategoryBar';
-//import { UserPaidOrders } from '../UserPaidOrders';
 import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
-  const tagBarVisible = useRouteMatch('/products');
+  const tagBarVisible = !!useRouteMatch('/products');
+  console.log(tagBarVisible);
 
   return (
     <>

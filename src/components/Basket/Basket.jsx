@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
+import uniqWith from 'lodash.uniqwith';
 
 import { useAuth } from '../../contexts';
 import { GET_ORDER_ITEMS_QUERY } from './Basket.gql';
@@ -12,7 +13,7 @@ export const Basket = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [getOrderItems, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUserOrders, { data: { allUsers } = {} }] = useLazyQuery(
     GET_ORDER_ITEMS_QUERY,
     {
       variables: { netlifyId },
@@ -20,8 +21,8 @@ export const Basket = () => {
   );
 
   useEffect(() => {
-    if (netlifyId) getOrderItems();
-  }, [netlifyId]);
+    if (netlifyId) getUserOrders();
+  }, [netlifyId, getUserOrders]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { orderItems = [] } = orders.find(({ paid }) => !paid) || {};
@@ -30,11 +31,15 @@ export const Basket = () => {
     ? orderItems.reduce((prevVal, currVal) => ({
         ...prevVal,
         sum:
-          prevVal.quantity * prevVal.product.price +
-          currVal.quantity * currVal.product.price,
+          prevVal.quantity * prevVal.productVariant.incrementPrice +
+          currVal.quantity * currVal.productVariant.incrementPrice,
       }))
     : { sum: 0 };
-  console.log(sum);
+
+  const orderItemProducts = uniqWith(
+    orderItems,
+    (a, b) => a.productVariant.product.id === b.productVariant.product.id,
+  );
 
   return (
     <>
@@ -43,7 +48,7 @@ export const Basket = () => {
         <SubTitle>Total £{sum.toFixed(2)}</SubTitle>
       </PageHeader>
       <Grid>
-        {orderItems.map(({ id, product }) => (
+        {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
           <ProductCard key={id} product={product} />
         ))}
       </Grid>

@@ -1,15 +1,12 @@
 import styled from 'styled-components';
-import { darken, readableColor } from 'polished';
 import { default as MdiIcon } from '@mdi/react';
 
-const height = 'calc(1.5rem + 1vw)';
+const height = '3rem';
 
-export const Buttons = styled.div(({ theme: { palette: { lightGrey } } }) => ({
+export const ProductVariant = styled.div(() => ({
   alignItems: 'center',
-  background: lightGrey,
   display: 'flex',
   height,
-  justifyContent: 'space-between',
 }));
 
 const SquareButton = styled.button(() => ({
@@ -20,6 +17,7 @@ const SquareButton = styled.button(() => ({
   display: 'flex',
   fontSize: '1.5rem',
   fontWeight: 500,
+  height,
   justifyContent: 'center',
   lineHeight: height,
   outline: 'none',
@@ -33,12 +31,11 @@ export const DecrementButton = styled(SquareButton)(
     theme: {
       palette: { red },
     },
+    quantity,
   }) => ({
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: red,
-      },
-    },
+    color: red,
+    opacity: quantity ? 1 : 0.1,
+    pointerEvents: quantity ? 'all' : 'none',
   }),
 );
 
@@ -48,40 +45,39 @@ export const IncrementButton = styled(SquareButton)(
       palette: { green },
     },
   }) => ({
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: green,
-      },
-    },
+    color: green,
   }),
 );
 
-export const Quantity = styled.div(() => ({
-  alignItems: 'center',
+export const Info = styled.div(() => ({
   display: 'flex',
   flex: 1,
-  fontSize: 'inherit',
-  fontWeight: 600,
-  height: '100%',
-  justifyContent: 'center',
-  userSelect: 'none',
+  flexDirection: 'column',
 }));
 
-export const NewOrderItemButton = styled(Quantity)(
+export const Quantity = styled.div(
   ({
     theme: {
-      palette: { black, green },
+      palette: { primary },
     },
+    quantity,
   }) => ({
-    color: black,
-    cursor: 'pointer',
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: green,
-      },
-    },
+    alignItems: 'center',
+    color: quantity ? primary : 'inherit',
+    display: 'flex',
+    fontSize: '0.8rem',
+    fontWeight: 700,
+    height: '100%',
+    userSelect: 'none',
   }),
 );
+
+export const Price = styled(Quantity)(() => ({}));
+
+export const Container = styled.span(({ theme: { palette: { grey } } }) => ({
+  color: grey,
+  whiteSpace: 'pre',
+}));
 
 export const Icon = styled(MdiIcon)(() => ({
   g: {

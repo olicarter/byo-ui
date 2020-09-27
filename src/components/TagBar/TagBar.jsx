@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 
@@ -7,7 +7,6 @@ import { GET_TAGS_QUERY } from './TagBar.gql';
 import * as Styled from './TagBar.styled';
 
 export const TagBar = () => {
-  const { tagSlug } = useParams();
   const { pathname, search } = useLocation();
 
   const { data: { allTags = [] } = {} } = useQuery(GET_TAGS_QUERY);

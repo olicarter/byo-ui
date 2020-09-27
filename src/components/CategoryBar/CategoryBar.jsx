@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 

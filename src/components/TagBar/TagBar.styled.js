@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 export const TagBar = styled.div(() => ({
   alignItems: 'center',
   display: 'flex',
-  height: '3rem',
+  height: '2.5rem',
   overflowX: 'scroll',
 }));
 
