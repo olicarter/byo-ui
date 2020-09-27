@@ -10,22 +10,46 @@ export const Unit = gql`
   }
 `;
 
-export const Product = gql`
-  fragment Product on Product {
+export const Container = gql`
+  fragment Container on Container {
     id
-    increments
-    name
     price
-    slug
-    tags {
-      id
-      slug
+    type
+    unit
+    volume
+  }
+`;
+
+export const ProductVariant = gql`
+  fragment ProductVariant on ProductVariant {
+    id
+    increment
+    incrementPrice
+    container {
+      ...Container
     }
     unit {
       ...Unit
     }
   }
+  ${Container}
   ${Unit}
+`;
+
+export const Product = gql`
+  fragment Product on Product {
+    id
+    name
+    slug
+    tags {
+      id
+      slug
+    }
+    variants {
+      ...ProductVariant
+    }
+  }
+  ${ProductVariant}
 `;
 
 export const OrderItem = gql`
