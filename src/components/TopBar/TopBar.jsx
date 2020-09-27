@@ -6,12 +6,13 @@ import { mdiAccountCircle } from '@mdi/js';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
+import { CategoryBar } from '../CategoryBar';
 //import { UserPaidOrders } from '../UserPaidOrders';
 import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
-  const tagBarVisible = useRouteMatch('/products/:tagSlug');
+  const tagBarVisible = useRouteMatch('/categories/:categorySlug');
 
   return (
     <>
@@ -28,7 +29,7 @@ export const TopBar = () => {
                 <Styled.NavItem>
                   <Styled.Link
                     selected={pathname.includes('products')}
-                    to="/products/all"
+                    to="/categories/all"
                   >
                     shop
                   </Styled.Link>
@@ -58,7 +59,8 @@ export const TopBar = () => {
           </Styled.Nav>
         </Styled.TopBar>
 
-        <Route path="/products/:tagSlug">
+        <Route path="/categories/:categorySlug">
+          <CategoryBar />
           <TagBar />
         </Route>
       </Styled.Wrapper>

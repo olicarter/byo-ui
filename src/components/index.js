@@ -2,6 +2,7 @@ export * from './AddToOrderButton';
 export * from './App';
 export * from './Basket';
 export * from './BasketIcon';
+export * from './CategoryBar';
 export * from './Main';
 export * from './ProductCard';
 export * from './TagBar';
