@@ -4,9 +4,7 @@ import { Link, Route } from 'react-router-dom';
 import * as Styled from './App.styled';
 import { Basket } from '../Basket';
 import { Footer } from '../Footer';
-import { PageHeader } from '../PageHeader';
 import { Products } from '../Products';
-import { SubTitle, Title } from '../Typography';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
 
@@ -26,14 +24,6 @@ export const App = () => (
       <Route path="/basket">
         <Basket />
         <Link to="/checkout">Go to Checkout</Link>
-      </Route>
-
-      <Route path="/blog">
-        {/* <PageHeader>
-          <Title>Blog</Title>
-          <SubTitle>Don't think this is part of original spec</SubTitle>
-        </PageHeader> */}
-        {/* <Products /> */}
       </Route>
     </Styled.Main>
 

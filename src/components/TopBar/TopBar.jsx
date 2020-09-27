@@ -12,7 +12,7 @@ import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
-  const tagBarVisible = useRouteMatch('/categories/:categorySlug');
+  const tagBarVisible = useRouteMatch('/products');
 
   return (
     <>
@@ -32,11 +32,6 @@ export const TopBar = () => {
                     to="/products"
                   >
                     shop
-                  </Styled.Link>
-                </Styled.NavItem>
-                <Styled.NavItem>
-                  <Styled.Link selected={pathname.includes('blog')} to="/blog">
-                    blog
                   </Styled.Link>
                 </Styled.NavItem>
               </Styled.NavItems>
