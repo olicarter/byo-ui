@@ -5,5 +5,6 @@ export * from './BasketIcon';
 export * from './CategoryBar';
 export * from './Main';
 export * from './ProductCard';
+export * from './Products';
 export * from './TagBar';
 export * from './TopBar';

@@ -1,13 +1,15 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { parse, stringify } from 'qs';
 
 import { GET_CATEGORIES_QUERY } from './CategoryBar.gql';
 import * as Styled from './CategoryBar.styled';
 
 export const CategoryBar = () => {
-  const { categorySlug } = useParams();
-  const { search } = useLocation();
+  const { pathname, search } = useLocation();
+
+  const { category, tags = [] } = parse(search, { ignoreQueryPrefix: true });
 
   const { data: { allCategories = [] } = {} } = useQuery(GET_CATEGORIES_QUERY);
 
@@ -20,8 +22,16 @@ export const CategoryBar = () => {
           </Styled.NavItem>
           <Styled.NavItem>
             <Styled.Tag
-              selected={categorySlug === 'all'}
-              to={`/categories/all${search}`}
+              selected={!category}
+              to={{
+                pathname,
+                search: stringify(
+                  {
+                    tags,
+                  },
+                  { arrayFormat: 'brackets', encode: false },
+                ),
+              }}
             >
               all
             </Styled.Tag>
@@ -29,8 +39,17 @@ export const CategoryBar = () => {
           {allCategories.map(({ id, name, slug }) => (
             <Styled.NavItem key={id}>
               <Styled.Tag
-                selected={categorySlug === slug}
-                to={`/categories/${slug}${search}`}
+                selected={category === slug}
+                to={{
+                  pathname,
+                  search: stringify(
+                    {
+                      category: slug,
+                      tags,
+                    },
+                    { arrayFormat: 'brackets', encode: false },
+                  ),
+                }}
               >
                 {name.toLowerCase()}
               </Styled.Tag>

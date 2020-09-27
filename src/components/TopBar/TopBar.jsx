@@ -29,7 +29,7 @@ export const TopBar = () => {
                 <Styled.NavItem>
                   <Styled.Link
                     selected={pathname.includes('products')}
-                    to="/categories/all"
+                    to="/products"
                   >
                     shop
                   </Styled.Link>
@@ -59,7 +59,7 @@ export const TopBar = () => {
           </Styled.Nav>
         </Styled.TopBar>
 
-        <Route path="/categories/:categorySlug">
+        <Route path="/products">
           <CategoryBar />
           <TagBar />
         </Route>

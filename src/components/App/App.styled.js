@@ -1,0 +1,17 @@
+import styled from 'styled-components';
+
+export const App = styled.div(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  // minHeight: '100vh',
+  // position: 'absolute',
+  // top: 0,
+  // left: 0,
+  // right: 0,
+  // bottom: 0,
+}));
+
+export const Main = styled.div(() => ({
+  flex: 1,
+  margin: '0 2vmin',
+}));
