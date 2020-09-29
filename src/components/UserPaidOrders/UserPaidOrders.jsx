@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER } from './UserPaidOrders.gql';
 import { useAuth } from '../../contexts';
-import * as Styled from './UserPaidOrders.styled';
+// import * as Styled from './UserPaidOrders.styled';
 
 export const UserPaidOrders = () => {
   const { user: authUser } = useAuth();

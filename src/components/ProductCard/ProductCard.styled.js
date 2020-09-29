@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const ProductCard = styled.div(() => ({
-  borderRadius: '1rem',
+  alignSelf: 'flex-start',
+  borderRadius: '0.5rem',
   boxShadow: '0 0 0.3rem 0.05rem rgba(0, 0, 0, 0.1)',
   display: 'flex',
   flexDirection: 'column',
@@ -14,22 +15,6 @@ export const ProductCard = styled.div(() => ({
   },
 }));
 
-export const AspectRatio = styled.div(() => ({
-  height: 0,
-  overflow: 'hidden',
-  paddingTop: '66.66%',
-  position: 'relative',
-}));
-
-export const Image = styled.img(() => ({
-  height: '100%',
-  left: 0,
-  objectFit: 'cover',
-  position: 'absolute',
-  top: 0,
-  width: '100%',
-}));
-
 export const Content = styled.div(() => ({
   cursor: 'default',
   display: 'flex',
@@ -40,12 +25,18 @@ export const Content = styled.div(() => ({
 
 export const Name = styled.span(({ theme: { palette: { black } } }) => ({
   color: black,
-  fontSize: '1rem',
+  fontSize: '1.1rem',
   fontWeight: 700,
   margin: 0,
   paddingBottom: '0.5rem',
   textTransform: 'capitalize',
-  textDecoration: 'none',
+}));
+
+export const Info = styled.p(({ theme: { palette: { grey } } }) => ({
+  color: grey,
+  fontSize: '0.8rem',
+  margin: 0,
+  paddingBottom: '0.5rem',
 }));
 
 export const Price = styled.span(() => ({
@@ -62,3 +53,21 @@ export const Buttons = styled.div(() => ({
     flex: 1,
   },
 }));
+
+export const OrderSummary = styled.div(() => ({
+  display: 'flex',
+  fontWeight: 700,
+  justifyContent: 'space-between',
+  padding: '0.5rem',
+}));
+
+export const ContainersTotalPrice = styled.span(
+  ({
+    theme: {
+      palette: { grey },
+    },
+  }) => ({
+    color: grey,
+    whiteSpace: 'pre',
+  }),
+);

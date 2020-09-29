@@ -21,7 +21,7 @@ export const BasketIcon = () => {
 
   useEffect(() => {
     if (netlifyId) getUnpaidOrderItemsCount();
-  }, [netlifyId]);
+  }, [netlifyId, getUnpaidOrderItemsCount]);
 
   const [{ orders = [] } = {}] = allUsers || [];
 

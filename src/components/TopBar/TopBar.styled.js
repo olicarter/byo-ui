@@ -3,7 +3,7 @@ import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 
 export const Spacer = styled.div(({ tagBarVisible }) => ({
-  height: tagBarVisible ? '7rem' : '4rem',
+  height: tagBarVisible ? '9rem' : '4rem',
 }));
 
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
