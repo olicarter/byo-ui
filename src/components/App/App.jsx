@@ -7,6 +7,7 @@ import { Footer } from '../Footer';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
+import { TextInput } from '../TextInput';
 
 export const App = () => (
   <Styled.App>
@@ -19,6 +20,7 @@ export const App = () => (
 
       <Route path="/account">
         <UserPaidOrders />
+        <TextInput />
       </Route>
 
       <Route path="/basket">
