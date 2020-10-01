@@ -1,8 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import netlifyIdentity from 'netlify-identity-widget';
 import { useLazyQuery, useMutation } from '@apollo/client';
+import netlifyIdentity from 'netlify-identity-widget';
+import GoTrue from 'gotrue-js';
 
 import { CREATE_USER, GET_USER } from './AuthContext.gql';
+import { LoginModal } from '../../components';
+
+const { REACT_APP_NETLIFY_IDENTITY_API_URL } = process.env;
+
+const auth = new GoTrue({
+  APIUrl: REACT_APP_NETLIFY_IDENTITY_API_URL,
+  setCookie: true, // required for "remember me" functionality
+});
 
 export const AuthContext = createContext({});
 
@@ -11,6 +20,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const { id: netlifyUserId, email } = user || {};
 
@@ -37,12 +47,14 @@ export const AuthProvider = ({ children }) => {
   }, [getUser, getUserCalled, netlifyUserId]);
 
   const login = callback => {
-    netlifyIdentity.open();
-    netlifyIdentity.on('login', authenticatedUser => {
-      setIsAuthenticated(true);
-      setUser(authenticatedUser);
-      if (typeof callback === 'function') callback(authenticatedUser);
-    });
+    setLoginModalVisible(true);
+    // netlifyIdentity.open();
+    // netlifyIdentity.on('login', authenticatedUser => {
+    //   console.log('authenticatedUser', authenticatedUser);
+    //   setIsAuthenticated(true);
+    //   setUser(authenticatedUser);
+    //   if (typeof callback === 'function') callback(authenticatedUser);
+    // });
   };
 
   const logout = callback => {
@@ -65,13 +77,9 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        login,
-        logout,
-        user,
-      }}
+      value={{ auth, isAuthenticated, login, logout, user }}
     >
+      {loginModalVisible ? <LoginModal /> : null}
       {children}
     </AuthContext.Provider>
   );

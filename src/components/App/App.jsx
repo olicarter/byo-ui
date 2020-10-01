@@ -4,6 +4,7 @@ import { Link, Route } from 'react-router-dom';
 import * as Styled from './App.styled';
 import { Basket } from '../Basket';
 import { Footer } from '../Footer';
+import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
@@ -18,6 +19,7 @@ export const App = () => (
       </Route>
 
       <Route path="/account">
+        <LogoutButton />
         <UserPaidOrders />
       </Route>
 

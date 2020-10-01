@@ -2,6 +2,7 @@ export * from './App';
 export * from './Basket';
 export * from './BasketIcon';
 export * from './CategoryBar';
+export * from './LoginModal';
 export * from './Main';
 export * from './ProductCard';
 export * from './Products';
