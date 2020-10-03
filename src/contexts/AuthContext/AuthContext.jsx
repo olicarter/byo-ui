@@ -46,38 +46,67 @@ export const AuthProvider = ({ children }) => {
     if (!getUserCalled && netlifyUserId) getUser();
   }, [getUser, getUserCalled, netlifyUserId]);
 
-  const login = callback => {
+  const openLoginModal = () => {
     setLoginModalVisible(true);
-    // netlifyIdentity.open();
-    // netlifyIdentity.on('login', authenticatedUser => {
-    //   console.log('authenticatedUser', authenticatedUser);
-    //   setIsAuthenticated(true);
-    //   setUser(authenticatedUser);
-    //   if (typeof callback === 'function') callback(authenticatedUser);
-    // });
   };
 
-  const logout = callback => {
-    netlifyIdentity.logout();
-    netlifyIdentity.on('logout', () => {
+  const closeLoginModal = () => {
+    setLoginModalVisible(false);
+  };
+
+  const login = async (email, password) => {
+    try {
+      const loginRes = await auth.login(email, password, true);
+      if (loginRes) setIsAuthenticated(true);
+      return loginRes;
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  const signup = async (email, password) => {
+    try {
+      const x = await auth.signup(email, password);
+      console.log('signup success', x);
+    } catch (error) {
+      console.dir(error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await user.logout();
       setIsAuthenticated(false);
-      setUser(null);
-      if (typeof callback === 'function') callback();
-    });
+    } catch (error) {
+      return { error };
+    }
   };
 
   useEffect(() => {
-    netlifyIdentity.on('init', user => setIsAuthenticated(!!user));
-    netlifyIdentity.init();
+    setIsAuthenticated(!!auth.currentUser());
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) setUser(netlifyIdentity.currentUser());
+    setUser(auth.currentUser());
   }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
-      value={{ auth, isAuthenticated, login, logout, user }}
+      value={{
+        auth,
+        closeLoginModal,
+        errorMessages: {
+          EMAIL_NOT_CONFIRMED: 'invalid_grant: Email not confirmed',
+          INVALID_EMAIL_OR_PASSWORD:
+            'invalid_grant: No user found with that email, or password invalid.',
+        },
+        isAuthenticated,
+        login,
+        logout,
+        openLoginModal,
+        signup,
+        user,
+      }}
     >
       {loginModalVisible ? <LoginModal /> : null}
       {children}

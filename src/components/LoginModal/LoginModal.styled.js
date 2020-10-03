@@ -13,10 +13,18 @@ export const Heading = styled.h3(({ theme: { palette: { black } } }) => ({
   padding: 0,
 }));
 
-export const Info = styled.p(({ theme: { palette: { grey } } }) => ({
-  color: grey,
-  cursor: 'default',
-  fontSize: '0.8rem',
-  margin: '0.5rem 0 0',
-  padding: 0,
-}));
+export const Info = styled.p(
+  ({
+    color,
+    theme: {
+      palette,
+      palette: { grey },
+    },
+  }) => ({
+    color: palette[color] || grey,
+    cursor: 'default',
+    fontSize: '0.8rem',
+    margin: '0.5rem 0 0',
+    padding: 0,
+  }),
+);
