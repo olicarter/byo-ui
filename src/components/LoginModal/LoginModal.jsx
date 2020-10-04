@@ -18,7 +18,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
 export const LoginModal = () => {
   const {
-    errorMessages: { EMAIL_NOT_CONFIRMED, INVALID_EMAIL_OR_PASSWORD },
+    errorMessages: { INVALID_EMAIL_OR_PASSWORD },
     closeLoginModal,
     login,
     signup,
@@ -41,13 +41,12 @@ export const LoginModal = () => {
   const [isPasswordInputVisible, setIsPasswordInputVisible] = useState(false);
   const [isFirstNameInputVisible, setIsFirstNameInputVisible] = useState(false);
   const [isLastNameInputVisible, setIsLastNameInputVisible] = useState(false);
-  const [
-    isUnconfirmedEmailMessageVisible,
-    setIsUnconfirmedEmailMessageVisible,
-  ] = useState(false);
-  const [continueButtonDisabled, setContinueButtonDisabled] = useState(true);
+  const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
+    true,
+  );
 
-  const [getUsers] = useLazyQuery(GET_USERS_BY_EMAIL, {
+  const [getUsersByEmail] = useLazyQuery(GET_USERS_BY_EMAIL, {
+    fetchPolicy: 'network-only',
     onCompleted: ({ allUsers }) => {
       setIsExistingUser(!!allUsers.length);
       setIsPasswordInputVisible(true);
@@ -80,7 +79,7 @@ export const LoginModal = () => {
   }, [lastName]);
 
   useEffect(() => {
-    setContinueButtonDisabled(
+    setIsContinueButtonDisabled(
       !isEmailValid ||
         (isPasswordInputVisible && !isPasswordValid) ||
         (isFirstNameInputVisible && !isFirstNameValid) ||
@@ -99,26 +98,19 @@ export const LoginModal = () => {
   const handleContinue = async () => {
     try {
       if (isEmailValid && !isPasswordInputVisible) {
-        return getUsers({ variables: { email } });
+        return getUsersByEmail({ variables: { email } });
       }
       if (isEmailValid && isPasswordValid && isExistingUser) {
         setButtonText('Logging in...');
-        setContinueButtonDisabled(true);
+        setIsContinueButtonDisabled(true);
         const { error = {}, id } = await login(email, password);
         switch (error.message) {
-          case EMAIL_NOT_CONFIRMED:
-            {
-              setIsUnconfirmedEmailMessageVisible(true);
-              setButtonText('Continue');
-              setContinueButtonDisabled(false);
-            }
-            break;
           case INVALID_EMAIL_OR_PASSWORD:
             {
               setIsInvalidEmailOrPasswordMessageVisible(true);
               setPassword('');
               setButtonText('Continue');
-              setContinueButtonDisabled(true);
+              setIsContinueButtonDisabled(true);
             }
             break;
           // no default
@@ -142,15 +134,30 @@ export const LoginModal = () => {
           isFirstNameValid &&
           isLastNameValid
         ) {
+          setButtonText('Storing your details...');
+          setIsContinueButtonDisabled(true);
           const signupRes = await signup(email, password);
-          const { error = {}, id: netlifyId } = signupRes;
+          const { error: signupError = {}, id: netlifyId } = signupRes;
           /** @todo handle error better */
-          if (error.message) return console.error(error.message);
-          createUser({
+          if (signupError.message) return console.error(signupError.message);
+          await createUser({
             variables: { email, firstName, lastName, netlifyId },
           });
-          setIsUnconfirmedEmailMessageVisible(true);
-          return;
+          setButtonText('Logging in...');
+          setIsContinueButtonDisabled(true);
+          const { error: loginError = {}, id } = await login(email, password);
+          switch (loginError.message) {
+            case INVALID_EMAIL_OR_PASSWORD:
+              {
+                setIsInvalidEmailOrPasswordMessageVisible(true);
+                setPassword('');
+                setButtonText('Continue');
+                setIsContinueButtonDisabled(true);
+              }
+              break;
+            // no default
+          }
+          if (id) return closeLoginModal();
         }
       }
     } catch (error) {
@@ -159,7 +166,7 @@ export const LoginModal = () => {
   };
 
   const handleKeyDown = e => {
-    if (e.key === 'Enter' && !continueButtonDisabled) {
+    if (e.key === 'Enter' && !isContinueButtonDisabled) {
       e.preventDefault();
       handleContinue();
     }
@@ -168,91 +175,68 @@ export const LoginModal = () => {
   return (
     <Modal onClose={closeLoginModal}>
       <Styled.LoginForm onKeyDown={handleKeyDown}>
-        {isUnconfirmedEmailMessageVisible ? (
-          <>
-            <Styled.Heading>Email verification required</Styled.Heading>
+        <Styled.Heading>Log in</Styled.Heading>
+        <Styled.Info>
+          To place an order with us, we need you to provide some details for
+          essential communication and delivery purposes.
+        </Styled.Info>
+        <FormGroup>
+          <Label>Enter your email</Label>
+          <TextInput autoFocus onChange={setEmail} type="email" />
+        </FormGroup>
+
+        {isPasswordInputVisible ? (
+          <FormGroup>
+            <Label>
+              {isExistingUser ? 'Hello again,' : "Looks like you're new,"} enter{' '}
+              {isExistingUser ? 'your' : 'a'} password
+            </Label>
+            {!isExistingUser ? (
+              <Styled.Info>
+                Your password must be at least 8 characters long.
+              </Styled.Info>
+            ) : null}
+            {isInvalidEmailOrPasswordMessageVisible ? (
+              <Styled.Info color="red">
+                Incorrect password, please try again.
+              </Styled.Info>
+            ) : null}
+            <TextInput
+              autoFocus
+              onChange={setPassword}
+              type="password"
+              value={password}
+            />
+          </FormGroup>
+        ) : null}
+
+        {isFirstNameInputVisible ? (
+          <FormGroup>
+            <Label>What's your first name?</Label>
+            <TextInput autoFocus onChange={setFirstName} type="text" />
+          </FormGroup>
+        ) : null}
+
+        {isLastNameInputVisible ? (
+          <FormGroup>
+            <Label>...and your last name?</Label>
             <Styled.Info>
-              We've sent you a verification email to ensure that the email you
-              entered is your own. Just follow the link in that email to log in.
-              If you can't find the email, use the button below to send another.
+              This is useful for more formal scenarios, like deliveries and
+              receipts.
             </Styled.Info>
-            <FormGroup>
-              <Button
-                borderRadius
-                onClick={() =>
-                  console.log('this should resend the verification email')
-                }
-              >
-                Send me a new verification email
-              </Button>
-            </FormGroup>
-          </>
-        ) : (
-          <>
-            <Styled.Heading>Log in</Styled.Heading>
-            <Styled.Info>
-              To place an order with us, we need you to provide some details for
-              essential communication and delivery purposes.
-            </Styled.Info>
-            <FormGroup>
-              <Label>Enter your email</Label>
-              <TextInput autoFocus onChange={setEmail} type="email" />
-            </FormGroup>
+            <TextInput autoFocus onChange={setLastName} type="text" />
+          </FormGroup>
+        ) : null}
 
-            {isPasswordInputVisible ? (
-              <FormGroup>
-                <Label>
-                  {isExistingUser ? 'Hello again,' : "Looks like you're new,"}{' '}
-                  enter {isExistingUser ? 'your' : 'a'} password
-                </Label>
-                {!isExistingUser ? (
-                  <Styled.Info>
-                    Your password must be at least 8 characters long.
-                  </Styled.Info>
-                ) : null}
-                {isInvalidEmailOrPasswordMessageVisible ? (
-                  <Styled.Info color="red">
-                    Incorrect password, please try again.
-                  </Styled.Info>
-                ) : null}
-                <TextInput
-                  autoFocus
-                  onChange={setPassword}
-                  type="password"
-                  value={password}
-                />
-              </FormGroup>
-            ) : null}
-
-            {isFirstNameInputVisible ? (
-              <FormGroup>
-                <Label>What's your first name?</Label>
-                <TextInput autoFocus onChange={setFirstName} type="text" />
-              </FormGroup>
-            ) : null}
-
-            {isLastNameInputVisible ? (
-              <FormGroup>
-                <Label>...and your last name?</Label>
-                <Styled.Info>
-                  This is useful for more formal scenarios, like deliveries and
-                  receipts.
-                </Styled.Info>
-                <TextInput autoFocus onChange={setLastName} type="text" />
-              </FormGroup>
-            ) : null}
-
-            <FormGroup>
-              <Button
-                borderRadius
-                disabled={continueButtonDisabled}
-                onClick={handleContinue}
-              >
-                {buttonText}
-              </Button>
-            </FormGroup>
-          </>
-        )}
+        <FormGroup>
+          <Button
+            borderRadius
+            disabled={isContinueButtonDisabled}
+            onClick={handleContinue}
+          >
+            {buttonText}
+          </Button>
+        </FormGroup>
       </Styled.LoginForm>
     </Modal>
   );

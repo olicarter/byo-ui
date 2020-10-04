@@ -1,22 +1,12 @@
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 
-export const GET_USER = gql `
-  query($netlifyId: String!) {
+import { User } from '../../fragments';
+
+export const GET_USERS_BY_NETLIFY_ID = gql`
+  query UserPaidOrdersGetUsersByNetlifyId($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
-      id
-      orders(where: { paid: true }) {
-        id
-        paid
-        orderItems {
-            id
-            product{
-                id
-                name
-                }
-            quantity
-            }
-        paidAt
-      }
+      ...User
     }
   }
+  ${User}
 `;

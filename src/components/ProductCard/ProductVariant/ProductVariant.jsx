@@ -57,20 +57,6 @@ export const ProductVariant = ({
           },
         });
       }
-      const id = cache.identify(unpaidOrder);
-      const { orderItems: currentOrderItems = [] } = cache.readFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-      });
-      cache.writeFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-        data: {
-          orderItems: [...currentOrderItems, createOrderItem],
-        },
-      });
     },
   });
 

@@ -18,21 +18,19 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const { id: netlifyUserId } = user || {};
 
-  const [getUser, { called: getUserCalled }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { netlifyId: netlifyUserId },
-    },
-  );
+  const [getUsersByNetlifyId] = useLazyQuery(GET_USERS_BY_NETLIFY_ID);
 
   useEffect(() => {
-    if (!getUserCalled && netlifyUserId) getUser();
-  }, [getUser, getUserCalled, netlifyUserId]);
+    if (netlifyUserId)
+      getUsersByNetlifyId({
+        variables: { netlifyId: netlifyUserId },
+      });
+  }, [getUsersByNetlifyId, netlifyUserId]);
 
   const openLoginModal = () => {
     setLoginModalVisible(true);
@@ -64,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await user.logout();
       setIsAuthenticated(false);
+      setUser(null);
     } catch (error) {
       return { error };
     }

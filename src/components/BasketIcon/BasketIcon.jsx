@@ -11,17 +11,13 @@ export const BasketIcon = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [getUnpaidOrderItemsCount, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
     GET_UNPAID_ORDER_ITEMS_COUNT,
-    {
-      fetchPolicy: 'cache-only',
-      variables: { netlifyId },
-    },
   );
 
   useEffect(() => {
-    if (netlifyId) getUnpaidOrderItemsCount();
-  }, [netlifyId, getUnpaidOrderItemsCount]);
+    if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
+  }, [netlifyId, getUsersByNetlifyId]);
 
   const [{ orders = [] } = {}] = allUsers || [];
 

@@ -1,19 +1,24 @@
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER } from './UserPaidOrders.gql';
+
 import { useAuth } from '../../contexts';
+import { GET_USERS_BY_NETLIFY_ID } from './UserPaidOrders.gql';
 // import * as Styled from './UserPaidOrders.styled';
 
 export const UserPaidOrders = () => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
-  const [getOrder, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
-  });
+
+  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
+    GET_USERS_BY_NETLIFY_ID,
+  );
+
   const [{ orders = [] } = {}] = allUsers || [];
+
   useEffect(() => {
-    if (netlifyId) getOrder();
-  }, [netlifyId, getOrder]);
+    if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
+  }, [netlifyId, getUsersByNetlifyId]);
+
   return (
     <div>
       {orders.map(({ orderItems, id, paidAt }) => (
