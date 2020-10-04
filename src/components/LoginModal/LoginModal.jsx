@@ -106,17 +106,22 @@ export const LoginModal = () => {
         setContinueButtonDisabled(true);
         const { error = {}, id } = await login(email, password);
         switch (error.message) {
-          case EMAIL_NOT_CONFIRMED: {
-            setIsUnconfirmedEmailMessageVisible(true);
-            setButtonText('Continue');
-            setContinueButtonDisabled(false);
-          }
-          case INVALID_EMAIL_OR_PASSWORD: {
-            setIsInvalidEmailOrPasswordMessageVisible(true);
-            setPassword('');
-            setButtonText('Continue');
-            setContinueButtonDisabled(true);
-          }
+          case EMAIL_NOT_CONFIRMED:
+            {
+              setIsUnconfirmedEmailMessageVisible(true);
+              setButtonText('Continue');
+              setContinueButtonDisabled(false);
+            }
+            break;
+          case INVALID_EMAIL_OR_PASSWORD:
+            {
+              setIsInvalidEmailOrPasswordMessageVisible(true);
+              setPassword('');
+              setButtonText('Continue');
+              setContinueButtonDisabled(true);
+            }
+            break;
+          // no default
         }
         if (id) return closeLoginModal();
       } else {

@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
-import netlifyIdentity from 'netlify-identity-widget';
+import { useLazyQuery } from '@apollo/client';
 import GoTrue from 'gotrue-js';
 
-import { CREATE_USER, GET_USERS_BY_NETLIFY_ID } from './AuthContext.gql';
+import { GET_USERS_BY_NETLIFY_ID } from './AuthContext.gql';
 import { LoginModal } from '../../components';
 
 const { REACT_APP_NETLIFY_IDENTITY_API_URL } = process.env;
