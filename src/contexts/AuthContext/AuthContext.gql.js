@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_USER = gql`
+export const GET_USERS_BY_NETLIFY_ID = gql`
   query($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
       id

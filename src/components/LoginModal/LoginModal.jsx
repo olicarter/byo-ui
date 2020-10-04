@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
-import { CREATE_USER, GET_USERS_BY_EMAIL } from './LoginModal.gql';
+import {
+  CREATE_USER,
+  GET_USERS_BY_EMAIL,
+  GET_USERS_BY_NETLIFY_ID,
+} from './LoginModal.gql';
 import * as Styled from './LoginModal.styled';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
@@ -11,7 +15,6 @@ import { Modal } from '../Modal';
 import { TextInput } from '../TextInput';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
-// const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export const LoginModal = () => {
   const {
@@ -52,10 +55,12 @@ export const LoginModal = () => {
   });
 
   const [createUser] = useMutation(CREATE_USER, {
-    // onCompleted: ({ allUsers }) => {
-    //   setIsExistingUser(!!allUsers.length);
-    //   setIsPasswordInputVisible(true);
-    // },
+    update: (cache, { data: { createUser } }) => {
+      cache.writeQuery({
+        query: GET_USERS_BY_NETLIFY_ID,
+        data: { allUsers: createUser },
+      });
+    },
   });
 
   useEffect(() => {
@@ -132,10 +137,15 @@ export const LoginModal = () => {
           isFirstNameValid &&
           isLastNameValid
         ) {
-          const { id: netlifyId } = await signup(email, password);
-          return createUser({
+          const signupRes = await signup(email, password);
+          const { error = {}, id: netlifyId } = signupRes;
+          /** @todo handle error better */
+          if (error.message) return console.error(error.message);
+          createUser({
             variables: { email, firstName, lastName, netlifyId },
           });
+          setIsUnconfirmedEmailMessageVisible(true);
+          return;
         }
       }
     } catch (error) {
@@ -157,15 +167,16 @@ export const LoginModal = () => {
           <>
             <Styled.Heading>Email verification required</Styled.Heading>
             <Styled.Info>
-              We recently sent you a verification email to ensure that the email
-              you entered is your own. Just follow the link in that email to log
-              in. If you can't find the email, use the button below to send
-              another.
+              We've sent you a verification email to ensure that the email you
+              entered is your own. Just follow the link in that email to log in.
+              If you can't find the email, use the button below to send another.
             </Styled.Info>
             <FormGroup>
               <Button
                 borderRadius
-                // onClick={handleContinue}
+                onClick={() =>
+                  console.log('this should resend the verification email')
+                }
               >
                 Send me a new verification email
               </Button>

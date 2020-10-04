@@ -42,7 +42,6 @@ export const ProductCard = ({
   const hideProductVariants = () => setProductVariantsVisible(false);
 
   const purchaseInfo = (() => {
-    console.log(variants);
     if (
       variants.every(({ container }) => container && !!Number(container.price))
     )

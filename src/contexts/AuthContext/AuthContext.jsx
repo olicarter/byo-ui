@@ -3,7 +3,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import netlifyIdentity from 'netlify-identity-widget';
 import GoTrue from 'gotrue-js';
 
-import { CREATE_USER, GET_USER } from './AuthContext.gql';
+import { CREATE_USER, GET_USERS_BY_NETLIFY_ID } from './AuthContext.gql';
 import { LoginModal } from '../../components';
 
 const { REACT_APP_NETLIFY_IDENTITY_API_URL } = process.env;
@@ -22,25 +22,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  const { id: netlifyUserId, email } = user || {};
+  const { id: netlifyUserId } = user || {};
 
-  const [createUser] = useMutation(CREATE_USER, {
-    variables: {
-      email,
-      firstName: 'firstName',
-      lastName: 'lastName',
-      netlifyId: netlifyUserId,
+  const [getUser, { called: getUserCalled }] = useLazyQuery(
+    GET_USERS_BY_NETLIFY_ID,
+    {
+      variables: { netlifyId: netlifyUserId },
     },
-  });
-
-  const [getUser, { called: getUserCalled }] = useLazyQuery(GET_USER, {
-    onCompleted: ({ allUsers }) => {
-      const [user] = allUsers;
-      const { id } = user || {};
-      if (!id) return createUser();
-    },
-    variables: { netlifyId: netlifyUserId },
-  });
+  );
 
   useEffect(() => {
     if (!getUserCalled && netlifyUserId) getUser();
@@ -66,10 +55,9 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (email, password) => {
     try {
-      const x = await auth.signup(email, password);
-      console.log('signup success', x);
+      return auth.signup(email, password);
     } catch (error) {
-      console.dir(error);
+      return { error };
     }
   };
 

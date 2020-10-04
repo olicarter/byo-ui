@@ -12,7 +12,6 @@ import { TagBar } from '../TagBar';
 export const TopBar = () => {
   const { pathname } = useLocation();
   const tagBarVisible = !!useRouteMatch('/products');
-  console.log(tagBarVisible);
 
   return (
     <>
