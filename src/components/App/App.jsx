@@ -6,6 +6,7 @@ import * as Styled from './App.styled';
 import { Basket } from '../Basket';
 import { Button } from '../Button';
 import { Footer } from '../Footer';
+import { Home } from '../Home';
 import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
@@ -19,6 +20,10 @@ export const App = () => {
       <TopBar />
 
       <Styled.Main>
+        <Route exact path="/">
+          <Home />
+        </Route>
+
         <Route path="/products">
           <Products />
         </Route>
