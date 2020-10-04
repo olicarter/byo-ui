@@ -10,7 +10,7 @@ import { Home } from '../Home';
 import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
-import { UserPaidOrders } from '../UserPaidOrders';
+import { UserOrders } from '../UserOrders';
 
 export const App = () => {
   const { isAuthenticated, openLoginModal } = useAuth();
@@ -34,7 +34,7 @@ export const App = () => {
           ) : (
             <Button onClick={openLoginModal}>Log in</Button>
           )}
-          <UserPaidOrders />
+          <UserOrders />
         </Route>
 
         <Route path="/basket">

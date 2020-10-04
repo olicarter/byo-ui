@@ -5,18 +5,29 @@ export const Column = styled.div(() => ({
   flexDirection: 'column',
   flexBasis: '100%',
   flex: '1',
-  maxWidth: '400px',
+  maxWidth: '600px',
 }));
 
-export const Row = styled.div(() => ({
+export const Section = styled.section(() => ({
+  ':not(:first-of-type)': {
+    marginTop: '0.5rem',
+  },
+}));
+
+export const Row = styled.div(({ bold }) => ({
   display: 'flex',
   flexDirection: 'row',
+  fontSize: '15px',
+  fontWeight: bold ? 600 : 'normal',
   justifyContent: 'space-between',
   width: '100%',
-  fontFamily: 'Roboto',
-  fontStyle: 'normal',
-  fontWeight: 'bold',
-  fontSize: '15px',
+}));
+
+export const Header = styled(Row)(() => ({
+  fontSize: '1.5rem',
+  '> span': {
+    fontWeight: 600,
+  },
 }));
 
 export const Date = styled.span(({ theme: { palette: { grey } } }) => ({

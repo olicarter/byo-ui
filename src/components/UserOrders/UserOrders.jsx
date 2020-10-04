@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
-import { GET_USERS_BY_NETLIFY_ID } from './UserPaidOrders.gql';
-import * as Styled from './UserPaidOrders.styled';
+import { GET_USERS_BY_NETLIFY_ID } from './UserOrders.gql';
+import * as Styled from './UserOrders.styled';
+import { SubTitle } from '../Typography';
 
-export const UserPaidOrders = () => {
+export const UserOrders = () => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
@@ -23,13 +24,21 @@ export const UserPaidOrders = () => {
     <Styled.Column>
       {orders.map(({ orderItems, id, paidAt }) => (
         <>
-          <Styled.Row>
-            <h4>{id}</h4>
-            <h4>Total price</h4>
-          </Styled.Row>
-          <Styled.Row>
-            <Styled.Date>{new Date(paidAt).toDateString()}</Styled.Date>
-          </Styled.Row>
+          <Styled.Section>
+            <Styled.Header as="header">
+              <span>#{id}</span>
+              <span>Total price</span>
+            </Styled.Header>
+          </Styled.Section>
+
+          <Styled.Section>
+            <Styled.Row>
+              <Styled.Date>
+                {paidAt ? new Date(paidAt).toDateString() : 'Pending delivery'}
+              </Styled.Date>
+            </Styled.Row>
+          </Styled.Section>
+
           {orderItems.map(
             ({
               quantity,
@@ -41,8 +50,8 @@ export const UserPaidOrders = () => {
                 unit,
               },
             }) => (
-              <>
-                <Styled.Row>
+              <Styled.Section>
+                <Styled.Row bold>
                   <Styled.Name>{name}</Styled.Name>
                   <span>Price</span>
                 </Styled.Row>
@@ -54,7 +63,7 @@ export const UserPaidOrders = () => {
                   </span>
                   {incrementPrice}
                 </Styled.Row>
-              </>
+              </Styled.Section>
             ),
           )}
         </>
