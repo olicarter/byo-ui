@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const UserOrders = styled.div(() => ({
+  padding: '1rem',
+}));
+
 export const Column = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -17,17 +21,20 @@ export const Section = styled.section(() => ({
 export const Row = styled.div(({ bold }) => ({
   display: 'flex',
   flexDirection: 'row',
-  fontSize: '15px',
-  fontWeight: bold ? 600 : 'normal',
+  fontSize: '0.9rem',
+  fontWeight: bold ? 700 : 'normal',
   justifyContent: 'space-between',
   width: '100%',
 }));
 
 export const Header = styled(Row)(() => ({
-  fontSize: '1.5rem',
-  '> span': {
-    fontWeight: 600,
-  },
+  fontSize: '1.2rem',
+  fontWeight: 600,
+}));
+
+export const OrderItemHeader = styled(Row)(() => ({
+  fontSize: '1rem',
+  fontWeight: 600,
 }));
 
 export const Date = styled.span(({ theme: { palette: { grey } } }) => ({
@@ -35,9 +42,9 @@ export const Date = styled.span(({ theme: { palette: { grey } } }) => ({
 }));
 
 export const Name = styled.span(() => ({
-  width: '1000px',
   height: '16px',
   lineHeight: '18px',
+  width: '1000px',
 }));
 
 export const Quantity = styled.span(() => ({

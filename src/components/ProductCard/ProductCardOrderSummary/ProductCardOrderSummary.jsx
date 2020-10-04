@@ -32,7 +32,7 @@ export const ProductCardOrderSummary = ({ orderItems }) => {
     <Styled.OrderSummary>
       <span>{/* {getQuantity({ orderItems, units: allUnits })} */}</span>
       <span>
-        £
+        £{/** @todo move to helper */}
         {Math.round(
           orderItems.reduce(
             (prev, curr) =>
