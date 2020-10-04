@@ -8,15 +8,15 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <GQLProvider>
-        <AuthProvider>
-          <ThemeProvider>
+    <ThemeProvider>
+      <BrowserRouter>
+        <GQLProvider>
+          <AuthProvider>
             <App />
-          </ThemeProvider>
-        </AuthProvider>
-      </GQLProvider>
-    </BrowserRouter>
+          </AuthProvider>
+        </GQLProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

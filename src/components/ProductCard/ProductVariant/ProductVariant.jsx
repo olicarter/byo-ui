@@ -15,7 +15,7 @@ import * as Styled from './ProductVariant.styled';
 export const ProductVariant = ({
   variant: { id, container, increment, incrementPrice, unit },
 }) => {
-  const { isAuthenticated, login, user: authUser } = useAuth();
+  const { isAuthenticated, openLoginModal, user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
   const [incrementLoading, setIncrementLoading] = useState(false);
@@ -111,7 +111,6 @@ export const ProductVariant = ({
   });
 
   const handleCreateOrderItem = () => {
-    if (!isAuthenticated) return login();
     createOrderItem({
       variables: {
         data: {
@@ -128,22 +127,22 @@ export const ProductVariant = ({
   };
 
   const handleUpdateOrderItem = newQuantity => {
-    if (!isAuthenticated) return login();
     updateOrderItem({ variables: { id: orderItemId, quantity: newQuantity } });
   };
 
   const handleDeleteOrderItem = () => {
-    if (!isAuthenticated) return login();
     deleteOrderItem({ variables: { id: orderItemId } });
   };
 
   const incrementOrderItem = () => {
+    if (!isAuthenticated) return openLoginModal();
     setIncrementLoading(true);
     if (!!quantity) handleUpdateOrderItem(quantity + 1);
     else handleCreateOrderItem();
   };
 
   const decrementOrderItem = () => {
+    if (!isAuthenticated) return openLoginModal();
     if (!quantity) return;
     setDecrementLoading(true);
     if (quantity > 1) handleUpdateOrderItem(quantity - 1);
