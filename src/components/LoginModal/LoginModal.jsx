@@ -106,12 +106,10 @@ export const LoginModal = () => {
         const { error = {}, id } = await login(email, password);
         switch (error.message) {
           case INVALID_EMAIL_OR_PASSWORD:
-            {
-              setIsInvalidEmailOrPasswordMessageVisible(true);
-              setPassword('');
-              setButtonText('Continue');
-              setIsContinueButtonDisabled(true);
-            }
+            setIsInvalidEmailOrPasswordMessageVisible(true);
+            setPassword('');
+            setButtonText('Continue');
+            setIsContinueButtonDisabled(true);
             break;
           // no default
         }
@@ -148,12 +146,10 @@ export const LoginModal = () => {
           const { error: loginError = {}, id } = await login(email, password);
           switch (loginError.message) {
             case INVALID_EMAIL_OR_PASSWORD:
-              {
-                setIsInvalidEmailOrPasswordMessageVisible(true);
-                setPassword('');
-                setButtonText('Continue');
-                setIsContinueButtonDisabled(true);
-              }
+              setIsInvalidEmailOrPasswordMessageVisible(true);
+              setPassword('');
+              setButtonText('Continue');
+              setIsContinueButtonDisabled(true);
               break;
             // no default
           }
