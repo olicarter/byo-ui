@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 
 import { Orders } from './Orders';
+import { Address } from './Address';
 
 export const User = gql`
   fragment User on User {
@@ -10,6 +11,8 @@ export const User = gql`
     email
     netlifyId
     ...Orders
+    ...Address
   }
   ${Orders}
+  ${Address}
 `;
