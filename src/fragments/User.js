@@ -11,7 +11,9 @@ export const User = gql`
     email
     netlifyId
     ...Orders
-    ...Address
+    address {
+      ...Address
+    }
   }
   ${Orders}
   ${Address}

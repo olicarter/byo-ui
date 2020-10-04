@@ -3,6 +3,10 @@ import { useLazyQuery } from '@apollo/client';
 
 import { GET_USERS_BY_NETLIFY_ID } from './UserAddressForm.gql';
 import { useAuth } from '../../contexts';
+import * as Styled from './UserAddressForm.styled';
+import { TextInput } from '../TextInput';
+import { FormGroup } from '../FormGroup';
+import { Label } from '../Label';
 
 export const UserAddressForm = () => {
   const { user: authUser } = useAuth();
@@ -23,60 +27,52 @@ export const UserAddressForm = () => {
   debugger;
   return (
     <div>
-      {address.map(({ id, streetName, flatNumber, postCode }) => (
-        <>
-          <p>{id}</p>
-          <p>{streetName}</p>
-          <p>{flatNumber}</p>
-          <p>{postCode}</p>
-        </>
-      ))}
-      <div>
-        <form>
-          <h3>Personal Datails</h3>
-          <div>
-            <label>Firstname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Lastname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text"></input>
-          </div>
-        </form>
-      </div>
-      <div>
-        <form>
-          <h3>Delivery Address</h3>
-          <div>
-            <label>Firstname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Lastname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Mobile Number</label>
-            <input type=""></input>
-          </div>
-          <div>
-            <label>Street name</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Apartment Number</label>
-            <input type=""></input>
-          </div>
-        </form>
-      </div>
+      <p>{address.id}</p>
+      <p>{address.streetName}</p>
+      <p>{address.flatNumber}</p>
+      <p>{address.postCode}</p>
+      <Styled.Form>
+        <Styled.Heading>Personal Datails</Styled.Heading>
+        <FormGroup>
+          <Label>Firstname</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Lastname</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Email</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+      </Styled.Form>
+      <Styled.Form>
+        <Styled.Heading>Delivery Address</Styled.Heading>
+        <FormGroup>
+          <Label>Firstname</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Lastname</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Email</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Mobile Number</Label>
+          <TextInput type="number"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Street Name</Label>
+          <TextInput type="text"></TextInput>
+        </FormGroup>
+        <FormGroup>
+          <Label>Apartment Number</Label>
+          <TextInput type="number"></TextInput>
+        </FormGroup>
+      </Styled.Form>
     </div>
   );
 };
