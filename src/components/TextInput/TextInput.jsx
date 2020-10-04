@@ -1,89 +1,17 @@
-import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import { GET_USER } from './TextInput.gql';
-import { useAuth } from '../../contexts';
+import React from 'react';
 
-export const TextInput = () => {
-  const { user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
-  const [getInfo, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: {
-      netlifyId,
-    },
-  });
-  const [{ id, firstName, lastName } = {}] = allUsers || [];
-  useEffect(() => {
-    if (netlifyId) getInfo();
-  }, [netlifyId, getInfo]);
-  console.log(firstName, id, lastName);
-  return (
-    <div>
-      <div>
-        <form>
-          <h3>Personal Datails</h3>
-          <div>
-            <label>Firstname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Lastname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text"></input>
-          </div>
-        </form>
-      </div>
-      <div>
-        <form>
-          <h3>Billing Address</h3>
-          <div>
-            <label>Address</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Zip/Postal code</label>
-            <input type=""></input>
-          </div>
-          <div>
-            <label>Country</label>
-            <select>
-              <option>UK</option>
-            </select>
-            {/* will add a react package to handle this later */}{' '}
-          </div>
-        </form>
-      </div>
-      <div>
-        <form>
-          <h3>Delivery Address</h3>
-          <div>
-            <label>Firstname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Lastname</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Mobile Number</label>
-            <input type=""></input>
-          </div>
-          <div>
-            <label>Street name</label>
-            <input type="text"></input>
-          </div>
-          <div>
-            <label>Apartment Number</label>
-            <input type=""></input>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+import * as Styled from './TextInput.styled';
+
+export const TextInput = ({
+  autoFocus = false,
+  onChange,
+  type = 'text',
+  value,
+}) => (
+  <Styled.TextInput
+    autoFocus={autoFocus}
+    onChange={e => typeof onChange === 'function' && onChange(e.target.value)}
+    type={type}
+    value={value}
+  />
+);

@@ -1,8 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import netlifyIdentity from 'netlify-identity-widget';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import GoTrue from 'gotrue-js';
 
-import { CREATE_USER, GET_USER } from './AuthContext.gql';
+import { GET_USERS_BY_NETLIFY_ID } from './AuthContext.gql';
+import { LoginModal } from '../../components';
+
+const { REACT_APP_NETLIFY_IDENTITY_API_URL } = process.env;
+
+const auth = new GoTrue({
+  APIUrl: REACT_APP_NETLIFY_IDENTITY_API_URL,
+  setCookie: true, // required for "remember me" functionality
+});
 
 export const AuthContext = createContext({});
 
@@ -11,67 +19,83 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  const { id: netlifyUserId, email } = user || {};
+  const { id: netlifyUserId } = user || {};
 
-  const [createUser] = useMutation(CREATE_USER, {
-    variables: {
-      email,
-      firstName: 'firstName',
-      lastName: 'lastName',
-      netlifyId: netlifyUserId,
+  const [getUser, { called: getUserCalled }] = useLazyQuery(
+    GET_USERS_BY_NETLIFY_ID,
+    {
+      variables: { netlifyId: netlifyUserId },
     },
-  });
-
-  const [getUser, { called: getUserCalled }] = useLazyQuery(GET_USER, {
-    onCompleted: ({ allUsers }) => {
-      const [user] = allUsers;
-      const { id } = user || {};
-      if (!id) return createUser();
-    },
-    variables: { netlifyId: netlifyUserId },
-  });
+  );
 
   useEffect(() => {
     if (!getUserCalled && netlifyUserId) getUser();
   }, [getUser, getUserCalled, netlifyUserId]);
 
-  const login = callback => {
-    netlifyIdentity.open();
-    netlifyIdentity.on('login', authenticatedUser => {
-      setIsAuthenticated(true);
-      setUser(authenticatedUser);
-      if (typeof callback === 'function') callback(authenticatedUser);
-    });
+  const openLoginModal = () => {
+    setLoginModalVisible(true);
   };
 
-  const logout = callback => {
-    netlifyIdentity.logout();
-    netlifyIdentity.on('logout', () => {
+  const closeLoginModal = () => {
+    setLoginModalVisible(false);
+  };
+
+  const login = async (email, password) => {
+    try {
+      const loginRes = await auth.login(email, password, true);
+      if (loginRes) setIsAuthenticated(true);
+      return loginRes;
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  const signup = async (email, password) => {
+    try {
+      return auth.signup(email, password);
+    } catch (error) {
+      return { error };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await user.logout();
       setIsAuthenticated(false);
-      setUser(null);
-      if (typeof callback === 'function') callback();
-    });
+    } catch (error) {
+      return { error };
+    }
   };
 
   useEffect(() => {
-    netlifyIdentity.on('init', user => setIsAuthenticated(!!user));
-    netlifyIdentity.init();
+    setIsAuthenticated(!!auth.currentUser());
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) setUser(netlifyIdentity.currentUser());
+    setUser(auth.currentUser());
   }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
       value={{
+        auth,
+        closeLoginModal,
+        errorMessages: {
+          EMAIL_NOT_CONFIRMED: 'invalid_grant: Email not confirmed',
+          INVALID_EMAIL_OR_PASSWORD:
+            'invalid_grant: No user found with that email, or password invalid.',
+        },
         isAuthenticated,
         login,
         logout,
+        openLoginModal,
+        signup,
         user,
       }}
     >
+      {loginModalVisible ? <LoginModal /> : null}
       {children}
     </AuthContext.Provider>
   );

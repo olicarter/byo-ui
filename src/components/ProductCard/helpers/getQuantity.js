@@ -2,7 +2,6 @@ export const getQuantity = ({ orderItems = [], units }) => {
   const allItems = orderItems.every(
     ({ productVariant: { container } }) => !!container,
   );
-  console.log(allItems);
   // const isItem = unit.singular === 'item';
 
   // const quantityNeedsDividing = !isItem && quantity * increment >= 1000;

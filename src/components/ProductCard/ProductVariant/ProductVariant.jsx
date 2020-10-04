@@ -3,11 +3,10 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
 import { useAuth } from '../../../contexts';
-import { OrderItems } from '../../../fragments';
+import { OrderItems, Orders } from '../../../fragments';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
-  // GET_UNITS,
   GET_USER,
   UPDATE_ORDER_ITEM,
 } from './ProductVariant.gql';
@@ -16,7 +15,7 @@ import * as Styled from './ProductVariant.styled';
 export const ProductVariant = ({
   variant: { id, container, increment, incrementPrice, unit },
 }) => {
-  const { isAuthenticated, login, user: authUser } = useAuth();
+  const { isAuthenticated, openLoginModal, user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
   const [incrementLoading, setIncrementLoading] = useState(false);
@@ -30,7 +29,8 @@ export const ProductVariant = ({
     if (netlifyId) getUser();
   }, [netlifyId, getUser]);
 
-  const [{ id: userId, orders = [] } = {}] = allUsers || [];
+  const [user] = allUsers || [];
+  const { id: userId, orders = [] } = user || {};
   const unpaidOrder = orders.find(({ paid }) => !paid) || {};
   const { id: unpaidOrderId, orderItems = [] } = unpaidOrder;
   const { id: orderItemId, quantity } =
@@ -38,11 +38,25 @@ export const ProductVariant = ({
       ({ productVariant: { id: variantId } }) => id === variantId,
     ) || {};
 
-  // const { data: { allUnits } = {} } = useQuery(GET_UNITS);
-
   const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
     onCompleted: () => setIncrementLoading(false),
     update: (cache, { data: { createOrderItem } }) => {
+      if (!unpaidOrderId) {
+        const userCacheId = cache.identify(user);
+        const { orders: currentOrders = [] } = cache.readFragment({
+          id: userCacheId,
+          fragment: Orders,
+          fragmentName: 'Orders',
+        });
+        cache.writeFragment({
+          id: userCacheId,
+          fragment: Orders,
+          fragmentName: 'Orders',
+          data: {
+            orders: [...currentOrders, createOrderItem.order],
+          },
+        });
+      }
       const id = cache.identify(unpaidOrder);
       const { orderItems: currentOrderItems = [] } = cache.readFragment({
         id,
@@ -97,7 +111,6 @@ export const ProductVariant = ({
   });
 
   const handleCreateOrderItem = () => {
-    if (!isAuthenticated) return login();
     createOrderItem({
       variables: {
         data: {
@@ -114,22 +127,22 @@ export const ProductVariant = ({
   };
 
   const handleUpdateOrderItem = newQuantity => {
-    if (!isAuthenticated) return login();
     updateOrderItem({ variables: { id: orderItemId, quantity: newQuantity } });
   };
 
   const handleDeleteOrderItem = () => {
-    if (!isAuthenticated) return login();
     deleteOrderItem({ variables: { id: orderItemId } });
   };
 
   const incrementOrderItem = () => {
+    if (!isAuthenticated) return openLoginModal();
     setIncrementLoading(true);
     if (!!quantity) handleUpdateOrderItem(quantity + 1);
     else handleCreateOrderItem();
   };
 
   const decrementOrderItem = () => {
+    if (!isAuthenticated) return openLoginModal();
     if (!quantity) return;
     setDecrementLoading(true);
     if (quantity > 1) handleUpdateOrderItem(quantity - 1);

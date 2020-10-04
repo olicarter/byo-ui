@@ -1,32 +1,44 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
 
+import { useAuth } from '../../contexts';
 import * as Styled from './App.styled';
 import { Basket } from '../Basket';
+import { Button } from '../Button';
 import { Footer } from '../Footer';
+import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
 
-export const App = () => (
-  <Styled.App>
-    <TopBar />
+export const App = () => {
+  const { isAuthenticated, openLoginModal } = useAuth();
 
-    <Styled.Main>
-      <Route path="/products">
-        <Products />
-      </Route>
+  return (
+    <Styled.App>
+      <TopBar />
 
-      <Route path="/account">
-        <UserPaidOrders />
-      </Route>
+      <Styled.Main>
+        <Route path="/products">
+          <Products />
+        </Route>
 
-      <Route path="/basket">
-        <Basket />
-        <Link to="/checkout">Go to Checkout</Link>
-      </Route>
-    </Styled.Main>
+        <Route path="/account">
+          {isAuthenticated ? (
+            <LogoutButton />
+          ) : (
+            <Button onClick={openLoginModal}>Log in</Button>
+          )}
+          <UserPaidOrders />
+        </Route>
 
-    <Footer />
-  </Styled.App>
-);
+        <Route path="/basket">
+          <Basket />
+          <Link to="/checkout">Go to Checkout</Link>
+        </Route>
+      </Styled.Main>
+
+      <Footer />
+    </Styled.App>
+  );
+};
