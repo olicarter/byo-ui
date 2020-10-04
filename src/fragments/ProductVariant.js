@@ -1,9 +1,9 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client';
 
-import { Container } from './Container';
-import { Unit } from './Unit';
+import {Container} from './Container';
+import {Unit} from './Unit';
 
-export const ProductVariant = gql`
+export const ProductVariant = gql `
   fragment ProductVariant on ProductVariant {
     id
     container {

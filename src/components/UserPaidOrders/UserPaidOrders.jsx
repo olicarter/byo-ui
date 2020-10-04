@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
 import { GET_USERS_BY_NETLIFY_ID } from './UserPaidOrders.gql';
-// import * as Styled from './UserPaidOrders.styled';
+import * as Styled from './UserPaidOrders.styled';
 
 export const UserPaidOrders = () => {
   const { user: authUser } = useAuth();
@@ -20,19 +20,45 @@ export const UserPaidOrders = () => {
   }, [netlifyId, getUsersByNetlifyId]);
 
   return (
-    <div>
+    <Styled.Column>
       {orders.map(({ orderItems, id, paidAt }) => (
         <>
-          <p>{id}</p>
-          <p>{paidAt}</p>
-          {orderItems.map(({ product: { name }, quantity }) => (
-            <>
-              <p>{name}</p>
-              <p>{quantity}</p>
-            </>
-          ))}
+          <Styled.Row>
+            <h4>{id}</h4>
+            <h4>Total price</h4>
+          </Styled.Row>
+          <Styled.Row>
+            <Styled.Date>{new Date(paidAt).toDateString()}</Styled.Date>
+          </Styled.Row>
+          {orderItems.map(
+            ({
+              quantity,
+              productVariant: {
+                container,
+                increment,
+                incrementPrice,
+                product: { name },
+                unit,
+              },
+            }) => (
+              <>
+                <Styled.Row>
+                  <Styled.Name>{name}</Styled.Name>
+                  <span>Price</span>
+                </Styled.Row>
+                <Styled.Row>
+                  <span>
+                    {quantity} x {increment}
+                    {unit.pluralAbbreviated}
+                    {container ? ` + ${container.type}` : ''}
+                  </span>
+                  {incrementPrice}
+                </Styled.Row>
+              </>
+            ),
+          )}
         </>
       ))}
-    </div>
+    </Styled.Column>
   );
 };
