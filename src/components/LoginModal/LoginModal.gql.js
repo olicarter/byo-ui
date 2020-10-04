@@ -1,11 +1,14 @@
 import { gql } from '@apollo/client';
 
+import { User } from '../../fragments';
+
 export const GET_USERS_BY_EMAIL = gql`
   query LoginModalGetUsersByEmail($email: String!) {
     allUsers(where: { email: $email }) {
-      id
+      ...User
     }
   }
+  ${User}
 `;
 
 export const CREATE_USER = gql`
@@ -23,15 +26,17 @@ export const CREATE_USER = gql`
         netlifyId: $netlifyId
       }
     ) {
-      id
+      ...User
     }
   }
+  ${User}
 `;
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
   query($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
-      id
+      ...User
     }
   }
+  ${User}
 `;

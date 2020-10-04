@@ -8,3 +8,4 @@ export * from './Product';
 export * from './ProductVariant';
 export * from './Tag';
 export * from './Unit';
+export * from './User';
