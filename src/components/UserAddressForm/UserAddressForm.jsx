@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
-import { GET_USERS_BY_NETLIFY_ID } from './UserAddressForm.gql';
+import {
+  GET_USERS_BY_NETLIFY_ID,
+  UPDATE_ADREESS_BY_NETLIFY_ID,
+} from './UserAddressForm.gql';
 import { useAuth } from '../../contexts';
 import * as Styled from './UserAddressForm.styled';
-import { TextInput } from '../TextInput';
-import { FormGroup } from '../FormGroup';
 import { Label } from '../Label';
+import { Button } from '../Button';
 
 export const UserAddressForm = () => {
   const { user: authUser } = useAuth();
@@ -20,59 +22,80 @@ export const UserAddressForm = () => {
   );
 
   const [{ address = [] } = {}] = allUsers || [];
+  const [{ user = [] } = {}] = allUsers || [];
 
   useEffect(() => {
     if (netlifyId) getAddress();
   }, [netlifyId, getAddress]);
+
+  const [updateAddress] = useMutation(UPDATE_ADREESS_BY_NETLIFY_ID);
+
+  const [flatNumber, setflatNumber] = useState('');
+  const [streetName, setstreetName] = useState('');
+  const [postCode, setpostCode] = useState('');
+
   debugger;
   return (
     <div>
-      <p>{address.id}</p>
-      <p>{address.streetName}</p>
-      <p>{address.flatNumber}</p>
-      <p>{address.postCode}</p>
       <Styled.Form>
         <Styled.Heading>Personal Datails</Styled.Heading>
-        <FormGroup>
+        <Styled.FormGroup>
           <Label>Firstname</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput
+            type="text"
+            value={user.firstName}
+          ></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Lastname</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput type="text"></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Email</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
+          <Styled.TextInput type="text"></Styled.TextInput>
+        </Styled.FormGroup>
       </Styled.Form>
       <Styled.Form>
         <Styled.Heading>Delivery Address</Styled.Heading>
-        <FormGroup>
+        <Styled.FormGroup>
           <Label>Firstname</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput type="text"></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Lastname</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput type="text"></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Email</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput type="text"></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Mobile Number</Label>
-          <TextInput type="number"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput type="number"></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Street Name</Label>
-          <TextInput type="text"></TextInput>
-        </FormGroup>
-        <FormGroup>
+          <Styled.TextInput
+            type="text"
+            defaultValue={address.streetName}
+          ></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
           <Label>Apartment Number</Label>
-          <TextInput type="number"></TextInput>
-        </FormGroup>
+          <Styled.TextInput
+            type="text"
+            defaultValue={address.flatNumber}
+          ></Styled.TextInput>
+        </Styled.FormGroup>
+        <Styled.FormGroup>
+          <Label>Post Code</Label>
+          <Styled.TextInput
+            type="text"
+            defaultValue={address.postCode}
+          ></Styled.TextInput>
+        </Styled.FormGroup>
       </Styled.Form>
+      <Button>Update</Button>
     </div>
   );
 };
