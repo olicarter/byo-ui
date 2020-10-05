@@ -1,8 +1,6 @@
 import React from 'react';
 
-// import { GET_USERS_BY_NETLIFY_ID } from './UserOrders.gql';
 import * as Styled from '../UserOrders.styled';
-// import { SubTitle } from '../Typography';
 
 export const UserOrdersProductOrderItems = ({ orderItems }) => {
   const [
