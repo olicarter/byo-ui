@@ -13,7 +13,7 @@ export const TextInput = styled.input(
     fontWeight: 500,
     outline: 'none',
     padding: '0.5rem 0',
-    maxWidth: '250px',
+    maxWidth: '350px',
   }),
 );
 

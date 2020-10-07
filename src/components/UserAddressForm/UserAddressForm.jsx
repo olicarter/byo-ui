@@ -17,12 +17,19 @@ export const UserAddressForm = () => {
   const [getAddress, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: { netlifyId },
+      variables: {
+        netlifyId,
+      },
     },
   );
 
-  const [{ address = [] } = {}] = allUsers || [];
-  const [{ user = [] } = {}] = allUsers || [];
+  const [{ address, firstName, lastName, email } = {}] = allUsers || [];
+  let {
+    id,
+    street: currentStreetName,
+    flatNumber: currentFlatNumber = '',
+    postCode: currentPostCode = '',
+  } = address || {};
 
   useEffect(() => {
     if (netlifyId) getAddress();
@@ -30,55 +37,52 @@ export const UserAddressForm = () => {
 
   const [updateAddress] = useMutation(UPDATE_ADREESS_BY_NETLIFY_ID);
 
-  const [flatNumber, setflatNumber] = useState('');
-  const [streetName, setstreetName] = useState('');
-  const [postCode, setpostCode] = useState('');
+  const [streetName, setStreetName] = useState('');
+  const [flatNumber, setFlatNumber] = useState('');
+  const [postCode, setPostCode] = useState('');
 
-  debugger;
+  useEffect(() => {
+    setStreetName(currentStreetName);
+  }, [currentStreetName]);
+
+  useEffect(() => {
+    setFlatNumber(currentFlatNumber);
+  }, [currentFlatNumber]);
+
+  useEffect(() => {
+    setPostCode(currentPostCode);
+  }, [currentPostCode]);
+
   return (
     <div>
       <Styled.Form>
         <Styled.Heading>Personal Datails</Styled.Heading>
         <Styled.FormGroup>
           <Label>Firstname</Label>
-          <Styled.TextInput
-            type="text"
-            value={user.firstName}
-          ></Styled.TextInput>
+          <Styled.TextInput type="text" value={firstName}></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Lastname</Label>
-          <Styled.TextInput type="text"></Styled.TextInput>
+          <Styled.TextInput type="text" value={lastName}></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Email</Label>
-          <Styled.TextInput type="text"></Styled.TextInput>
+          <Styled.TextInput type="text" defaultValue={email}></Styled.TextInput>
         </Styled.FormGroup>
       </Styled.Form>
-      <Styled.Form
-        onSubmit={e => {
-          e.preventDefault();
-          updateAddress({
-            variables: {
-              id: note.Note.id,
-              title: title ? title : note.Note.title,
-              content: content ? content : note.Note.content,
-            },
-          });
-        }}
-      >
+      <Styled.Form>
         <Styled.Heading>Delivery Address</Styled.Heading>
         <Styled.FormGroup>
           <Label>Firstname</Label>
-          <Styled.TextInput type="text"></Styled.TextInput>
+          <Styled.TextInput type="text" value={firstName}></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Lastname</Label>
-          <Styled.TextInput type="text"></Styled.TextInput>
+          <Styled.TextInput type="text" value={lastName}></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Email</Label>
-          <Styled.TextInput type="text"></Styled.TextInput>
+          <Styled.TextInput type="text" defaultValue={email}></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Mobile Number</Label>
@@ -88,24 +92,24 @@ export const UserAddressForm = () => {
           <Label>Street Name</Label>
           <Styled.TextInput
             type="text"
-            defaultValue={address.streetName}
-            onChange={e => setstreetName(e.target.value)}
+            value={streetName}
+            onChange={e => setStreetName(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Apartment Number</Label>
           <Styled.TextInput
             type="text"
-            defaultValue={address.flatNumber}
-            onChange={e => setflatNumber(e.target.value)}
+            value={flatNumber}
+            onChange={e => setFlatNumber(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Post Code</Label>
           <Styled.TextInput
             type="text"
-            defaultValue={address.postCode}
-            onChange={e => setpostCode(e.target.value)}
+            value={postCode}
+            onChange={e => setPostCode(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
       </Styled.Form>
