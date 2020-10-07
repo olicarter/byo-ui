@@ -55,7 +55,18 @@ export const UserAddressForm = () => {
           <Styled.TextInput type="text"></Styled.TextInput>
         </Styled.FormGroup>
       </Styled.Form>
-      <Styled.Form>
+      <Styled.Form
+        onSubmit={e => {
+          e.preventDefault();
+          updateAddress({
+            variables: {
+              id: note.Note.id,
+              title: title ? title : note.Note.title,
+              content: content ? content : note.Note.content,
+            },
+          });
+        }}
+      >
         <Styled.Heading>Delivery Address</Styled.Heading>
         <Styled.FormGroup>
           <Label>Firstname</Label>
@@ -78,6 +89,7 @@ export const UserAddressForm = () => {
           <Styled.TextInput
             type="text"
             defaultValue={address.streetName}
+            onChange={e => setstreetName(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
@@ -85,6 +97,7 @@ export const UserAddressForm = () => {
           <Styled.TextInput
             type="text"
             defaultValue={address.flatNumber}
+            onChange={e => setflatNumber(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
         <Styled.FormGroup>
@@ -92,6 +105,7 @@ export const UserAddressForm = () => {
           <Styled.TextInput
             type="text"
             defaultValue={address.postCode}
+            onChange={e => setpostCode(e.target.value)}
           ></Styled.TextInput>
         </Styled.FormGroup>
       </Styled.Form>
