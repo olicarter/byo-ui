@@ -3,7 +3,10 @@ import { gql } from '@apollo/client';
 export const Address = gql`
   fragment Address on Address {
     id
-    streetName
+    firstName
+    lastName
+    phoneNumber
+    street
     flatNumber
     postCode
   }

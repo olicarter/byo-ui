@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { User } from '../../fragments';
+import { Address, User } from '../../fragments';
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
   query UserAddressFormGetUsersByNetlifyId($netlifyId: String!) {
@@ -12,21 +12,28 @@ export const GET_USERS_BY_NETLIFY_ID = gql`
 `;
 
 export const UPDATE_ADREESS_BY_NETLIFY_ID = gql`
-mutation UpdateUserAdress(
-  $id: ID!
-  $streetName: String!
-  $flatNumber: String!
-  $postCode: String
-){
-  updateAddress(
-    id: $id,
-    data:{
-      streetName: $streetName,
-      flatNumber: $flatNumber,
-      postCode: $postCode
+  mutation UpdateUserAdress(
+    $id: ID!
+    $firstName: String!
+    $lastName: String!
+    $phoneNumber: String!
+    $street: String!
+    $flatNumber: String!
+    $postCode: String!
+  ) {
+    updateAddress(
+      id: $id
+      data: {
+        firstName: $firstName
+        lastName: $lastName
+        phoneNumber: $phoneNumber
+        street: $street
+        flatNumber: $flatNumber
+        postCode: $postCode
+      }
+    ) {
+      ...Address
     }
-  ){
-    ...User
   }
-  ${User}
-}`;
+  ${Address}
+`;
