@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 
 export const TagBar = styled.div(() => ({
@@ -28,7 +29,7 @@ export const Tag = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, grey, primary },
+      palette: { black, grey, primary, red },
     },
     to,
   }) => ({
@@ -45,7 +46,11 @@ export const Tag = styled(RouterLink)(
     userSelect: 'none',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: to ? primary : grey,
+        get color() {
+          if (selected) return red;
+          if (to) return primary;
+          return grey;
+        },
       },
     },
   }),

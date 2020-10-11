@@ -7,10 +7,13 @@ import { Basket } from '../Basket';
 import { Button } from '../Button';
 import { Footer } from '../Footer';
 import { Home } from '../Home';
+import { Layout } from '../Layout';
 import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
+import { Section } from '../Section';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
+import { Title } from '../Typography';
 
 export const App = () => {
   const { isAuthenticated, openLoginModal } = useAuth();
@@ -21,25 +24,51 @@ export const App = () => {
 
       <Styled.Main>
         <Route exact path="/">
-          <Home />
-        </Route>
-
-        <Route path="/products">
-          <Products />
+          <Layout center>
+            <Home />
+          </Layout>
         </Route>
 
         <Route path="/account">
-          {isAuthenticated ? (
-            <LogoutButton />
-          ) : (
-            <Button onClick={openLoginModal}>Log in</Button>
-          )}
-          <UserPaidOrders />
+          <Layout>
+            <Section>
+              <Title>Account</Title>
+            </Section>
+            {isAuthenticated ? (
+              <>
+                <Section>
+                  <UserPaidOrders />
+                </Section>
+                <Section>
+                  <LogoutButton />
+                </Section>
+              </>
+            ) : (
+              <Button onClick={openLoginModal}>Log in</Button>
+            )}
+          </Layout>
+        </Route>
+
+        <Route path="/products">
+          <Layout>
+            <Section>
+              <Title>Products</Title>
+            </Section>
+            <Section>
+              <Products />
+            </Section>
+          </Layout>
         </Route>
 
         <Route path="/basket">
-          <Basket />
-          <Link to="/checkout">Go to Checkout</Link>
+          <Layout>
+            <Section>
+              <Title>Checkout</Title>
+            </Section>
+            <Section>
+              <Basket />
+            </Section>
+          </Layout>
         </Route>
       </Styled.Main>
 
