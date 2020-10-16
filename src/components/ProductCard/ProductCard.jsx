@@ -11,7 +11,7 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Button } from '../Button';
 
 export const ProductCard = ({
-  product: { id: productId, name, origin, slug, variants },
+  product: { id: productId, name, deliveryInfo, origin, slug, variants },
 }) => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
@@ -42,7 +42,7 @@ export const ProductCard = ({
   const showProductVariants = () => setProductVariantsVisible(true);
   const hideProductVariants = () => setProductVariantsVisible(false);
 
-  const purchaseInfo = (() => {
+  const defaultDeliveryInfo = (() => {
     if (
       variants.every(({ container }) => container && !!Number(container.price))
     )
@@ -60,7 +60,7 @@ export const ProductCard = ({
         <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
         <Styled.Info>
           {productVariantsVisible ? (
-            purchaseInfo
+            deliveryInfo || defaultDeliveryInfo
           ) : (
             <div>
               {origin ? (

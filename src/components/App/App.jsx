@@ -22,7 +22,11 @@ export const App = () => {
 
       <Styled.Main>
         <Route exact path="/">
-          <Home />
+          <Styled.MaxWidthLayout>
+            <Styled.MaxWidth>
+              <Home />
+            </Styled.MaxWidth>
+          </Styled.MaxWidthLayout>
         </Route>
 
         <Route exact path="/products">
@@ -30,7 +34,11 @@ export const App = () => {
         </Route>
 
         <Route exact path="/products/:productSlug">
-          <Product />
+          <Styled.MaxWidthLayout>
+            <Styled.MaxWidth>
+              <Product />
+            </Styled.MaxWidth>
+          </Styled.MaxWidthLayout>
         </Route>
 
         <Route path="/account">

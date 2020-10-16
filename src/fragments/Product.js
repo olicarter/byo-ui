@@ -9,10 +9,11 @@ export const Product = gql`
     id
     name
     slug
+    allergenInfo
     category {
       ...Category
     }
-    allergenInfo
+    deliveryInfo
     ingredients
     origin
     tags {
