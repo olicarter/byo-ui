@@ -12,6 +12,8 @@ export const Product = gql`
     category {
       ...Category
     }
+    allergenInfo
+    ingredients
     origin
     tags {
       ...Tag

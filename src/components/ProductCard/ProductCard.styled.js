@@ -24,14 +24,26 @@ export const Content = styled.div(() => ({
   padding: '0.5rem',
 }));
 
-export const Name = styled(Link)(({ theme: { palette: { black } } }) => ({
-  color: black,
-  fontSize: '1.1rem',
-  fontWeight: 700,
-  margin: 0,
-  paddingBottom: '0.5rem',
-  textTransform: 'capitalize',
-}));
+export const Name = styled(Link)(
+  ({
+    theme: {
+      palette: { black, primary },
+    },
+  }) => ({
+    color: black,
+    fontSize: '1.1rem',
+    fontWeight: 700,
+    margin: 0,
+    paddingBottom: '0.5rem',
+    textDecoration: 'none',
+    textTransform: 'capitalize',
+    '@media (hover: hover) and (pointer: fine)': {
+      ':hover': {
+        color: primary,
+      },
+    },
+  }),
+);
 
 export const Origin = styled.span(({ theme: { palette: { grey } } }) => ({
   color: grey,
