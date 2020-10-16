@@ -12,6 +12,7 @@ export const Product = gql`
     category {
       ...Category
     }
+    origin
     tags {
       ...Tag
     }

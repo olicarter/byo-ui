@@ -8,6 +8,7 @@ import { Button } from '../Button';
 import { Footer } from '../Footer';
 import { Home } from '../Home';
 import { LogoutButton } from '../LogoutButton';
+import { Product } from '../Product';
 import { Products } from '../Products';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
@@ -24,8 +25,12 @@ export const App = () => {
           <Home />
         </Route>
 
-        <Route path="/products">
+        <Route exact path="/products">
           <Products />
+        </Route>
+
+        <Route exact path="/products/:productSlug">
+          <Product />
         </Route>
 
         <Route path="/account">

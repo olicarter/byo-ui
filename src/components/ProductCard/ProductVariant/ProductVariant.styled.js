@@ -1,13 +1,31 @@
 import styled from 'styled-components';
 import { default as MdiIcon } from '@mdi/react';
 
-const height = '3rem';
+const height = 'auto';
 
-export const ProductVariant = styled.div(() => ({
-  alignItems: 'center',
-  display: 'flex',
-  height,
-}));
+export const ProductVariant = styled.div(
+  ({
+    theme: {
+      palette: { lightGrey },
+    },
+  }) => ({
+    alignItems: 'stretch',
+    display: 'flex',
+    height,
+    position: 'relative',
+    ':not(:last-of-type)': {
+      ':after': {
+        backgroundColor: lightGrey,
+        bottom: 0,
+        content: '""',
+        height: '1px',
+        margin: '0 1rem',
+        position: 'absolute',
+        width: 'calc(100% - 2rem)',
+      },
+    },
+  }),
+);
 
 const SquareButton = styled.button(() => ({
   alignItems: 'center',
@@ -17,13 +35,12 @@ const SquareButton = styled.button(() => ({
   display: 'flex',
   fontSize: '1.5rem',
   fontWeight: 500,
-  height,
   justifyContent: 'center',
   lineHeight: height,
   outline: 'none',
   padding: 0,
   textAlign: 'left',
-  width: height,
+  width: '48px',
 }));
 
 export const DecrementButton = styled(SquareButton)(
@@ -53,6 +70,8 @@ export const Info = styled.div(() => ({
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
+  justifyContent: 'center',
+  padding: '0.5rem 0',
 }));
 
 export const Quantity = styled.div(
@@ -67,12 +86,16 @@ export const Quantity = styled.div(
     display: 'flex',
     fontSize: '0.8rem',
     fontWeight: 700,
-    height: '100%',
     userSelect: 'none',
   }),
 );
 
 export const Price = styled(Quantity)(() => ({}));
+
+export const Tags = styled(Quantity)(({ theme: { palette: { grey } } }) => ({
+  color: grey,
+  fontWeight: 400,
+}));
 
 export const Container = styled.span(({ theme: { palette: { grey } } }) => ({
   color: grey,

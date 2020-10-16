@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
+import Icon from '@mdi/react';
+import { mdiMapMarker } from '@mdi/js';
 
 import { useAuth } from '../../contexts';
 import * as Styled from './ProductCard.styled';
 import { GET_USER } from './ProductCard.gql';
-
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Button } from '../Button';
 
 export const ProductCard = ({
-  product: { id: productId, description, name, variants },
+  product: { id: productId, name, origin, slug, variants },
 }) => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
@@ -56,16 +57,30 @@ export const ProductCard = ({
   return (
     <Styled.ProductCard className="Product">
       <Styled.Content>
-        <Styled.Name>{name}</Styled.Name>
+        <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
         <Styled.Info>
-          {productVariantsVisible ? purchaseInfo : description}
+          {productVariantsVisible ? (
+            purchaseInfo
+          ) : (
+            <div>
+              {origin ? (
+                <Styled.Origin>
+                  <Icon path={mdiMapMarker} size={0.5} />
+                  <span>{origin}</span>
+                </Styled.Origin>
+              ) : null}
+            </div>
+          )}
         </Styled.Info>
       </Styled.Content>
 
-      {productVariantsVisible &&
-        variants.map(variant => (
-          <ProductVariant key={variant.id} variant={variant} />
-        ))}
+      {productVariantsVisible ? (
+        <div>
+          {variants.map(variant => (
+            <ProductVariant key={variant.id} variant={variant} />
+          ))}
+        </div>
+      ) : null}
 
       <Styled.Buttons>
         {productVariantsVisible ? (
