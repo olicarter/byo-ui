@@ -30,9 +30,9 @@ export const DeliverySlotPicker = () => {
 
   const [{ orders = [] } = {}] = allUsers || [];
   const {
-    id: unpaidOrderId,
-    deliverySlot: { id: unpaidOrderDeliverySlotId } = {},
-  } = orders.find(({ paid }) => !paid) || {};
+    id: unsubmittedOrderId,
+    deliverySlot: { id: unsubmittedOrderDeliverySlotId } = {},
+  } = orders.find(({ submitted }) => !submitted) || {};
 
   const [setOrderDeliverySlot] = useMutation(SET_ORDER_DELIVERY_SLOT);
 
@@ -49,13 +49,13 @@ export const DeliverySlotPicker = () => {
 
   const handleChange = ({ target: { value } }) => {
     setOrderDeliverySlot({
-      variables: { id: unpaidOrderId, deliverySlotId: value },
+      variables: { id: unsubmittedOrderId, deliverySlotId: value },
     });
   };
 
   return (
     <Styled.DeliverySlotPicker>
-      <Select onChange={handleChange} value={unpaidOrderDeliverySlotId}>
+      <Select onChange={handleChange} value={unsubmittedOrderDeliverySlotId}>
         <option disabled value="">
           Choose a delivery slot
         </option>

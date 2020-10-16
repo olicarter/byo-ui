@@ -12,7 +12,7 @@ import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { Section } from '../Section';
 import { TopBar } from '../TopBar';
-import { UserPaidOrders } from '../UserPaidOrders';
+import { UserSubmittedOrders } from '../UserSubmittedOrders';
 import { Title } from '../Typography';
 
 export const App = () => {
@@ -37,7 +37,7 @@ export const App = () => {
             {isAuthenticated ? (
               <>
                 <Section>
-                  <UserPaidOrders />
+                  <UserSubmittedOrders />
                 </Section>
                 <Section>
                   <LogoutButton />

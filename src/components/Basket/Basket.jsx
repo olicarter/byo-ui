@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
 import { useAuth } from '../../contexts';
 import { sumOrderItems } from '../../helpers';
-import { GET_ORDER_ITEMS } from './Basket.gql';
+import { GET_USER, SUBMIT_ORDER } from './Basket.gql';
 import { Button } from '../Button';
 import { Column } from '../Column';
 import { Columns } from '../Columns';
@@ -22,19 +22,27 @@ export const Basket = () => {
   const { id: netlifyId } = user || {};
 
   const [
-    getUserOrders,
-    { data: { allUsers } = {}, loading: getOrderItemsLoading },
-  ] = useLazyQuery(GET_ORDER_ITEMS, {
+    getUser,
+    { data: { allUsers } = {}, loading: getUserLoading },
+  ] = useLazyQuery(GET_USER, {
     variables: { netlifyId },
   });
 
   useEffect(() => {
-    if (netlifyId) getUserOrders();
-  }, [netlifyId, getUserOrders]);
+    if (netlifyId) getUser();
+  }, [netlifyId, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const { deliverySlot, orderItems = [] } =
-    orders.find(({ paid }) => !paid) || {};
+  const { id: unsubmittedOrderId, deliverySlot, orderItems = [] } =
+    orders.find(({ submitted }) => !submitted) || {};
+
+  const [submitOrder, { loading: submitOrderLoading }] = useMutation(
+    SUBMIT_ORDER,
+    {
+      variables: { id: unsubmittedOrderId, submitted: true },
+      onCompleted: () => {},
+    },
+  );
 
   let { products, containers, total } = sumOrderItems(orderItems);
   const productsTotal = +parseFloat(products).toFixed(2);
@@ -45,9 +53,6 @@ export const Basket = () => {
     orderItems,
     (a, b) => a.productVariant.product.id === b.productVariant.product.id,
   );
-
-  /** @todo implement this */
-  const placeOrder = () => {};
 
   return (
     <Columns>
@@ -89,8 +94,8 @@ export const Basket = () => {
           <Button
             borderRadius
             disabled={total < minOrderValue || !deliverySlot}
-            loading={getOrderItemsLoading}
-            onClick={placeOrder}
+            loading={getUserLoading || submitOrderLoading}
+            onClick={submitOrder}
           >
             Place order
           </Button>

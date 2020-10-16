@@ -2,21 +2,22 @@ import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
-import { GET_USERS_BY_NETLIFY_ID } from './UserPaidOrders.gql';
-import * as Styled from './UserPaidOrders.styled';
+import { GET_USERS_BY_NETLIFY_ID } from './UserSubmittedOrders.gql';
+import * as Styled from './UserSubmittedOrders.styled';
 
-export const UserPaidOrders = () => {
+export const UserSubmittedOrders = () => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
-  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-  );
+  const [
+    getUsersByNetlifyId,
+    { data: { allUsers } = {} },
+  ] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, { variables: { netlifyId } });
 
   const [{ orders = [] } = {}] = allUsers || [];
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
+    if (netlifyId) getUsersByNetlifyId();
   }, [netlifyId, getUsersByNetlifyId]);
 
   return (
