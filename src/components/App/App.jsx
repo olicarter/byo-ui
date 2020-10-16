@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { useAuth } from '../../contexts';
 import * as Styled from './App.styled';
@@ -11,6 +11,7 @@ import { Layout } from '../Layout';
 import { LogoutButton } from '../LogoutButton';
 import { Products } from '../Products';
 import { Section } from '../Section';
+import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
 import { TopBar } from '../TopBar';
 import { UserSubmittedOrders } from '../UserSubmittedOrders';
 import { Title } from '../Typography';
@@ -31,11 +32,9 @@ export const App = () => {
 
         <Route path="/account">
           <Layout>
-            <Section>
-              <Title>Account</Title>
-            </Section>
             {isAuthenticated ? (
               <>
+                <SubmittedUnpaidOrder />
                 <Section>
                   <UserSubmittedOrders />
                 </Section>

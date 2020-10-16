@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
@@ -16,8 +16,6 @@ export const DeliverySlotPicker = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [selectedDeliverySlot, setSelectedDeliverySlot] = useState('');
-
   const { data: { allDeliverySlots = [] } = {} } = useQuery(GET_DELIVERY_SLOTS);
 
   const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
@@ -29,10 +27,9 @@ export const DeliverySlotPicker = () => {
   }, [netlifyId]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const {
-    id: unsubmittedOrderId,
-    deliverySlot: { id: unsubmittedOrderDeliverySlotId } = {},
-  } = orders.find(({ submitted }) => !submitted) || {};
+  const { id: unsubmittedOrderId, deliverySlot } =
+    orders.find(({ submitted }) => !submitted) || {};
+  const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
 
   const [setOrderDeliverySlot] = useMutation(SET_ORDER_DELIVERY_SLOT);
 

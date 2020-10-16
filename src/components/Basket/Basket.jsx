@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
@@ -18,6 +19,7 @@ import { Section } from '../Section';
 const minOrderValue = 15;
 
 export const Basket = () => {
+  const { push } = useHistory();
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
@@ -40,7 +42,7 @@ export const Basket = () => {
     SUBMIT_ORDER,
     {
       variables: { id: unsubmittedOrderId, submitted: true },
-      onCompleted: () => {},
+      onCompleted: () => push('/account'),
     },
   );
 

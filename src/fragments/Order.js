@@ -9,8 +9,9 @@ export const Order = gql`
     deliverySlot {
       ...DeliverySlot
     }
-    paid
     ...OrderItems
+    paid
+    submitted
   }
   ${DeliverySlot}
   ${OrderItems}
