@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import {
   COUNT_DELIVERY_SLOT_ORDERS,
   GET_DELIVERY_SLOT,
-} from './DeliverySlotPicker.gql';
+} from './DeliverySlotPickerOption.gql';
 
 export const DeliverySlotPickerOption = ({ id }) => {
   const { data: { DeliverySlot } = {} } = useQuery(GET_DELIVERY_SLOT, {
@@ -29,10 +29,7 @@ export const DeliverySlotPickerOption = ({ id }) => {
   });
 
   return (
-    <option
-      disabled={count > maxOrders}
-      value={`${startDateTime.ts}-${endDateTime.ts}`}
-    >
+    <option disabled={count > maxOrders} value={id}>
       {startDateTime.toLocaleString(DateTime.TIME_24_SIMPLE)} -{' '}
       {endDateTime.toLocaleString(DateTime.TIME_24_SIMPLE)},{' '}
       {startDateTime.toFormat('cccc d LLL')}

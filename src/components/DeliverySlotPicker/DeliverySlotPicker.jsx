@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
-import { GET_DELIVERY_SLOTS } from './DeliverySlotPicker.gql';
+import { useAuth } from '../../contexts';
+import {
+  GET_DELIVERY_SLOTS,
+  GET_USER,
+  SET_ORDER_DELIVERY_SLOT,
+} from './DeliverySlotPicker.gql';
 import * as Styled from './DeliverySlotPicker.styled';
 import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
 import { Select } from '../Select';
 
 export const DeliverySlotPicker = () => {
+  const { user } = useAuth();
+  const { id: netlifyId } = user || {};
+
   const [selectedDeliverySlot, setSelectedDeliverySlot] = useState('');
 
   const { data: { allDeliverySlots = [] } = {} } = useQuery(GET_DELIVERY_SLOTS);
+
+  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
+    variables: { netlifyId },
+  });
+
+  useEffect(() => {
+    if (netlifyId) getUser();
+  }, [netlifyId]);
+
+  const [{ orders = [] } = {}] = allUsers || [];
+  const {
+    id: unpaidOrderId,
+    deliverySlot: { id: unpaidOrderDeliverySlotId } = {},
+  } = orders.find(({ paid }) => !paid) || {};
+
+  const [setOrderDeliverySlot] = useMutation(SET_ORDER_DELIVERY_SLOT);
 
   const deliverySlotsByDay = {};
 
@@ -24,12 +48,14 @@ export const DeliverySlotPicker = () => {
   });
 
   const handleChange = ({ target: { value } }) => {
-    setSelectedDeliverySlot(value);
+    setOrderDeliverySlot({
+      variables: { id: unpaidOrderId, deliverySlotId: value },
+    });
   };
 
   return (
     <Styled.DeliverySlotPicker>
-      <Select onChange={handleChange} value={selectedDeliverySlot}>
+      <Select onChange={handleChange} value={unpaidOrderDeliverySlotId}>
         <option disabled value="">
           Choose a delivery slot
         </option>

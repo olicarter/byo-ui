@@ -33,7 +33,8 @@ export const Basket = () => {
   }, [netlifyId, getUserOrders]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const { orderItems = [] } = orders.find(({ paid }) => !paid) || {};
+  const { deliverySlot, orderItems = [] } =
+    orders.find(({ paid }) => !paid) || {};
 
   let { products, containers, total } = sumOrderItems(orderItems);
   const productsTotal = +parseFloat(products).toFixed(2);
@@ -87,7 +88,7 @@ export const Basket = () => {
         >
           <Button
             borderRadius
-            disabled={total < minOrderValue}
+            disabled={total < minOrderValue || !deliverySlot}
             loading={getOrderItemsLoading}
             onClick={placeOrder}
           >

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { DeliverySlot } from '../../fragments';
+import { DeliverySlot, Order, User } from '../../fragments';
 
 export const GET_DELIVERY_SLOTS = gql`
   query DeliverySlotPickerGetDeliverySlots {
@@ -11,19 +11,23 @@ export const GET_DELIVERY_SLOTS = gql`
   ${DeliverySlot}
 `;
 
-export const GET_DELIVERY_SLOT = gql`
-  query DeliverySlotPickerGetDeliverySlot($id: ID!) {
-    DeliverySlot(where: { id: $id }) {
-      ...DeliverySlot
+export const GET_USER = gql`
+  query DeliverySlotPickerGetUser($netlifyId: String!) {
+    allUsers(where: { netlifyId: $netlifyId }) {
+      ...User
     }
   }
-  ${DeliverySlot}
+  ${User}
 `;
 
-export const COUNT_DELIVERY_SLOT_ORDERS = gql`
-  query DeliverySlotPickerCountDeliverySlotOrders($id: ID!) {
-    _allOrdersMeta(where: { deliverySlot: { id: $id } }) {
-      count
+export const SET_ORDER_DELIVERY_SLOT = gql`
+  mutation DeliverySlotPickerUpdateOrder($id: ID!, $deliverySlotId: ID!) {
+    updateOrder(
+      id: $id
+      data: { deliverySlot: { connect: { id: $deliverySlotId } } }
+    ) {
+      ...Order
     }
   }
+  ${Order}
 `;
