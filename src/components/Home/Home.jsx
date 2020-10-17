@@ -13,19 +13,17 @@ export const Home = () => {
 
   return (
     <Styled.Home>
-      <Styled.MaxWidth>
-        <Markdown
-          options={{
-            overrides: {
-              h1: Title,
-              h2: SubTitle,
-              img: Styled.Image,
-            },
-          }}
-        >
-          {homeContent}
-        </Markdown>
-      </Styled.MaxWidth>
+      <Markdown
+        options={{
+          overrides: {
+            h1: Title,
+            h2: SubTitle,
+            img: Styled.Image,
+          },
+        }}
+      >
+        {homeContent}
+      </Markdown>
     </Styled.Home>
   );
 };

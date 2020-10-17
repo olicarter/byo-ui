@@ -4,7 +4,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import { useAuth } from '../../contexts';
-import { GET_ALL_PRODUCTS_QUERY, GET_AUTH_DATA } from './Products.gql';
+import { GET_PRODUCTS, GET_USERS_BY_NETLIFY_ID } from './Products.gql';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
 
@@ -13,15 +13,15 @@ export const Products = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const { data: { allProducts = [] } = {} } = useQuery(GET_ALL_PRODUCTS_QUERY);
+  const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
 
-  const [getUserUnpaidOrder] = useLazyQuery(GET_AUTH_DATA, {
+  const [getUsersByNetlifyId] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
     variables: { netlifyId },
   });
 
   useEffect(() => {
-    if (netlifyId) getUserUnpaidOrder();
-  }, [netlifyId, getUserUnpaidOrder]);
+    if (netlifyId) getUsersByNetlifyId();
+  }, [netlifyId, getUsersByNetlifyId]);
 
   const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,

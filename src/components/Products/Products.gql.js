@@ -2,8 +2,8 @@ import { gql } from '@apollo/client';
 
 import { Product, User } from '../../fragments';
 
-export const GET_ALL_PRODUCTS_QUERY = gql`
-  query GetAllProducts {
+export const GET_PRODUCTS = gql`
+  query ProductsGetProducts {
     allProducts {
       ...Product
     }
@@ -11,8 +11,8 @@ export const GET_ALL_PRODUCTS_QUERY = gql`
   ${Product}
 `;
 
-export const GET_AUTH_DATA = gql`
-  query GetUserUnpaidOrder($netlifyId: String!) {
+export const GET_USERS_BY_NETLIFY_ID = gql`
+  query ProductsGetUsersByNetlifyId($netlifyId: String!) {
     allUsers(where: { netlifyId: $netlifyId }) {
       ...User
     }
