@@ -51,12 +51,7 @@ export const App = () => {
 
         <Route exact path="/products">
           <Layout>
-            <Section>
-              <Title>Products</Title>
-            </Section>
-            <Section>
-              <Products />
-            </Section>
+            <Products />
           </Layout>
         </Route>
 
