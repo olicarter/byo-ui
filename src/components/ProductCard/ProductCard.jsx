@@ -25,8 +25,8 @@ export const ProductCard = ({
   }, [netlifyId, getUserOrders]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const unpaidOrder = orders.find(({ paid }) => !paid) || {};
-  const { orderItems: allOrderItems = [] } = unpaidOrder;
+  const { orderItems: allOrderItems = [] } =
+    orders.find(({ submitted }) => !submitted) || {};
   const orderItems = allOrderItems.filter(
     ({ productVariant: { product: { id: orderItemProductId } = {} } = {} }) =>
       orderItemProductId === productId,

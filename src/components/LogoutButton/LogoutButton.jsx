@@ -6,5 +6,9 @@ import { Button } from '../Button';
 export const LogoutButton = () => {
   const { logout } = useAuth();
 
-  return <Button onClick={logout}>Logout</Button>;
+  return (
+    <Button backgroundColor="red" borderRadius flex={1} onClick={logout}>
+      Logout
+    </Button>
+  );
 };

@@ -31,8 +31,8 @@ export const ProductVariant = ({
 
   const [user] = allUsers || [];
   const { id: userId, orders = [] } = user || {};
-  const unpaidOrder = orders.find(({ paid }) => !paid) || {};
-  const { id: unpaidOrderId, orderItems = [] } = unpaidOrder;
+  const unsubmittedOrder = orders.find(({ submitted }) => !submitted) || {};
+  const { id: unsubmittedOrderId, orderItems = [] } = unsubmittedOrder;
   const { id: orderItemId, quantity } =
     orderItems.find(
       ({ productVariant: { id: variantId } }) => id === variantId,
@@ -41,7 +41,7 @@ export const ProductVariant = ({
   const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
     onCompleted: () => setIncrementLoading(false),
     update: (cache, { data: { createOrderItem } }) => {
-      if (!unpaidOrderId) {
+      if (!unsubmittedOrderId) {
         const userCacheId = cache.identify(user);
         const { orders: currentOrders = [] } = cache.readFragment({
           id: userCacheId,
@@ -77,7 +77,7 @@ export const ProductVariant = ({
         },
       },
     ) => {
-      const id = cache.identify(unpaidOrder);
+      const id = cache.identify(unsubmittedOrder);
       const { orderItems: currentOrderItems = [] } = cache.readFragment({
         id,
         fragment: OrderItems,
@@ -101,8 +101,8 @@ export const ProductVariant = ({
       variables: {
         data: {
           order: {
-            ...(unpaidOrderId
-              ? { connect: { id: unpaidOrderId } }
+            ...(unsubmittedOrderId
+              ? { connect: { id: unsubmittedOrderId } }
               : { create: { user: { connect: { id: userId } } } }),
           },
           productVariant: { connect: { id } },

@@ -1,27 +1,20 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import Icon from '@mdi/react';
 import {
   mdiAlertOctagram,
   mdiBicycleBasket,
   mdiFormatListBulletedType,
-  mdiLoading,
   mdiMapMarker,
   mdiOctagram,
 } from '@mdi/js';
 
-import { useTheme } from '../../contexts';
 import { GET_PRODUCTS_BY_SLUG } from './Product.gql';
 import * as Styled from './Product.styled';
 import { Title } from '../Typography';
 
 export const Product = () => {
   const { productSlug } = useParams();
-
-  const {
-    palette: { grey },
-  } = useTheme();
 
   const {
     data: {
@@ -37,7 +30,6 @@ export const Product = () => {
         } = {},
       ] = [],
     } = {},
-    loading: getProductsBySlugLoading,
   } = useQuery(GET_PRODUCTS_BY_SLUG, {
     variables: { slug: productSlug },
   });
@@ -53,9 +45,6 @@ export const Product = () => {
       return 'Delivered in non-refundable containers';
     return 'Delivered in cotton bags';
   })();
-
-  if (getProductsBySlugLoading)
-    return <Icon color={grey} rotate={90} path={mdiLoading} size={5} spin />;
 
   return (
     <Styled.Product>

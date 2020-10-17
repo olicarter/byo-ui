@@ -1,60 +1,55 @@
 import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
 import { useAuth } from '../../contexts';
-import { GET_ORDER_ITEMS_QUERY } from './Basket.gql';
-import * as Styled from './Basket.styled';
+import { sumOrderItems } from '../../helpers';
+import { GET_USER, SUBMIT_ORDER } from './Basket.gql';
+import { Button } from '../Button';
+import { Column } from '../Column';
+import { Columns } from '../Columns';
+import { DeliverySlotPicker } from '../DeliverySlotPicker';
+import { FormGroup } from '../FormGroup';
 import { Grid } from '../Grid';
-import { PageHeader } from '../PageHeader';
 import { ProductCard } from '../ProductCard';
-import { SubTitle, Title } from '../Typography';
+import { Section } from '../Section';
+
+/** @todo get this from backend settings doc */
+const minOrderValue = 15;
 
 export const Basket = () => {
+  const { push } = useHistory();
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [getUserOrders, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_ORDER_ITEMS_QUERY,
-    {
-      variables: { netlifyId },
-    },
-  );
+  const [
+    getUser,
+    { data: { allUsers } = {}, loading: getUserLoading },
+  ] = useLazyQuery(GET_USER, {
+    variables: { netlifyId },
+  });
 
   useEffect(() => {
-    if (netlifyId) getUserOrders();
-  }, [netlifyId, getUserOrders]);
+    if (netlifyId) getUser();
+  }, [netlifyId, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const { orderItems = [] } = orders.find(({ paid }) => !paid) || {};
+  const { id: unsubmittedOrderId, deliverySlot, orderItems = [] } =
+    orders.find(({ submitted }) => !submitted) || {};
 
-  const { sum = 0 } = orderItems.reduce(
-    (prevVal, currVal) => ({
-      ...prevVal,
-      sum:
-        prevVal.sum +
-        currVal.quantity * Number(currVal.productVariant.incrementPrice),
-    }),
-    { productVariant: { incrementPrice: 0 }, sum: 0, quantity: 0 },
-  );
-
-  const { totalContainerPrice = 0 } = orderItems.reduce(
-    (prevVal, currVal) => {
-      if (currVal.productVariant.container)
-        return {
-          ...prevVal,
-          totalContainerPrice:
-            prevVal.totalContainerPrice +
-            currVal.quantity * Number(currVal.productVariant.container.price),
-        };
-      else return prevVal;
-    },
+  const [submitOrder, { loading: submitOrderLoading }] = useMutation(
+    SUBMIT_ORDER,
     {
-      productVariant: { container: { price: 0 } },
-      totalContainerPrice: 0,
-      quantity: 0,
+      variables: { id: unsubmittedOrderId, submitted: true },
+      onCompleted: () => push('/account'),
     },
   );
+
+  let { products, containers, total } = sumOrderItems(orderItems);
+  const productsTotal = +parseFloat(products).toFixed(2);
+  const containersTotal = +parseFloat(containers).toFixed(2);
+  total = +parseFloat(total).toFixed(2);
 
   const orderItemProducts = uniqWith(
     orderItems,
@@ -62,23 +57,52 @@ export const Basket = () => {
   );
 
   return (
-    <>
-      <PageHeader>
-        <Title>Basket</Title>
-        <SubTitle>
-          Total £{+parseFloat(sum).toFixed(2)}{' '}
-          {totalContainerPrice ? (
-            <Styled.TotalContainerPrice>
-              + £{+parseFloat(totalContainerPrice).toFixed(2)}
-            </Styled.TotalContainerPrice>
-          ) : null}
-        </SubTitle>
-      </PageHeader>
-      <Grid>
-        {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
-          <ProductCard key={id} product={product} />
-        ))}
-      </Grid>
-    </>
+    <Columns>
+      <Column flex={2}>
+        <Section>
+          <Grid>
+            {orderItemProducts.map(
+              ({ id, productVariant: { product } = {} }) => (
+                <ProductCard key={id} product={product} />
+              ),
+            )}
+          </Grid>
+        </Section>
+      </Column>
+
+      <Column flex={1}>
+        <FormGroup
+          label="Choose a delivery slot"
+          info="The delivery rider will contact you with a more precise time on day of delivery."
+        >
+          <DeliverySlotPicker />
+        </FormGroup>
+
+        <FormGroup
+          label={`Total${productsTotal ? ` £${productsTotal}` : ''}${
+            containersTotal ? ` + £${containersTotal}` : ''
+          }`}
+          info={
+            total >= minOrderValue
+              ? 'Payment is taken by the rider on delivery. Price is dependant on stock levels on day of dispatch.'
+              : undefined
+          }
+          errorInfo={
+            productsTotal && containersTotal && total < minOrderValue
+              ? `£${minOrderValue} minimum order value`
+              : undefined
+          }
+        >
+          <Button
+            borderRadius
+            disabled={total < minOrderValue || !deliverySlot}
+            loading={getUserLoading || submitOrderLoading}
+            onClick={submitOrder}
+          >
+            Place order
+          </Button>
+        </FormGroup>
+      </Column>
+    </Columns>
   );
 };

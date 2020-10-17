@@ -10,7 +10,6 @@ import {
 import * as Styled from './LoginModal.styled';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
-import { Label } from '../Label';
 import { Modal } from '../Modal';
 import { TextInput } from '../TextInput';
 
@@ -176,27 +175,28 @@ export const LoginModal = () => {
           To place an order with us, we need you to provide some details for
           essential communication and delivery purposes.
         </Styled.Info>
-        <FormGroup>
-          <Label>Enter your email</Label>
+        <FormGroup label="Enter your email">
           <TextInput autoFocus onChange={setEmail} type="email" />
         </FormGroup>
 
         {isPasswordInputVisible ? (
-          <FormGroup>
-            <Label>
-              {isExistingUser ? 'Hello again,' : "Looks like you're new,"} enter{' '}
-              {isExistingUser ? 'your' : 'a'} password
-            </Label>
-            {!isExistingUser ? (
-              <Styled.Info>
-                Your password must be at least 8 characters long.
-              </Styled.Info>
-            ) : null}
-            {isInvalidEmailOrPasswordMessageVisible ? (
-              <Styled.Info color="red">
-                Incorrect password, please try again.
-              </Styled.Info>
-            ) : null}
+          <FormGroup
+            label={
+              isExistingUser
+                ? 'Hello again,'
+                : `Looks like you're new, enter ${
+                    isExistingUser ? 'your' : 'a'
+                  } password`
+            }
+            info={
+              isExistingUser ||
+              'Your password must be at least 8 characters long.'
+            }
+            errorInfo={
+              isInvalidEmailOrPasswordMessageVisible &&
+              'Incorrect password, please try again.'
+            }
+          >
             <TextInput
               autoFocus
               onChange={setPassword}
@@ -207,19 +207,16 @@ export const LoginModal = () => {
         ) : null}
 
         {isFirstNameInputVisible ? (
-          <FormGroup>
-            <Label>What's your first name?</Label>
+          <FormGroup label="What's your first name?">
             <TextInput autoFocus onChange={setFirstName} type="text" />
           </FormGroup>
         ) : null}
 
         {isLastNameInputVisible ? (
-          <FormGroup>
-            <Label>...and your last name?</Label>
-            <Styled.Info>
-              This is useful for more formal scenarios, like deliveries and
-              receipts.
-            </Styled.Info>
+          <FormGroup
+            label="...and your last name?"
+            info="This is useful for more formal scenarios, like deliveries and receipts."
+          >
             <TextInput autoFocus onChange={setLastName} type="text" />
           </FormGroup>
         ) : null}
