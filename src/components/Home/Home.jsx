@@ -12,18 +12,16 @@ export const Home = () => {
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
-    <Styled.Home>
-      <Markdown
-        options={{
-          overrides: {
-            h1: Title,
-            h2: SubTitle,
-            img: Styled.Image,
-          },
-        }}
-      >
-        {homeContent}
-      </Markdown>
-    </Styled.Home>
+    <Markdown
+      options={{
+        overrides: {
+          h1: Title,
+          h2: SubTitle,
+          img: Styled.Image,
+        },
+      }}
+    >
+      {homeContent}
+    </Markdown>
   );
 };

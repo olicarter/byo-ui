@@ -1,9 +1,10 @@
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 
-import {Container} from './Container';
-import {Unit} from './Unit';
+import { Container } from './Container';
+import { Tag } from './Tag';
+import { Unit } from './Unit';
 
-export const ProductVariant = gql `
+export const ProductVariant = gql`
   fragment ProductVariant on ProductVariant {
     id
     container {
@@ -11,10 +12,14 @@ export const ProductVariant = gql `
     }
     increment
     incrementPrice
+    tags {
+      ...Tag
+    }
     unit {
       ...Unit
     }
   }
   ${Container}
+  ${Tag}
   ${Unit}
 `;

@@ -13,7 +13,7 @@ import {
 import * as Styled from './ProductVariant.styled';
 
 export const ProductVariant = ({
-  variant: { id, container, increment, incrementPrice, unit },
+  variant: { id, container, increment, incrementPrice, tags = [], unit },
 }) => {
   const { isAuthenticated, openLoginModal, user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
@@ -167,6 +167,11 @@ export const ProductVariant = ({
             <Styled.Container> + £{container.price}</Styled.Container>
           ) : null}
         </Styled.Price>
+        {tags.length ? (
+          <Styled.Tags>
+            {tags.map(({ name }) => name.toLowerCase()).join(', ')}
+          </Styled.Tags>
+        ) : null}
       </Styled.Info>
 
       <Styled.IncrementButton onClick={incrementOrderItem}>

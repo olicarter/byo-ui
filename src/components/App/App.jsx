@@ -9,6 +9,7 @@ import { Footer } from '../Footer';
 import { Home } from '../Home';
 import { Layout } from '../Layout';
 import { LogoutButton } from '../LogoutButton';
+import { Product } from '../Product';
 import { Products } from '../Products';
 import { Section } from '../Section';
 import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
@@ -48,7 +49,7 @@ export const App = () => {
           </Layout>
         </Route>
 
-        <Route path="/products">
+        <Route exact path="/products">
           <Layout>
             <Section>
               <Title>Products</Title>
@@ -56,6 +57,12 @@ export const App = () => {
             <Section>
               <Products />
             </Section>
+          </Layout>
+        </Route>
+
+        <Route exact path="/products/:productSlug">
+          <Layout center>
+            <Product />
           </Layout>
         </Route>
 

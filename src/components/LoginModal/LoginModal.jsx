@@ -10,7 +10,6 @@ import {
 import * as Styled from './LoginModal.styled';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
-import { Label } from '../Label';
 import { Modal } from '../Modal';
 import { TextInput } from '../TextInput';
 

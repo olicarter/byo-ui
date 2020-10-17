@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 
 export const TagBar = styled.div(() => ({

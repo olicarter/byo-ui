@@ -24,7 +24,7 @@ export const DeliverySlotPicker = () => {
 
   useEffect(() => {
     if (netlifyId) getUser();
-  }, [netlifyId]);
+  }, [netlifyId, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { id: unsubmittedOrderId, deliverySlot } =
