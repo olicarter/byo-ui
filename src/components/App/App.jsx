@@ -32,7 +32,7 @@ export const App = () => {
         </Route>
 
         <Route path="/account">
-          <Layout>
+          <Layout center>
             {isAuthenticated ? (
               <>
                 <SubmittedUnpaidOrder />
@@ -44,7 +44,9 @@ export const App = () => {
                 </Section>
               </>
             ) : (
-              <Button onClick={openLoginModal}>Log in</Button>
+              <Button borderRadius onClick={openLoginModal}>
+                Log in
+              </Button>
             )}
           </Layout>
         </Route>

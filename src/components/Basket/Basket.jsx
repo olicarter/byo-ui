@@ -89,14 +89,14 @@ export const Basket = () => {
           }
           errorInfo={
             productsTotal && containersTotal && total < minOrderValue
-              ? `£${minOrderValue} minimum order value`
+              ? `Minimum order value is £${minOrderValue}`
               : undefined
           }
         >
           <Button
             borderRadius
             disabled={total < minOrderValue || !deliverySlot}
-            loading={getUserLoading || submitOrderLoading}
+            // loading={getUserLoading || submitOrderLoading}
             onClick={submitOrder}
           >
             Place order

@@ -16,9 +16,15 @@ export const DeliverySlotPicker = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const { data: { allDeliverySlots = [] } = {} } = useQuery(GET_DELIVERY_SLOTS);
+  const {
+    data: { allDeliverySlots } = {},
+    loading: getDeliverySlotsLoading,
+  } = useQuery(GET_DELIVERY_SLOTS);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
+  const [
+    getUser,
+    { data: { allUsers } = {}, loading: getUserLoading },
+  ] = useLazyQuery(GET_USER, {
     variables: { netlifyId },
   });
 
@@ -31,11 +37,14 @@ export const DeliverySlotPicker = () => {
     orders.find(({ submitted }) => !submitted) || {};
   const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
 
-  const [setOrderDeliverySlot] = useMutation(SET_ORDER_DELIVERY_SLOT);
+  const [
+    setOrderDeliverySlot,
+    { loading: setOrderDeliverySlotLoading },
+  ] = useMutation(SET_ORDER_DELIVERY_SLOT);
 
   const deliverySlotsByDay = {};
 
-  allDeliverySlots.forEach(deliverySlot => {
+  (allDeliverySlots || []).forEach(deliverySlot => {
     const { startTime } = deliverySlot;
     const st = DateTime.fromISO(startTime, { zone: 'Europe/London' });
     deliverySlotsByDay[st.toFormat('cccc d LLL')] = [
@@ -45,14 +54,25 @@ export const DeliverySlotPicker = () => {
   });
 
   const handleChange = ({ target: { value } }) => {
-    setOrderDeliverySlot({
-      variables: { id: unsubmittedOrderId, deliverySlotId: value },
-    });
+    if (unsubmittedOrderId) {
+      setOrderDeliverySlot({
+        variables: { id: unsubmittedOrderId, deliverySlotId: value },
+      });
+    }
   };
 
   return (
     <Styled.DeliverySlotPicker>
-      <Select onChange={handleChange} value={unsubmittedOrderDeliverySlotId}>
+      <Select
+        loading={(() => {
+          if (getDeliverySlotsLoading || getUserLoading)
+            return 'Loading delivery slots...';
+          if (setOrderDeliverySlotLoading) return 'Selecting slot...';
+          return undefined;
+        })()}
+        onChange={handleChange}
+        value={unsubmittedOrderDeliverySlotId}
+      >
         <option disabled value="">
           Choose a delivery slot
         </option>

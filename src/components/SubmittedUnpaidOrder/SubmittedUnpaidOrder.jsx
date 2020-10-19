@@ -23,10 +23,14 @@ export const SubmittedUnpaidOrder = () => {
   }, [netlifyId, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const { deliverySlot: { startTime, endTime } = {} } =
-    orders.find(({ paid, submitted }) => submitted && !paid) || {};
+  const submittedUnpaidOrder = orders.find(
+    ({ paid, submitted }) => submitted && !paid,
+  );
 
-  if (getUserLoading) return null;
+  if (getUserLoading || !submittedUnpaidOrder) return null;
+
+  const { deliverySlot: { startTime, endTime } = {} } =
+    submittedUnpaidOrder || {};
 
   const st = DateTime.fromISO(startTime, {
     zone: 'Europe/London',

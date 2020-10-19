@@ -40,17 +40,18 @@ export const LoginModal = () => {
   const [isPasswordInputVisible, setIsPasswordInputVisible] = useState(false);
   const [isFirstNameInputVisible, setIsFirstNameInputVisible] = useState(false);
   const [isLastNameInputVisible, setIsLastNameInputVisible] = useState(false);
-  const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
-    true,
-  );
+  const [isContinueDisabled, setIsContinueDisabled] = useState(true);
 
-  const [getUsersByEmail] = useLazyQuery(GET_USERS_BY_EMAIL, {
-    fetchPolicy: 'network-only',
-    onCompleted: ({ allUsers }) => {
-      setIsExistingUser(!!allUsers.length);
-      setIsPasswordInputVisible(true);
+  const [getUsersByEmail, { loading: getUsersByEmailLoading }] = useLazyQuery(
+    GET_USERS_BY_EMAIL,
+    {
+      fetchPolicy: 'network-only',
+      onCompleted: ({ allUsers }) => {
+        setIsExistingUser(!!allUsers.length);
+        setIsPasswordInputVisible(true);
+      },
     },
-  });
+  );
 
   const [createUser] = useMutation(CREATE_USER, {
     update: (cache, { data: { createUser } }) => {
@@ -60,6 +61,13 @@ export const LoginModal = () => {
       });
     },
   });
+
+  useEffect(() => {
+    if (getUsersByEmailLoading) {
+      setButtonText('Checking email...');
+      setIsContinueDisabled(true);
+    }
+  }, [getUsersByEmailLoading]);
 
   useEffect(() => {
     setIsEmailValid(EMAIL_REGEX.test(email));
@@ -78,7 +86,7 @@ export const LoginModal = () => {
   }, [lastName]);
 
   useEffect(() => {
-    setIsContinueButtonDisabled(
+    setIsContinueDisabled(
       !isEmailValid ||
         (isPasswordInputVisible && !isPasswordValid) ||
         (isFirstNameInputVisible && !isFirstNameValid) ||
@@ -101,14 +109,14 @@ export const LoginModal = () => {
       }
       if (isEmailValid && isPasswordValid && isExistingUser) {
         setButtonText('Logging in...');
-        setIsContinueButtonDisabled(true);
+        setIsContinueDisabled(true);
         const { error = {}, id } = await login(email, password);
         switch (error.message) {
           case INVALID_EMAIL_OR_PASSWORD:
             setIsInvalidEmailOrPasswordMessageVisible(true);
             setPassword('');
             setButtonText('Continue');
-            setIsContinueButtonDisabled(true);
+            setIsContinueDisabled(true);
             break;
           // no default
         }
@@ -132,7 +140,7 @@ export const LoginModal = () => {
           isLastNameValid
         ) {
           setButtonText('Storing your details...');
-          setIsContinueButtonDisabled(true);
+          setIsContinueDisabled(true);
           const signupRes = await signup(email, password);
           const { error: signupError = {}, id: netlifyId } = signupRes;
           /** @todo handle error better */
@@ -141,14 +149,14 @@ export const LoginModal = () => {
             variables: { email, firstName, lastName, netlifyId },
           });
           setButtonText('Logging in...');
-          setIsContinueButtonDisabled(true);
+          setIsContinueDisabled(true);
           const { error: loginError = {}, id } = await login(email, password);
           switch (loginError.message) {
             case INVALID_EMAIL_OR_PASSWORD:
               setIsInvalidEmailOrPasswordMessageVisible(true);
               setPassword('');
               setButtonText('Continue');
-              setIsContinueButtonDisabled(true);
+              setIsContinueDisabled(true);
               break;
             // no default
           }
@@ -161,9 +169,9 @@ export const LoginModal = () => {
   };
 
   const handleKeyDown = e => {
-    if (e.key === 'Enter' && !isContinueButtonDisabled) {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      handleContinue();
+      if (!isContinueDisabled) handleContinue();
     }
   };
 
@@ -181,13 +189,9 @@ export const LoginModal = () => {
 
         {isPasswordInputVisible ? (
           <FormGroup
-            label={
-              isExistingUser
-                ? 'Hello again,'
-                : `Looks like you're new, enter ${
-                    isExistingUser ? 'your' : 'a'
-                  } password`
-            }
+            label={`${
+              isExistingUser ? 'Hello again' : `Looks like you're new`
+            }, enter ${isExistingUser ? 'your' : 'a'} password`}
             info={
               isExistingUser ||
               'Your password must be at least 8 characters long.'
@@ -224,7 +228,7 @@ export const LoginModal = () => {
         <FormGroup>
           <Button
             borderRadius
-            disabled={isContinueButtonDisabled}
+            disabled={isContinueDisabled}
             onClick={handleContinue}
           >
             {buttonText}

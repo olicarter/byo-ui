@@ -30,6 +30,7 @@ export const Product = () => {
         } = {},
       ] = [],
     } = {},
+    loading,
   } = useQuery(GET_PRODUCTS_BY_SLUG, {
     variables: { slug: productSlug },
   });
@@ -48,52 +49,56 @@ export const Product = () => {
 
   return (
     <Styled.Product>
-      <Title>{productName}</Title>
-      <Styled.Section>
-        <Styled.Icon path={mdiBicycleBasket} size="2rem" />
-        <div>
-          <Styled.SectionTitle>Delivery info</Styled.SectionTitle>
-          <Styled.Info>{deliveryInfo || defaultDeliveryInfo}</Styled.Info>
-        </div>
-      </Styled.Section>
-      {origin ? (
-        <Styled.Section>
-          <Styled.Icon path={mdiMapMarker} size="2rem" />
-          <div>
-            <Styled.SectionTitle>Origin</Styled.SectionTitle>
-            <Styled.Info>{origin}</Styled.Info>
-          </div>
-        </Styled.Section>
-      ) : null}
-      {tags.length ? (
-        <Styled.Section>
-          <Styled.Icon path={mdiOctagram} size="2rem" />
-          <div>
-            <Styled.SectionTitle>Tags</Styled.SectionTitle>
-            <Styled.Info>
-              {tags.map(({ name }) => name.toLowerCase()).join(', ')}
-            </Styled.Info>
-          </div>
-        </Styled.Section>
-      ) : null}
-      {ingredients ? (
-        <Styled.Section>
-          <Styled.Icon path={mdiFormatListBulletedType} size="2rem" />
-          <div>
-            <Styled.SectionTitle>Ingredients</Styled.SectionTitle>
-            <Styled.Info>{ingredients}</Styled.Info>
-          </div>
-        </Styled.Section>
-      ) : null}
-      {allergenInfo ? (
-        <Styled.Section>
-          <Styled.Icon path={mdiAlertOctagram} size="2rem" />
-          <div>
-            <Styled.SectionTitle>Allergen info</Styled.SectionTitle>
-            <Styled.Info>{allergenInfo}</Styled.Info>
-          </div>
-        </Styled.Section>
-      ) : null}
+      <Title>{loading ? 'Loading product info' : productName}</Title>
+      {loading || (
+        <>
+          <Styled.Section>
+            <Styled.Icon path={mdiBicycleBasket} size="2rem" />
+            <div>
+              <Styled.SectionTitle>Delivery info</Styled.SectionTitle>
+              <Styled.Info>{deliveryInfo || defaultDeliveryInfo}</Styled.Info>
+            </div>
+          </Styled.Section>
+          {origin ? (
+            <Styled.Section>
+              <Styled.Icon path={mdiMapMarker} size="2rem" />
+              <div>
+                <Styled.SectionTitle>Origin</Styled.SectionTitle>
+                <Styled.Info>{origin}</Styled.Info>
+              </div>
+            </Styled.Section>
+          ) : null}
+          {tags.length ? (
+            <Styled.Section>
+              <Styled.Icon path={mdiOctagram} size="2rem" />
+              <div>
+                <Styled.SectionTitle>Tags</Styled.SectionTitle>
+                <Styled.Info>
+                  {tags.map(({ name }) => name.toLowerCase()).join(', ')}
+                </Styled.Info>
+              </div>
+            </Styled.Section>
+          ) : null}
+          {ingredients ? (
+            <Styled.Section>
+              <Styled.Icon path={mdiFormatListBulletedType} size="2rem" />
+              <div>
+                <Styled.SectionTitle>Ingredients</Styled.SectionTitle>
+                <Styled.Info>{ingredients}</Styled.Info>
+              </div>
+            </Styled.Section>
+          ) : null}
+          {allergenInfo ? (
+            <Styled.Section>
+              <Styled.Icon path={mdiAlertOctagram} size="2rem" />
+              <div>
+                <Styled.SectionTitle>Allergen info</Styled.SectionTitle>
+                <Styled.Info>{allergenInfo}</Styled.Info>
+              </div>
+            </Styled.Section>
+          ) : null}
+        </>
+      )}
     </Styled.Product>
   );
 };
