@@ -23,10 +23,7 @@ export const Basket = () => {
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [
-    getUser,
-    { data: { allUsers } = {}, loading: getUserLoading },
-  ] = useLazyQuery(GET_USER, {
+  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
     variables: { netlifyId },
   });
 
@@ -38,13 +35,10 @@ export const Basket = () => {
   const { id: unsubmittedOrderId, deliverySlot, orderItems = [] } =
     orders.find(({ submitted }) => !submitted) || {};
 
-  const [submitOrder, { loading: submitOrderLoading }] = useMutation(
-    SUBMIT_ORDER,
-    {
-      variables: { id: unsubmittedOrderId, submitted: true },
-      onCompleted: () => push('/account'),
-    },
-  );
+  const [submitOrder] = useMutation(SUBMIT_ORDER, {
+    variables: { id: unsubmittedOrderId, submitted: true },
+    onCompleted: () => push('/account'),
+  });
 
   let { products, containers, total } = sumOrderItems(orderItems);
   const productsTotal = +parseFloat(products).toFixed(2);

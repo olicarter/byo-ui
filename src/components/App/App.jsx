@@ -14,6 +14,7 @@ import { Products } from '../Products';
 import { Section } from '../Section';
 import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
 import { TopBar } from '../TopBar';
+import { UserOrders } from '../UserOrders';
 import { UserSubmittedOrders } from '../UserSubmittedOrders';
 import { Title } from '../Typography';
 
@@ -37,7 +38,8 @@ export const App = () => {
               <>
                 <SubmittedUnpaidOrder />
                 <Section>
-                  <UserSubmittedOrders />
+                  <UserOrders />
+                  {/* <UserSubmittedOrders /> */}
                 </Section>
                 <Section>
                   <LogoutButton />
