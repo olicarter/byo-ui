@@ -16,15 +16,7 @@ export const UserOrders = () => {
   );
 
   const [{ orders = [] } = {}] = allUsers || [];
-
-  // if (orders.length) {
-  //   orders[0].orderItems.sort((a, b) => {
-  //     console.log(a);
-  //     return a.productVariant.product.name.localeCompare(
-  //       b.productVariant.product.name,
-  //     );
-  //   });
-  // }
+  const submittedOrders = orders.filter(({ submitted }) => !!submitted);
 
   useEffect(() => {
     if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
@@ -32,7 +24,7 @@ export const UserOrders = () => {
 
   return (
     <Styled.Column>
-      {orders.map(({ id, orderItems = [], paidAt }) => {
+      {submittedOrders.map(({ id, orderItems = [], paidAt }) => {
         const orderItemsByProduct = [];
         const uniqueProductIds = [];
         orderItems.forEach(i => {
@@ -67,6 +59,19 @@ export const UserOrders = () => {
           },
         );
 
+        const totalOrderValue =
+          Math.round(
+            (orderItems.reduce(
+              (prev, curr) =>
+                prev +
+                Number(curr.quantity) *
+                  Number(curr.productVariant.incrementPrice),
+              0,
+            ) +
+              totalContainerPrice) *
+              100,
+          ) / 100;
+
         return (
           <Styled.UserOrders>
             <SubTitle>Your orders</SubTitle>
@@ -75,23 +80,12 @@ export const UserOrders = () => {
               <Styled.Header as="header">
                 <span>#{id}</span>
                 <div>
-                  <span>
-                    £
-                    {Math.round(
-                      orderItems.reduce(
-                        (prev, curr) =>
-                          prev +
-                          Number(curr.quantity) *
-                            Number(curr.productVariant.incrementPrice),
-                        0,
-                      ) * 100,
-                    ) / 100}
-                  </span>
-                  <span>
+                  <span>£{totalOrderValue}</span>
+                  {/* <span>
                     {totalContainerPrice ? (
                       <span> + £{+parseFloat(totalContainerPrice)}</span>
                     ) : null}
-                  </span>
+                  </span> */}
                 </div>
               </Styled.Header>
             </Styled.Section>

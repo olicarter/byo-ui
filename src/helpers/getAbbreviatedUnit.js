@@ -10,5 +10,6 @@ export const getAbbreviatedUnit = unit => {
       return 'L';
     case 'items':
       return 'items';
+    // no default
   }
 };

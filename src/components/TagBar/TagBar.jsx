@@ -9,7 +9,7 @@ import * as Styled from './TagBar.styled';
 export const TagBar = () => {
   const { pathname, search } = useLocation();
 
-  const { data: { allTags = [] } = {} } = useQuery(GET_TAGS_QUERY);
+  const { data: { allTags = [] } = {}, loading } = useQuery(GET_TAGS_QUERY);
 
   const { category, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,
@@ -28,7 +28,9 @@ export const TagBar = () => {
       <Styled.Nav>
         <Styled.NavItems>
           <Styled.NavItem>
-            <Styled.Tag as="span">tags</Styled.Tag>
+            <Styled.Tag as="span">
+              {loading ? 'loading tags' : 'tags'}
+            </Styled.Tag>
           </Styled.NavItem>
           {allTags.map(({ id, name, slug }) => (
             <Styled.NavItem key={id}>

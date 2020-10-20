@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import React from 'react';
 
-import { useAuth } from '../../../contexts';
-// import { GET_USERS_BY_NETLIFY_ID } from './UserOrders.gql';
-import * as Styled from '../UserOrders.styled';
-// import { SubTitle } from '../Typography';
+import * as Styled from './UserOrdersProductOrderItems.styled';
 
 export const UserOrdersProductOrderItems = ({ orderItems }) => {
   const [
@@ -19,7 +15,7 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
       <Styled.OrderItemHeader>
         <Styled.Name>{name}</Styled.Name>
         <span>
-          £
+          {/* £
           {
             +parseFloat(
               Math.round(
@@ -32,7 +28,7 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
                 ) * 100,
               ) / 100,
             )
-          }
+          } */}
         </span>
       </Styled.OrderItemHeader>
       {orderItems.map(
@@ -41,11 +37,11 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
           productVariant: { container, increment, incrementPrice, unit },
         }) => (
           <Styled.Row>
-            <span>
+            <Styled.OrderItemProduct>
               {quantity} x {increment}
               {unit.pluralAbbreviated}
               {container ? ` + ${container.type}` : ''}
-            </span>
+            </Styled.OrderItemProduct>
             £{+parseFloat(incrementPrice * quantity)}
           </Styled.Row>
         ),

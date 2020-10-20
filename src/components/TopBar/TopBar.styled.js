@@ -8,7 +8,7 @@ export const Spacer = styled.div(({ tagBarVisible }) => ({
 
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
   background: transparentize(0.4, white),
-  backdropFilter: 'blur(10px)',
+  backdropFilter: 'blur(20px)',
   left: 0,
   position: 'fixed',
   top: 0,

@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 
-export const UserOrders = styled.div(() => ({
-  padding: '1rem',
-}));
+export const UserOrders = styled.div(() => ({}));
 
 export const Column = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column',
   flexBasis: '100%',
   flex: '1',
-  maxWidth: '600px',
+  width: '100%',
 }));
 
 export const Section = styled.section(() => ({
@@ -33,12 +31,11 @@ export const Header = styled(Row)(() => ({
 }));
 
 export const OrderItemHeader = styled(Row)(() => ({
-  fontSize: '1rem',
-  fontWeight: 600,
+  fontWeight: 700,
 }));
 
-export const Date = styled.span(({ theme: { palette: { grey } } }) => ({
-  color: grey,
+export const Date = styled.span(({ theme: { palette: { green } } }) => ({
+  color: green,
 }));
 
 export const Name = styled.span(() => ({

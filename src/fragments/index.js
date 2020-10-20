@@ -1,5 +1,6 @@
 export * from './Category';
 export * from './Container';
+export * from './DeliverySlot';
 export * from './OrderItem';
 export * from './OrderItems';
 export * from './Order';

@@ -11,7 +11,7 @@ import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname } = useLocation();
-  const tagBarVisible = !!useRouteMatch('/products');
+  const tagBarVisible = !!useRouteMatch({ exact: true, path: '/products' });
 
   return (
     <>
@@ -53,7 +53,7 @@ export const TopBar = () => {
           </Styled.Nav>
         </Styled.TopBar>
 
-        <Route path="/products">
+        <Route exact path="/products">
           <CategoryBar />
           <TagBar />
         </Route>
