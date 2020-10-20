@@ -16,7 +16,9 @@ export const UserOrders = () => {
   );
 
   const [{ orders = [] } = {}] = allUsers || [];
-  const submittedOrders = orders.filter(({ submitted }) => !!submitted);
+  const submittedOrders = orders.filter(
+    ({ paid, submitted }) => paid && submitted,
+  );
 
   useEffect(() => {
     if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
