@@ -85,6 +85,7 @@ export const TopBar = () => {
   const menuRef = useRef();
   const menuTransitions = useTransition(menuVisible, null, {
     ref: menuRef,
+    config: { duration: 500 },
     from: {
       backdropFilter: 'blur(0px)',
       WebkitBackdropFilter: 'blur(0px)',
@@ -109,7 +110,7 @@ export const TopBar = () => {
     {
       ref: menuItemsRef,
       unique: true,
-      trail: 50,
+      trail: menuVisible ? 50 : 0,
       from: {
         opacity: 0,
       },
@@ -124,9 +125,7 @@ export const TopBar = () => {
 
   useChain(
     menuVisible ? [menuRef, menuItemsRef] : [menuItemsRef, menuRef],
-    menuVisible
-      ? [0, 0.1]
-      : [0, 0.1 * (menuItemsLeft.length + menuItemsRight.length)],
+    menuVisible ? [0, 0.5] : [0, 0],
   );
 
   return (

@@ -18,7 +18,6 @@ import { FormGroup } from '../FormGroup';
 import { Grid } from '../Grid';
 import { Label } from '../Label';
 import { ProductCard } from '../ProductCard';
-import { Section } from '../Section';
 
 export const Basket = () => {
   const { push } = useHistory();
@@ -66,19 +65,19 @@ export const Basket = () => {
   return (
     <Columns>
       <Column flex={2}>
-        <Section>
-          <Grid>
-            {orderItemProducts.map(
-              ({ id, productVariant: { product } = {} }) => (
-                <ProductCard key={id} product={product} />
-              ),
-            )}
-          </Grid>
-        </Section>
+        <Grid>
+          {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
+            <ProductCard key={id} product={product} />
+          ))}
+        </Grid>
       </Column>
 
       <Column flex={1}>
-        <FormGroup label="Choose a delivery slot" info={chooseDeliverySlotInfo}>
+        <FormGroup
+          label="Choose a delivery slot"
+          info={chooseDeliverySlotInfo}
+          margin="0"
+        >
           <DeliverySlotPicker />
         </FormGroup>
 
