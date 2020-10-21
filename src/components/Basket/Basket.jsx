@@ -1,31 +1,44 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
 import { useAuth } from '../../contexts';
 import { sumOrderItems } from '../../helpers';
-import { GET_USER, SUBMIT_ORDER } from './Basket.gql';
+import {
+  GET_SETTINGS,
+  GET_USERS_BY_NETLIFY_ID,
+  SUBMIT_ORDER,
+} from './Basket.gql';
 import { Button } from '../Button';
 import { Column } from '../Column';
 import { Columns } from '../Columns';
 import { DeliverySlotPicker } from '../DeliverySlotPicker';
 import { FormGroup } from '../FormGroup';
 import { Grid } from '../Grid';
+import { Label } from '../Label';
 import { ProductCard } from '../ProductCard';
 import { Section } from '../Section';
-
-/** @todo get this from backend settings doc */
-const minOrderValue = 15;
 
 export const Basket = () => {
   const { push } = useHistory();
   const { user } = useAuth();
   const { id: netlifyId } = user || {};
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
-  });
+  const {
+    data: {
+      allSettings: [
+        { chooseDeliverySlotInfo, minOrderValue, orderSubmissionInfo } = {},
+      ] = [],
+    } = {},
+  } = useQuery(GET_SETTINGS);
+
+  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
+    GET_USERS_BY_NETLIFY_ID,
+    {
+      variables: { netlifyId },
+    },
+  );
 
   useEffect(() => {
     if (netlifyId) getUser();
@@ -41,9 +54,9 @@ export const Basket = () => {
   });
 
   let { products, containers, total } = sumOrderItems(orderItems);
-  const productsTotal = +parseFloat(products).toFixed(2);
-  const containersTotal = +parseFloat(containers).toFixed(2);
-  total = +parseFloat(total).toFixed(2);
+  const productsTotal = products.toFixed(2);
+  const containersTotal = containers.toFixed(2);
+  total = total.toFixed(2);
 
   const orderItemProducts = uniqWith(
     orderItems,
@@ -65,36 +78,42 @@ export const Basket = () => {
       </Column>
 
       <Column flex={1}>
-        <FormGroup
-          label="Choose a delivery slot"
-          info="The delivery rider will contact you with a more precise time on day of delivery."
-        >
+        <FormGroup label="Choose a delivery slot" info={chooseDeliverySlotInfo}>
           <DeliverySlotPicker />
         </FormGroup>
 
-        <FormGroup
-          label={`Total${productsTotal ? ` £${productsTotal}` : ''}${
-            containersTotal ? ` + £${containersTotal}` : ''
-          }`}
-          info={
-            total >= minOrderValue
-              ? 'Payment is taken by the rider on delivery. Price is dependant on stock levels on day of dispatch.'
-              : undefined
-          }
-          errorInfo={
-            productsTotal && containersTotal && total < minOrderValue
-              ? `Minimum order value is £${minOrderValue}`
-              : undefined
-          }
-        >
-          <Button
-            borderRadius
-            disabled={total < minOrderValue || !deliverySlot}
-            // loading={getUserLoading || submitOrderLoading}
-            onClick={submitOrder}
+        <FormGroup>
+          {productsTotal ? (
+            <div>
+              <Label color="grey">£{productsTotal} goods</Label>
+            </div>
+          ) : null}
+          {containersTotal ? (
+            <div>
+              <Label color="grey">
+                £{containersTotal} refundable containers
+              </Label>
+            </div>
+          ) : null}
+          <FormGroup
+            label={`£${total} total`}
+            info={total >= minOrderValue ? orderSubmissionInfo : undefined}
+            errorInfo={
+              productsTotal && containersTotal && total < minOrderValue
+                ? `Minimum order value is £${minOrderValue}`
+                : undefined
+            }
+            margin="0"
           >
-            Place order
-          </Button>
+            <Button
+              borderRadius
+              disabled={total < minOrderValue || !deliverySlot}
+              // loading={getUserLoading || submitOrderLoading}
+              onClick={submitOrder}
+            >
+              Place order
+            </Button>
+          </FormGroup>
         </FormGroup>
       </Column>
     </Columns>

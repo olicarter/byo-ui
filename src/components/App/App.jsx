@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import { useAuth } from '../../contexts';
 import * as Styled from './App.styled';
+import { About } from '../About';
 import { Basket } from '../Basket';
 import { Button } from '../Button';
 import { Footer } from '../Footer';
@@ -28,6 +29,12 @@ export const App = () => {
         <Route exact path="/">
           <Layout center>
             <Home />
+          </Layout>
+        </Route>
+
+        <Route exact path="/about">
+          <Layout center>
+            <About />
           </Layout>
         </Route>
 

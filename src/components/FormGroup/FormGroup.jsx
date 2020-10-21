@@ -3,8 +3,14 @@ import React from 'react';
 import * as Styled from './FormGroup.styled';
 import { Label } from '../Label';
 
-export const FormGroup = ({ children, errorInfo, info, label }) => (
-  <Styled.FormGroup>
+export const FormGroup = ({
+  children,
+  errorInfo,
+  info,
+  label,
+  margin = '1rem 0 0',
+}) => (
+  <Styled.FormGroup margin={margin}>
     {label ? (
       <Styled.Label>
         <Label>{label}</Label>

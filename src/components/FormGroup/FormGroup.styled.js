@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const FormGroup = styled.div(() => ({
-  margin: '1rem 0 0',
+export const FormGroup = styled.div(({ margin }) => ({
+  margin,
   '> *': {
     width: '100%',
   },
@@ -9,6 +9,7 @@ export const FormGroup = styled.div(() => ({
 
 export const Label = styled.div(() => ({
   margin: '0 0 0.5rem',
+  whiteSpace: 'pre',
 }));
 
 export const Info = styled.p(

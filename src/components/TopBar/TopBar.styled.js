@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
+import { animated } from 'react-spring';
 
 export const Spacer = styled.div(({ tagBarVisible }) => ({
   height: tagBarVisible ? '9rem' : '4rem',
@@ -34,7 +35,9 @@ export const Logo = styled.img(() => ({
   height: '2rem',
 }));
 
-export const Nav = styled.nav(() => ({}));
+export const Nav = styled.nav(() => ({
+  display: 'flex',
+}));
 
 export const NavItems = styled.ul(() => ({
   display: 'flex',
@@ -79,3 +82,38 @@ export const Link = styled(RouterLink)(
 export const LinkIcon = styled(Link)(() => ({
   padding: '0.5rem',
 }));
+
+export const Menu = styled(animated.div)(
+  ({
+    theme: {
+      palette: { white },
+    },
+  }) => ({
+    background: transparentize(0.4, white),
+    display: 'flex',
+    flexDirection: 'column',
+    left: 0,
+    // padding: '1rem',
+    position: 'fixed',
+    top: '4rem',
+    bottom: 0,
+    right: 0,
+    zIndex: 1,
+  }),
+);
+
+export const MenuItem = styled(animated.div)(
+  ({
+    theme: {
+      palette: { black },
+    },
+  }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    // color: black,
+    // fontSize: '1.2rem',
+    // fontWeight: 700,
+    // padding: '1rem 0',
+  }),
+);

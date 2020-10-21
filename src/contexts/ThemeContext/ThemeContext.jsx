@@ -3,6 +3,7 @@ import {
   createGlobalStyle,
   ThemeProvider as SCThemeProvider,
 } from 'styled-components';
+import { useMediaLayout } from 'use-media';
 
 const theme = {
   palette: {
@@ -38,11 +39,15 @@ export const ThemeContext = createContext({});
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const ThemeProvider = ({ children }) => (
-  <ThemeContext.Provider value={theme}>
-    <SCThemeProvider theme={theme}>
-      <Global />
-      {children}
-    </SCThemeProvider>
-  </ThemeContext.Provider>
-);
+export const ThemeProvider = ({ children }) => {
+  const isDesktop = useMediaLayout({ minWidth: '600px' });
+
+  return (
+    <ThemeContext.Provider value={{ ...theme, isDesktop }}>
+      <SCThemeProvider theme={theme}>
+        <Global />
+        {children}
+      </SCThemeProvider>
+    </ThemeContext.Provider>
+  );
+};

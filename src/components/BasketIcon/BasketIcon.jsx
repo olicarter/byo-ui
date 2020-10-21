@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import Icon from '@mdi/react';
-import { mdiBasket } from '@mdi/js';
+import { mdiBasketOutline } from '@mdi/js';
 
 import { useAuth } from '../../contexts';
 import { GET_USERS_BY_NETLIFY_ID } from './BasketIcon.gql';
@@ -26,7 +26,7 @@ export const BasketIcon = () => {
   return (
     <Styled.BasketIcon>
       <Styled.Counter>{orderItems.length}</Styled.Counter>
-      <Icon path={mdiBasket} size={1} title="Basket" />
+      <Icon path={mdiBasketOutline} size={1} title="Basket" />
     </Styled.BasketIcon>
   );
 };
