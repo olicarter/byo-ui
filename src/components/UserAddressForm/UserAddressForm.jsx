@@ -103,7 +103,6 @@ export const UserAddressForm = () => {
 
   return (
     <div>
-      <h3>There will be UserDetailsForm Compoonent right here!</h3>
       <p>{currentError}</p>
       <Styled.Form>
         <Styled.Heading>Delivery Address</Styled.Heading>
@@ -157,7 +156,7 @@ export const UserAddressForm = () => {
           ></Styled.TextInput>
         </Styled.FormGroup>
       </Styled.Form>
-      <Button onClick={validateInputs}>Update</Button>
+      <Button onClick={handleSubmit}>Update</Button>
     </div>
   );
 };

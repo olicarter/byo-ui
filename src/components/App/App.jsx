@@ -12,6 +12,7 @@ import { Products } from '../Products';
 import { TopBar } from '../TopBar';
 import { UserPaidOrders } from '../UserPaidOrders';
 import { UserAddressForm } from '../UserAddressForm';
+import { UserDetailsForm } from '../UserDetailsForm';
 
 export const App = () => {
   const { isAuthenticated, openLoginModal } = useAuth();
@@ -36,7 +37,10 @@ export const App = () => {
             <Button onClick={openLoginModal}>Log in</Button>
           )}
           <UserPaidOrders />
-          <UserAddressForm />
+          <Styled.Flex>
+            <UserDetailsForm />
+            <UserAddressForm />
+          </Styled.Flex>
         </Route>
 
         <Route path="/basket">
