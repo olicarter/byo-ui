@@ -66,6 +66,9 @@ export const LoginModal = () => {
     if (getUsersByEmailLoading) {
       setButtonText('Checking email...');
       setIsContinueDisabled(true);
+    } else {
+      setButtonText('Continue');
+      setIsContinueDisabled(true);
     }
   }, [getUsersByEmailLoading]);
 
