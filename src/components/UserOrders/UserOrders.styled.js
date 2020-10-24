@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
-export const UserOrders = styled.div(() => ({}));
-
 export const Column = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column',
   flexBasis: '100%',
   flex: '1',
   width: '100%',
+}));
+
+export const CardContent = styled.div(() => ({
+  cursor: 'default',
+  padding: '1rem',
 }));
 
 export const Section = styled.section(() => ({
@@ -30,12 +33,17 @@ export const Header = styled(Row)(() => ({
   fontWeight: 600,
 }));
 
+export const OrderId = styled.span(() => ({
+  textTransform: 'uppercase',
+}));
+
 export const OrderItemHeader = styled(Row)(() => ({
   fontWeight: 700,
 }));
 
-export const Date = styled.span(({ theme: { palette: { green } } }) => ({
-  color: green,
+export const Status = styled.span(({ theme: { palette: { primary } } }) => ({
+  color: primary,
+  fontWeight: 600,
 }));
 
 export const Name = styled.span(() => ({

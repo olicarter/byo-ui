@@ -13,7 +13,7 @@ import { LogoutButton } from '../LogoutButton';
 import { Product } from '../Product';
 import { Products } from '../Products';
 import { Section } from '../Section';
-import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
+// import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
 import { TopBar } from '../TopBar';
 import { UserOrders } from '../UserOrders';
 import { Title } from '../Typography';
@@ -42,7 +42,7 @@ export const App = () => {
           <Layout center>
             {isAuthenticated ? (
               <>
-                <SubmittedUnpaidOrder />
+                {/* <SubmittedUnpaidOrder /> */}
                 <Section>
                   <UserOrders />
                 </Section>

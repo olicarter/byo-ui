@@ -6,6 +6,7 @@ import { OrderItems } from './OrderItems';
 export const Order = gql`
   fragment Order on Order {
     id
+    createdAt
     deliverySlot {
       ...DeliverySlot
     }

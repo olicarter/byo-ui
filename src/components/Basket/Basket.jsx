@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
-import { useAuth } from '../../contexts';
+import { useAuth, useTheme } from '../../contexts';
 import { sumOrderItems } from '../../helpers';
 import {
   GET_SETTINGS,
@@ -22,7 +22,15 @@ import { ProductCard } from '../ProductCard';
 export const Basket = () => {
   const { push } = useHistory();
   const { user } = useAuth();
+  const { isDesktop } = useTheme();
+
   const { id: netlifyId } = user || {};
+
+  const [isProductGridVisible, setIsProductGridVisible] = useState(isDesktop);
+
+  useEffect(() => {
+    setIsProductGridVisible(!!isDesktop);
+  }, [isDesktop]);
 
   const {
     data: {
@@ -66,9 +74,22 @@ export const Basket = () => {
     <Columns>
       <Column flex={2}>
         <Grid>
-          {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
-            <ProductCard key={id} product={product} />
-          ))}
+          {isDesktop ? null : (
+            <Button
+              borderRadius
+              onClick={() => setIsProductGridVisible(!isProductGridVisible)}
+            >
+              {isProductGridVisible ? 'Hide products' : 'Show products'}
+            </Button>
+          )}
+
+          {isProductGridVisible
+            ? orderItemProducts.map(
+                ({ id, productVariant: { product } = {} }) => (
+                  <ProductCard key={id} product={product} />
+                ),
+              )
+            : null}
         </Grid>
       </Column>
 

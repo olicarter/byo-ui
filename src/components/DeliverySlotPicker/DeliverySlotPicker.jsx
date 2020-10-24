@@ -37,6 +37,7 @@ export const DeliverySlotPicker = () => {
     orders.find(({ submitted }) => !submitted) || {};
   const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
 
+  /** @todo update delivery slot count after mutation */
   const [
     setOrderDeliverySlot,
     { loading: setOrderDeliverySlotLoading },

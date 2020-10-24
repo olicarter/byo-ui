@@ -1,21 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const ProductCard = styled.div(() => ({
-  alignSelf: 'flex-start',
-  borderRadius: '0.5rem',
-  boxShadow: '0 0 0.4rem 0 rgba(0, 0, 0, 0.1)',
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'hidden',
-  transitionDuration: '200ms',
-  '@media (hover: hover) and (pointer: fine)': {
-    ':hover': {
-      boxShadow: '0 0 1rem 0.1rem rgba(0, 0, 0, 0.1)',
-    },
-  },
-}));
-
 export const Content = styled.div(() => ({
   cursor: 'default',
   display: 'flex',

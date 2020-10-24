@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Route, useLocation, useRouteMatch } from 'react-router-dom';
 import { parse } from 'qs';
 import { useQuery } from '@apollo/client';
@@ -14,16 +14,18 @@ import {
   mdiStoreOutline,
 } from '@mdi/js';
 
-import { useTheme } from '../../contexts';
+import { useAuth, useTheme } from '../../contexts';
 import { GET_SETTINGS } from './TopBar.gql';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
+import { Button } from '../Button';
 import { CategoryBar } from '../CategoryBar';
 import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname, search } = useLocation();
+  const { isAuthenticated, openLoginModal } = useAuth();
 
   const tagBarVisible = !!useRouteMatch({ exact: true, path: '/products' });
 
@@ -32,6 +34,8 @@ export const TopBar = () => {
   });
 
   const { isDesktop } = useTheme();
+
+  const [menuItemsRight, setMenuItemsRight] = useState([]);
 
   const {
     data: { allSettings: [{ facebookUrl, instagramUrl } = {}] = [] } = {},
@@ -51,36 +55,59 @@ export const TopBar = () => {
       to: '/about',
     },
   ];
-  const menuItemsRight = [
-    {
-      key: 'facebook',
-      as: 'a',
-      href: facebookUrl,
-      target: '_blank',
-      icon: mdiFacebook,
-      title: 'Facebook',
-    },
-    {
-      key: 'instagram',
-      as: 'a',
-      href: instagramUrl,
-      target: '_blank',
-      icon: mdiInstagram,
-      title: 'Instagram',
-    },
-    {
-      key: 'basket',
-      title: 'Basket',
-      to: '/basket',
-      component: <BasketIcon />,
-    },
-    {
-      key: 'account',
-      to: '/account',
-      icon: mdiAccountCircleOutline,
-      title: 'Account',
-    },
-  ];
+  useEffect(() => {
+    if (isAuthenticated) {
+      setMenuItemsRight([
+        {
+          key: 'facebook',
+          as: 'a',
+          href: facebookUrl,
+          target: '_blank',
+          icon: mdiFacebook,
+          title: 'Facebook',
+        },
+        {
+          key: 'instagram',
+          as: 'a',
+          href: instagramUrl,
+          target: '_blank',
+          icon: mdiInstagram,
+          title: 'Instagram',
+        },
+        {
+          key: 'basket',
+          title: 'Basket',
+          to: '/basket',
+          component: <BasketIcon />,
+        },
+        {
+          key: 'account',
+          to: '/account',
+          icon: mdiAccountCircleOutline,
+          title: 'Account',
+        },
+      ]);
+    } else {
+      setMenuItemsRight([
+        {
+          key: 'facebook',
+          as: 'a',
+          href: facebookUrl,
+          target: '_blank',
+          icon: mdiFacebook,
+          title: 'Facebook',
+        },
+        {
+          key: 'instagram',
+          as: 'a',
+          href: instagramUrl,
+          target: '_blank',
+          icon: mdiInstagram,
+          title: 'Instagram',
+        },
+      ]);
+    }
+  }, [isAuthenticated, facebookUrl, instagramUrl]);
 
   const menuRef = useRef();
   const menuTransitions = useTransition(menuVisible, null, {
@@ -184,6 +211,15 @@ export const TopBar = () => {
                         </Styled.LinkIcon>
                       </Styled.NavItem>
                     ),
+                  )}
+                  {isAuthenticated ? null : (
+                    <Styled.NavItem>
+                      <Styled.LinkIcon>
+                        <Button borderRadius onClick={openLoginModal}>
+                          Log in
+                        </Button>
+                      </Styled.LinkIcon>
+                    </Styled.NavItem>
                   )}
                 </>
               ) : (

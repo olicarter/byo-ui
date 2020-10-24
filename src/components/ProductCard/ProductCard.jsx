@@ -9,6 +9,7 @@ import { GET_USER } from './ProductCard.gql';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Button } from '../Button';
+import { Card } from '../Card';
 
 export const ProductCard = ({
   product: { id: productId, name, deliveryInfo, origin, slug, variants },
@@ -55,7 +56,7 @@ export const ProductCard = ({
   })();
 
   return (
-    <Styled.ProductCard className="Product">
+    <Card>
       <Styled.Content>
         <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
         <Styled.Info>
@@ -97,6 +98,6 @@ export const ProductCard = ({
           <Button onClick={showProductVariants}>Add to order</Button>
         )}
       </Styled.Buttons>
-    </Styled.ProductCard>
+    </Card>
   );
 };

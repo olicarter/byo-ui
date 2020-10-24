@@ -28,6 +28,7 @@ export const Button = styled.button(
       lineHeight: '2rem',
       opacity: disabled ? 0.5 : 1,
       outline: 'none',
+      padding: '0 0.75rem',
       pointerEvents: disabled ? 'none' : 'all',
       userSelect: 'none',
       '@media (hover: hover) and (pointer: fine)': {
