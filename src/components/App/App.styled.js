@@ -19,3 +19,10 @@ export const MaxWidth = styled.div(() => ({
 export const Main = styled.div(() => ({
   flex: 1,
 }));
+
+export const Flex = styled.div(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  minWidth: '50%',
+  marginTop: '20px',
+}));

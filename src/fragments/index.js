@@ -1,3 +1,4 @@
+export * from './Address';
 export * from './Category';
 export * from './Container';
 export * from './DeliverySlot';
