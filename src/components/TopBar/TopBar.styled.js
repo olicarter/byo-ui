@@ -4,12 +4,12 @@ import { Link as RouterLink } from 'react-router-dom';
 import { animated } from 'react-spring';
 
 export const Spacer = styled.div(({ tagBarVisible }) => ({
-  height: tagBarVisible ? '9rem' : '4rem',
+  height: '4rem',
 }));
 
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
   background: transparentize(0.4, white),
-  backdropFilter: 'blur(20px)',
+  backdropFilter: 'blur(16px)',
   left: 0,
   position: 'fixed',
   top: 0,
@@ -98,7 +98,7 @@ export const Menu = styled(animated.div)(
     top: '4rem',
     bottom: 0,
     right: 0,
-    zIndex: 1,
+    zIndex: 2,
   }),
 );
 

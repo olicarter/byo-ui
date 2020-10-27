@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Route, useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 import { parse } from 'qs';
 import { useQuery } from '@apollo/client';
 import { useChain, useTransition } from 'react-spring';
@@ -20,8 +20,6 @@ import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
 import { Button } from '../Button';
-import { CategoryBar } from '../CategoryBar';
-import { TagBar } from '../TagBar';
 
 export const TopBar = () => {
   const { pathname, search } = useLocation();
@@ -119,8 +117,8 @@ export const TopBar = () => {
       opacity: 0,
     },
     enter: {
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       opacity: 1,
     },
     leave: {
@@ -241,10 +239,10 @@ export const TopBar = () => {
           </Styled.Nav>
         </Styled.TopBar>
 
-        <Route exact path="/products">
+        {/* <Route exact path="/products">
           <CategoryBar />
           <TagBar />
-        </Route>
+        </Route> */}
       </Styled.Wrapper>
 
       {menuTransitions.map(

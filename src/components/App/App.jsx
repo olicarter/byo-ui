@@ -6,20 +6,22 @@ import * as Styled from './App.styled';
 import { About } from '../About';
 import { Basket } from '../Basket';
 import { Button } from '../Button';
+import { CategoryBar } from '../CategoryBar';
+import { Checkout } from '../Checkout';
+import { FloatingButton } from '../FloatingButton';
 import { Footer } from '../Footer';
 import { Home } from '../Home';
 import { Layout } from '../Layout';
-import { LogoutButton } from '../LogoutButton';
+import { Markdown } from '../Markdown';
 import { Product } from '../Product';
 import { Products } from '../Products';
 import { Section } from '../Section';
-// import { SubmittedUnpaidOrder } from '../SubmittedUnpaidOrder';
+import { TagBar } from '../TagBar';
 import { TopBar } from '../TopBar';
 import { UserOrders } from '../UserOrders';
-import { Title } from '../Typography';
 
 export const App = () => {
-  const { isAuthenticated, openLoginModal } = useAuth();
+  const { isAuthenticated, logout, openLoginModal } = useAuth();
 
   return (
     <Styled.App>
@@ -28,13 +30,17 @@ export const App = () => {
       <Styled.Main>
         <Route exact path="/">
           <Layout center>
-            <Home />
+            <Section>
+              <Home />
+            </Section>
           </Layout>
         </Route>
 
         <Route exact path="/about">
           <Layout center>
-            <About />
+            <Section>
+              <About />
+            </Section>
           </Layout>
         </Route>
 
@@ -47,20 +53,29 @@ export const App = () => {
                   <UserOrders />
                 </Section>
                 <Section>
-                  <LogoutButton />
+                  <FloatingButton backgroundColor="red" onClick={logout}>
+                    Log out
+                  </FloatingButton>
                 </Section>
               </>
             ) : (
-              <Button borderRadius onClick={openLoginModal}>
-                Log in
-              </Button>
+              <FloatingButton onClick={openLoginModal}>Log in</FloatingButton>
             )}
           </Layout>
         </Route>
 
         <Route exact path="/products">
           <Layout>
-            <Products />
+            <Section>
+              <Markdown># Products</Markdown>
+            </Section>
+            <Section padding="0">
+              <CategoryBar />
+              <TagBar />
+            </Section>
+            <Section>
+              <Products />
+            </Section>
           </Layout>
         </Route>
 
@@ -73,10 +88,21 @@ export const App = () => {
         <Route path="/basket">
           <Layout>
             <Section>
-              <Title>Checkout</Title>
+              <Markdown># Basket</Markdown>
             </Section>
             <Section>
               <Basket />
+            </Section>
+          </Layout>
+        </Route>
+
+        <Route path="/checkout">
+          <Layout>
+            <Section>
+              <Markdown># Checkout</Markdown>
+            </Section>
+            <Section>
+              <Checkout />
             </Section>
           </Layout>
         </Route>

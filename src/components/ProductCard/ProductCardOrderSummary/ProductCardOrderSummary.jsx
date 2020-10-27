@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { sumOrderItems } from '../../../helpers';
 import * as Styled from './ProductCardOrderSummary.styled';
 
 export const ProductCardOrderSummary = ({ orderItems }) => {
@@ -32,16 +33,7 @@ export const ProductCardOrderSummary = ({ orderItems }) => {
     <Styled.OrderSummary>
       <span>{/* {getQuantity({ orderItems, units: allUnits })} */}</span>
       <span>
-        £{/** @todo move to helper */}
-        {Math.round(
-          orderItems.reduce(
-            (prev, curr) =>
-              prev +
-              Number(curr.quantity) *
-                Number(curr.productVariant.incrementPrice),
-            0,
-          ) * 100,
-        ) / 100}
+        £{sumOrderItems(orderItems).total.toFixed(2)}
         {orderItemsWithRefundableContainers.length ? (
           <Styled.ContainersTotalPrice>
             {' '}

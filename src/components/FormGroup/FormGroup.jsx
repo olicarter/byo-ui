@@ -6,14 +6,17 @@ import { Label } from '../Label';
 export const FormGroup = ({
   children,
   errorInfo,
+  flex = 1,
+  horizontal = false,
   info,
   label,
+  largeLabel,
   margin = '1rem 0 0',
 }) => (
-  <Styled.FormGroup margin={margin}>
+  <Styled.FormGroup flex={flex} horizontal={horizontal} margin={margin}>
     {label ? (
       <Styled.Label>
-        <Label>{label}</Label>
+        <Label large={largeLabel}>{label}</Label>
       </Styled.Label>
     ) : null}
     {info ? <Styled.Info>{info}</Styled.Info> : null}

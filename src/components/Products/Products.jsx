@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import { useAuth } from '../../contexts';
 import { GET_PRODUCTS, GET_USERS_BY_NETLIFY_ID } from './Products.gql';
+import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
 
 export const Products = () => {
+  const { push } = useHistory();
   const { search } = useLocation();
-  const { user } = useAuth();
+  const { isAuthenticated, openLoginModal, user } = useAuth();
   const { id: netlifyId } = user || {};
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
@@ -38,10 +40,19 @@ export const Products = () => {
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   return (
-    <Grid>
-      {filteredProducts.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </Grid>
+    <>
+      <Grid>
+        {filteredProducts.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </Grid>
+      {isAuthenticated ? (
+        <FloatingButton onClick={() => push('/basket')}>
+          View basket
+        </FloatingButton>
+      ) : (
+        <FloatingButton onClick={openLoginModal}>Log in</FloatingButton>
+      )}
+    </>
   );
 };

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const Footer = styled.footer(() => ({
   display: 'flex',
   justifyContent: 'center',
-  padding: '4rem 1rem',
+  opacity: 0.5,
+  padding: '3rem 1rem 8rem',
 }));
 
 export const MadeWithText = styled.span(({ theme: { palette: { grey } } }) => ({

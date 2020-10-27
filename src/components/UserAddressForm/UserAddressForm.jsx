@@ -6,37 +6,33 @@ import {
   UPDATE_ADREESS_BY_NETLIFY_ID,
 } from './UserAddressForm.gql';
 import { useAuth } from '../../contexts';
-import * as Styled from './UserAddressForm.styled';
-import { Label } from '../Label';
 import { Button } from '../Button';
+import { FormGroup } from '../FormGroup';
+import { TextInput } from '../TextInput';
 
 export const UserAddressForm = () => {
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
-  const [getAddress, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: {
-        netlifyId,
-      },
+      variables: { netlifyId },
     },
   );
 
-  const [{ address } = {}] = allUsers || [];
+  const [{ address, firstName, lastName } = {}] = allUsers || [];
   let {
     id,
-    firstName: currentDeliveryFirstName = '',
-    lastName: currentDeliveryLastName = '',
-    phoneNumber: currentPhoneNumber = '',
-    street: currentStreetName = '',
-    flatNumber: currentFlatNumber = '',
-    postCode: currentPostCode = '',
+    phoneNumber: currentPhoneNumber,
+    street: currentStreetName,
+    flatNumber: currentFlatNumber,
+    postCode: currentPostCode,
   } = address || {};
 
   useEffect(() => {
-    if (netlifyId) getAddress();
-  }, [netlifyId, getAddress]);
+    if (netlifyId) getUsersByNetlifyId();
+  }, [netlifyId, getUsersByNetlifyId]);
 
   let currentError = 'work please';
 
@@ -48,44 +44,41 @@ export const UserAddressForm = () => {
   const [flatNumber, setFlatNumber] = useState('');
   const [postCode, setPostCode] = useState('');
   let [, setError] = useState('');
+  const [isAddressChanged, setIsAddressChanged] = useState(false);
 
   useEffect(() => {
-    setDeliveryFirstName(currentDeliveryFirstName);
-  }, [currentDeliveryFirstName]);
+    if (!deliveryFirstName) setDeliveryFirstName(firstName);
+    else if (firstName !== deliveryFirstName) setIsAddressChanged(true);
+  }, [firstName, deliveryFirstName]);
 
   useEffect(() => {
-    setDeliveryLastName(currentDeliveryLastName);
-  }, [currentDeliveryLastName]);
+    if (!deliveryLastName) setDeliveryLastName(lastName);
+    else if (lastName !== deliveryLastName) setIsAddressChanged(true);
+  }, [lastName, deliveryLastName]);
 
   useEffect(() => {
-    setPhoneNumber(currentPhoneNumber);
+    if (!phoneNumber) setPhoneNumber(currentPhoneNumber);
+    else if (phoneNumber !== currentPhoneNumber) setIsAddressChanged(true);
   }, [currentPhoneNumber]);
 
   useEffect(() => {
-    setStreetName(currentStreetName);
+    if (!streetName) setStreetName(currentStreetName);
+    else if (streetName !== currentStreetName) setIsAddressChanged(true);
   }, [currentStreetName]);
 
   useEffect(() => {
-    setFlatNumber(currentFlatNumber);
+    if (!flatNumber) setFlatNumber(currentFlatNumber);
+    else if (flatNumber !== currentFlatNumber) setIsAddressChanged(true);
   }, [currentFlatNumber]);
 
   useEffect(() => {
-    setPostCode(currentPostCode);
+    if (!postCode) setPostCode(currentPostCode);
+    else if (postCode !== currentPostCode) setIsAddressChanged(true);
   }, [currentPostCode]);
 
   useEffect(() => {
     setError(currentError);
   }, [currentError]);
-
-  console.log(currentError);
-  const validateInputs = () => {
-    if (deliveryFirstName < 2 || deliveryFirstName === '') {
-      // need to be fixed to update state
-      setError('Name cannot be empty');
-    } else {
-      handleSubmit();
-    }
-  };
 
   const handleSubmit = () => {
     updateAddress({
@@ -102,61 +95,45 @@ export const UserAddressForm = () => {
   };
 
   return (
-    <div>
-      <p>{currentError}</p>
-      <Styled.Form>
-        <Styled.Heading>Delivery Address</Styled.Heading>
-        <Styled.FormGroup>
-          <Label>Firstname</Label>
-          <Styled.TextInput
-            name="firstname"
-            type="text"
+    <FormGroup
+      label="Delivery address"
+      largeLabel
+      info="Enter the address you would like your order delivered to."
+    >
+      <FormGroup horizontal margin="0">
+        <FormGroup label="First name" margin="0">
+          <TextInput
+            onChange={setDeliveryFirstName}
             value={deliveryFirstName}
-            onChange={e => setDeliveryFirstName(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Lastname</Label>
-          <Styled.TextInput
-            type="text"
-            value={deliveryLastName}
-            onChange={e => setDeliveryLastName(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Mobile Number</Label>
-          <Styled.TextInput
-            type="text"
-            value={phoneNumber}
-            onChange={e => setPhoneNumber(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Street Name</Label>
-          <Styled.TextInput
-            type="text"
-            value={streetName}
-            onChange={e => setStreetName(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Apartment Number</Label>
-          <Styled.TextInput
-            type="text"
-            value={flatNumber}
-            onChange={e => setFlatNumber(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Post Code</Label>
-          <Styled.TextInput
-            type="text"
-            value={postCode}
-            onChange={e => setPostCode(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-      </Styled.Form>
-      <Button onClick={handleSubmit}>Update</Button>
-    </div>
+          />
+        </FormGroup>
+        <FormGroup label="Last name" margin="0">
+          <TextInput onChange={setDeliveryLastName} value={deliveryLastName} />
+        </FormGroup>
+      </FormGroup>
+      <FormGroup horizontal>
+        <FormGroup label="Flat #" flex={1} margin="0">
+          <TextInput onChange={setFlatNumber} value={flatNumber} />
+        </FormGroup>
+        <FormGroup label="Street name" flex={2} margin="0">
+          <TextInput onChange={setStreetName} value={streetName} />
+        </FormGroup>
+      </FormGroup>
+      <FormGroup horizontal>
+        <FormGroup label="Post code" flex={1} margin="0">
+          <TextInput onChange={setPostCode} value={postCode} />
+        </FormGroup>
+        <FormGroup label="Mobile number" flex={2} margin="0">
+          <TextInput onChange={setPhoneNumber} value={phoneNumber} />
+        </FormGroup>
+      </FormGroup>
+      {isAddressChanged ? (
+        <FormGroup>
+          <Button borderRadius onClick={handleSubmit}>
+            Update address
+          </Button>
+        </FormGroup>
+      ) : null}
+    </FormGroup>
   );
 };

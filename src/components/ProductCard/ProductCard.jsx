@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/client';
 import Icon from '@mdi/react';
-import { mdiMapMarker } from '@mdi/js';
+import { mdiInformationOutline, mdiMapMarker } from '@mdi/js';
 
 import { useAuth } from '../../contexts';
 import * as Styled from './ProductCard.styled';
 import { GET_USER } from './ProductCard.gql';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
-import { Button } from '../Button';
 import { Card } from '../Card';
 
 export const ProductCard = ({
   product: { id: productId, name, deliveryInfo, origin, slug, variants },
 }) => {
+  const { push } = useHistory();
   const { user: authUser } = useAuth();
   const { id: netlifyId } = authUser || {};
 
@@ -40,8 +41,8 @@ export const ProductCard = ({
       setProductVariantsVisible(true);
   }, [orderItems, productVariantsVisible]);
 
-  const showProductVariants = () => setProductVariantsVisible(true);
-  const hideProductVariants = () => setProductVariantsVisible(false);
+  // const showProductVariants = () => setProductVariantsVisible(true);
+  // const hideProductVariants = () => setProductVariantsVisible(false);
 
   const defaultDeliveryInfo = (() => {
     if (
@@ -58,7 +59,14 @@ export const ProductCard = ({
   return (
     <Card>
       <Styled.Content>
-        <Styled.Name to={`/products/${slug}`}>{name}</Styled.Name>
+        <Styled.Header>
+          <Styled.Name>{name}</Styled.Name>
+          <Styled.Icon
+            onClick={() => push(`/products/${slug}`)}
+            path={mdiInformationOutline}
+            size={0.8}
+          />
+        </Styled.Header>
         <Styled.Info>
           {productVariantsVisible ? (
             deliveryInfo || defaultDeliveryInfo
@@ -75,28 +83,16 @@ export const ProductCard = ({
         </Styled.Info>
       </Styled.Content>
 
-      {productVariantsVisible ? (
-        <div>
-          {variants.map(variant => (
-            <ProductVariant key={variant.id} variant={variant} />
-          ))}
-        </div>
-      ) : null}
+      <div>
+        {variants.map(variant => (
+          <ProductVariant key={variant.id} variant={variant} />
+        ))}
+      </div>
 
       <Styled.Buttons>
-        {productVariantsVisible ? (
-          <>
-            {!!orderItems.length ? (
-              <ProductCardOrderSummary orderItems={orderItems} />
-            ) : (
-              <Button backgroundColor="red" onClick={hideProductVariants}>
-                Cancel
-              </Button>
-            )}
-          </>
-        ) : (
-          <Button onClick={showProductVariants}>Add to order</Button>
-        )}
+        {!!orderItems.length ? (
+          <ProductCardOrderSummary orderItems={orderItems} />
+        ) : null}
       </Styled.Buttons>
     </Card>
   );
