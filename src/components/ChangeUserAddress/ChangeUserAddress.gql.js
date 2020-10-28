@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Address, User, Order } from '../../fragments';
+import { User, Address } from '../../fragments';
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
   query UserAddressFormGetUsersByAuth0Id($auth0Id: String!) {
@@ -11,8 +11,9 @@ export const GET_USERS_BY_NETLIFY_ID = gql`
   ${User}
 `;
 
-export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
-  mutation CreateUserAdress(
+export const UPDATE_ADREESS_BY_NETLIFY_ID = gql`
+  mutation UpdateUserAdress(
+    $id: ID!
     $firstName: String!
     $lastName: String!
     $phoneNumber: String!
@@ -20,7 +21,8 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
     $flatNumber: String!
     $postCode: String!
   ) {
-    createAddress(
+    updateAddress(
+      id: $id
       data: {
         firstName: $firstName
         lastName: $lastName
@@ -34,13 +36,4 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
     }
   }
   ${Address}
-`;
-
-export const SET_ORDER_ADDRESS = gql`
-  mutation UpdateOrder($id: ID!, $addressId: ID!) {
-    updateOrder(id: $id, data: { address: { connect: { id: $addressId } } }) {
-      ...Order
-    }
-  }
-  ${Order}
 `;
