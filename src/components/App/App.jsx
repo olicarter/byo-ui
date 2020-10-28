@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
 import { mdiLoading } from '@mdi/js';
 
+import { useAuth } from '../../contexts';
 import { GET_AUTHENTICATED_USER, GET_PRODUCTS, GET_SETTINGS } from './App.gql';
 import * as Styled from './App.styled';
 import { About } from '../About';
@@ -48,13 +49,26 @@ const Logo = () => (
 );
 
 export const App = () => {
-  const { loading: getAuthenticatedUserLoading } = useQuery(
-    GET_AUTHENTICATED_USER,
+  const { isAuthenticated } = useAuth();
+
+  const {
+    loading: getAuthenticatedUserLoading,
+    refetch: getAuthenticatedUserRefetch,
+  } = useQuery(GET_AUTHENTICATED_USER);
+
+  const { loading: getProductsLoading, refetch: getProductsRefetch } = useQuery(
+    GET_PRODUCTS,
   );
 
-  const { loading: getProductsLoading } = useQuery(GET_PRODUCTS);
+  const { loading: getSettingsLoading, refetch: getSettingsRefetch } = useQuery(
+    GET_SETTINGS,
+  );
 
-  const { loading: getSettingsLoading } = useQuery(GET_SETTINGS);
+  useEffect(() => {
+    getAuthenticatedUserRefetch();
+    getProductsRefetch();
+    getSettingsRefetch();
+  }, [isAuthenticated]);
 
   if (getAuthenticatedUserLoading || getProductsLoading || getSettingsLoading)
     return <Logo loading />;

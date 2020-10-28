@@ -23,11 +23,7 @@ export const AccountPage = () => {
         <ChangeUserAddress />
       </Section>
       <Section>
-        <FloatingButton
-          onClick={() => logout({ returnTo: window.location.origin })}
-        >
-          Log out
-        </FloatingButton>
+        <FloatingButton onClick={() => logout('/')}>Log out</FloatingButton>
       </Section>
     </Layout>
   );
