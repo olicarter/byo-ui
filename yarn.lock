@@ -4895,6 +4895,11 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+fuse.js@^6.4.2:
+  version "6.4.2"
+  resolved "https://registry.npm.taobao.org/fuse.js/download/fuse.js-6.4.2.tgz#bd1400164de6562c077baeaa54ed642b4c2fca62"
+  integrity sha1-vRQAFk3mViwHe66qVO1kK0wvymI=
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
@@ -8929,6 +8934,11 @@ react-spring@^8.0.27:
   dependencies:
     "@babel/runtime" "^7.3.1"
     prop-types "^15.5.8"
+
+react-use-fuzzy@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npm.taobao.org/react-use-fuzzy/download/react-use-fuzzy-1.0.4.tgz#8697aec1ca6d858721d93dca334044787ce6fa0b"
+  integrity sha1-hpeuwcpthYch2T3KM0BEeHzm+gs=
 
 react@^16.13.1:
   version "16.13.1"

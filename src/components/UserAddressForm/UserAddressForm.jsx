@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import {
-  GET_AUTHENTICATED_USER,
-  CREATE_ADREESS_BY_NETLIFY_ID,
+  GET_USERS_BY_NETLIFY_ID,
   SET_ORDER_ADDRESS,
+  UPDATE_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
@@ -13,35 +13,48 @@ import { TextInput } from '../TextInput';
 export const UserAddressForm = () => {
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const { address, firstName, lastName, orders = [] } = authenticatedUser || {};
-  const { id: addressId } = ({} = address || {});
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
+    GET_USERS_BY_NETLIFY_ID,
+    {
+      variables: { auth0Id },
+    },
+  );
+
+  const [{ address } = {}] = allUsers || [];
+  const [{ id: addressId } = {}] = address || [];
   let {
-    id,
+    firstName: currentFirstName,
+    lastName: currentLastName,
     phoneNumber: currentPhoneNumber,
     street: currentStreetName,
     flatNumber: currentFlatNumber,
     postCode: currentPostCode,
   } = address || {};
 
-  let currentError = 'work please';
-  const [createAddress] = useMutation(CREATE_ADREESS_BY_NETLIFY_ID);
-  const [deliveryFirstName, setDeliveryFirstName] = useState('');
-  const [deliveryLastName, setDeliveryLastName] = useState('');
+  useEffect(() => {
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [streetName, setStreetName] = useState('');
   const [flatNumber, setFlatNumber] = useState('');
   const [postCode, setPostCode] = useState('');
   const [isAddressChanged, setIsAddressChanged] = useState(false);
 
-  useEffect(() => {
-    if (!deliveryFirstName) setDeliveryFirstName(firstName);
-    else if (firstName !== deliveryFirstName) setIsAddressChanged(true);
-  }, [firstName, deliveryFirstName]);
+  const [updateOrderAddress] = useMutation(UPDATE_ORDER_ADDRESS);
+  const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
 
   useEffect(() => {
-    if (!deliveryLastName) setDeliveryLastName(lastName);
-    else if (lastName !== deliveryLastName) setIsAddressChanged(true);
-  }, [lastName, deliveryLastName]);
+    if (!firstName) setFirstName(currentFirstName);
+    else if (firstName !== currentFirstName) setIsAddressChanged(true);
+  }, [firstName, currentFirstName]);
+
+  useEffect(() => {
+    if (!lastName) setLastName(currentLastName);
+    else if (lastName !== currentLastName) setIsAddressChanged(true);
+  }, [lastName, currentLastName]);
 
   useEffect(() => {
     if (!phoneNumber) setPhoneNumber(currentPhoneNumber);
@@ -65,29 +78,23 @@ export const UserAddressForm = () => {
 
   const { id: unsubmittedOrderId } =
     orders.find(({ submitted }) => !submitted) || {};
-  const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
-
-  /* @todo  (if address is null.. create on order items checkout)*/
 
   const handleSubmit = () => {
-    // logic need to be fixed when null
     if (address === null) {
-      createAddress({
+      updateOrderAddress({
         variables: {
-          firstName: deliveryFirstName,
-          lastName: deliveryLastName,
-          phoneNumber: phoneNumber,
+          id: unsubmittedOrderId,
+          firstName,
+          lastName,
+          phoneNumber,
           street: streetName,
-          flatNumber: flatNumber,
-          postCode: postCode,
+          flatNumber,
+          postCode,
         },
-      });
-      setOrderAddress({
-        variables: { id: unsubmittedOrderId, addressId: addressId },
       });
     } else {
       setOrderAddress({
-        variables: { id: unsubmittedOrderId, addressId: addressId },
+        variables: { id: unsubmittedOrderId, addressId },
       });
     }
   };
@@ -100,13 +107,10 @@ export const UserAddressForm = () => {
     >
       <FormGroup horizontal margin="0">
         <FormGroup label="First name" margin="0">
-          <TextInput
-            onChange={setDeliveryFirstName}
-            value={deliveryFirstName}
-          />
+          <TextInput onChange={setFirstName} value={firstName} />
         </FormGroup>
         <FormGroup label="Last name" margin="0">
-          <TextInput onChange={setDeliveryLastName} value={deliveryLastName} />
+          <TextInput onChange={setLastName} value={lastName} />
         </FormGroup>
       </FormGroup>
       <FormGroup horizontal>
@@ -126,9 +130,13 @@ export const UserAddressForm = () => {
         </FormGroup>
       </FormGroup>
       <FormGroup>
-        <Button borderRadius onClick={handleSubmit}>
-          Update address
-        </Button>
+        {isAddressChanged ? (
+          <FormGroup>
+            <Button borderRadius onClick={handleSubmit}>
+              Update address
+            </Button>
+          </FormGroup>
+        ) : null}
       </FormGroup>
     </FormGroup>
   );
