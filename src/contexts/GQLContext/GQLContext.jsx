@@ -1,19 +1,29 @@
 import React, { createContext, useContext } from 'react';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-
-import { useAuth } from '../AuthContext';
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 const { REACT_APP_KEYSTONE_GRAPHQL_URI } = process.env;
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('byo.token');
+  return {
+    headers: {
+      ...headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  };
+});
 
 export const GQLContext = createContext({});
 
 export const useGQL = () => useContext(GQLContext);
 
 export const GQLProvider = ({ children }) => {
-  const {
-    user: { token: { access_token: accessToken } = {} } = {},
-  } = useAuth();
-
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     defaultOptions: {
@@ -29,10 +39,9 @@ export const GQLProvider = ({ children }) => {
         errorPolicy: 'all',
       },
     },
-    headers: {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-    },
-    uri: REACT_APP_KEYSTONE_GRAPHQL_URI,
+    link: authLink.concat(
+      createHttpLink({ uri: REACT_APP_KEYSTONE_GRAPHQL_URI }),
+    ),
   });
 
   return (

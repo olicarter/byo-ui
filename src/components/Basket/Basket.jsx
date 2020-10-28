@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
-import { useAuth } from '../../contexts';
-import { GET_SETTINGS, GET_USERS_BY_NETLIFY_ID } from './Basket.gql';
+import { GET_SETTINGS, GET_AUTHENTICATED_USER } from './Basket.gql';
 import { BasketTotal } from '../BasketTotal';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
@@ -12,25 +11,14 @@ import { ProductCard } from '../ProductCard';
 
 export const Basket = () => {
   const { push } = useHistory();
-  const { user } = useAuth();
-  const { sub: auth0Id } = user || {};
 
   const {
     data: { allSettings: [{ minOrderValue } = {}] = [] } = {},
   } = useQuery(GET_SETTINGS);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};
 
   const orderItemProducts = uniqWith(

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { Route, useHistory } from 'react-router-dom';
 
-export const ProtectedRoute = ({ component, ...args }) => (
-  <Route
-    {...args}
-    component={withAuthenticationRequired(component, {
-      onRedirecting: () => <p>loading...</p>,
-    })}
-  />
-);
+export const ProtectedRoute = ({ children, ...args }) => {
+  const { push } = useHistory();
+
+  if (!localStorage.getItem('byo.token')) {
+    push('/login');
+    return null;
+  }
+
+  return <Route {...args}>{children}</Route>;
+};

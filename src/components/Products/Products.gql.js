@@ -11,9 +11,9 @@ export const GET_PRODUCTS = gql`
   ${Product}
 `;
 
-export const GET_USERS_BY_NETLIFY_ID = gql`
-  query ProductsGetUsersByAuth0Id($auth0Id: String!) {
-    allUsers(where: { auth0Id: $auth0Id }) {
+export const GET_AUTHENTICATED_USER = gql`
+  query ProductsGetAuthenticatedUser {
+    authenticatedUser {
       ...User
     }
   }

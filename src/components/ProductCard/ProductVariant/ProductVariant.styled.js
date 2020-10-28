@@ -63,17 +63,24 @@ export const DecrementButton = styled(SquareButton)(
 
 export const IncrementButton = styled(SquareButton)(
   ({
+    disabled,
     theme: {
       palette: { green },
     },
   }) => ({
     color: green,
+    opacity: disabled ? 0.5 : 1,
+    pointerEvents: disabled ? 'none' : 'all',
     transitionDuration: '150ms',
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: saturate(1.5, green),
-      },
-    },
+    ...(disabled
+      ? {}
+      : {
+          '@media (hover: hover) and (pointer: fine)': {
+            ':hover': {
+              color: saturate(1.5, green),
+            },
+          },
+        }),
   }),
 );
 

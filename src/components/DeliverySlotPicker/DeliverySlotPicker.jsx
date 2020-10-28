@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import React from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
-import { useAuth } from '../../contexts';
 import {
+  GET_AUTHENTICATED_USER,
   GET_DELIVERY_SLOTS,
-  GET_USER,
   SET_ORDER_DELIVERY_SLOT,
 } from './DeliverySlotPicker.gql';
 import * as Styled from './DeliverySlotPicker.styled';
@@ -13,26 +12,17 @@ import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
 import { Select } from '../Select';
 
 export const DeliverySlotPicker = () => {
-  const { user } = useAuth();
-  const { sub: auth0Id } = user || {};
-
   const {
     data: { allDeliverySlots } = {},
     loading: getDeliverySlotsLoading,
   } = useQuery(GET_DELIVERY_SLOTS);
 
-  const [
-    getUser,
-    { data: { allUsers } = {}, loading: getUserLoading },
-  ] = useLazyQuery(GET_USER, {
-    variables: { auth0Id },
-  });
+  const {
+    data: { authenticatedUser } = {},
+    loading: getAuthenticatedUserLoading,
+  } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const { id: unsubmittedOrderId, deliverySlot } =
     orders.find(({ submitted }) => !submitted) || {};
   const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
@@ -66,7 +56,7 @@ export const DeliverySlotPicker = () => {
     <Styled.DeliverySlotPicker>
       <Select
         loading={(() => {
-          if (getDeliverySlotsLoading || getUserLoading)
+          if (getDeliverySlotsLoading || getAuthenticatedUserLoading)
             return 'Loading delivery slots...';
           if (setOrderDeliverySlotLoading) return 'Selecting slot...';
           return undefined;

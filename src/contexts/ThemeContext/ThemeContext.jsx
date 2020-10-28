@@ -3,7 +3,7 @@ import {
   createGlobalStyle,
   ThemeProvider as SCThemeProvider,
 } from 'styled-components';
-import { useMediaLayout } from 'use-media';
+import { useMedia, useMediaLayout } from 'use-media';
 
 const themes = {
   dark: {
@@ -62,16 +62,25 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const isDesktop = useMediaLayout({ minWidth: '600px' });
 
-  const [theme, setTheme] = useState(
-    themes[localStorage.getItem('byo.themeName') || 'light'],
-  );
+  const prefersDarkTheme = useMedia({ prefersColorScheme: 'dark' });
+
+  const getTheme = () => {
+    if (localStorage.getItem('byo.theme'))
+      return themes[localStorage.getItem('byo.theme')];
+    if (prefersDarkTheme) return themes.dark;
+    return themes.light;
+  };
+
+  const [theme, setTheme] = useState(getTheme());
 
   useEffect(() => {
-    localStorage.setItem('byo.themeName', theme.name);
-  }, [theme]);
+    setTheme(getTheme());
+  }, [prefersDarkTheme]);
 
   const toggleTheme = () => {
-    setTheme(theme.name === 'dark' ? themes.light : themes.dark);
+    const newThemeName = theme.name === 'dark' ? 'light' : 'dark';
+    setTheme(themes[newThemeName]);
+    localStorage.setItem('byo.theme', newThemeName);
   };
 
   return (

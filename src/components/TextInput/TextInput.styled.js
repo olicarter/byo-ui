@@ -18,6 +18,7 @@ export const TextInput = styled.input(
     lineHeight: 1,
     outline: 'none',
     padding: '0.25rem 0',
+    transitionDuration: '100ms',
     ':focus': {
       borderColor: black,
     },

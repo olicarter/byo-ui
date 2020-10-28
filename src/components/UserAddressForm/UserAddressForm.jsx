@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
 import {
   GET_USERS_BY_NETLIFY_ID,
   SET_ORDER_ADDRESS,
   UPDATE_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
-import { useAuth } from '../../contexts';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 import { TextInput } from '../TextInput';
 
 export const UserAddressForm = () => {
-  const { user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
@@ -78,7 +76,6 @@ export const UserAddressForm = () => {
     else if (postCode !== currentPostCode) setIsAddressChanged(true);
   }, [currentPostCode]);
 
-  const [{ orders = [] } = {}] = allUsers || [];
   const { id: unsubmittedOrderId } =
     orders.find(({ submitted }) => !submitted) || {};
 

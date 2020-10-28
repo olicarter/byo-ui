@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
-import { useAuth } from '../../contexts';
 import { sumOrderItems } from '../../helpers';
 import {
+  GET_AUTHENTICATED_USER,
   GET_SETTINGS,
-  GET_USERS_BY_NETLIFY_ID,
   SUBMIT_ORDER,
 } from './Checkout.gql';
 import { BasketTotal } from '../BasketTotal';
 import { DeliverySlotPicker } from '../DeliverySlotPicker';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
-import { Label } from '../Label';
 import { UserAddressForm } from '../UserAddressForm';
 
 export const Checkout = () => {
   const { push } = useHistory();
-  const { user } = useAuth();
-  const { sub: auth0Id } = user || {};
 
   const {
     data: {
@@ -29,18 +25,9 @@ export const Checkout = () => {
     } = {},
   } = useQuery(GET_SETTINGS);
 
-  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const { id: unsubmittedOrderId, deliverySlot, orderItems = [] } =
     orders.find(({ submitted }) => !submitted) || {};
 
@@ -72,12 +59,12 @@ export const Checkout = () => {
 
       <UserAddressForm />
 
-      {containersTotal > 0 ? (
+      {/* {containersTotal > 0 ? (
         <div>
           <Label color="grey">£{productsTotal} goods</Label>
           <Label color="grey">£{containersTotal} refundable containers</Label>
         </div>
-      ) : null}
+      ) : null} */}
       <FormGroup
         label={`£${total} total`}
         largeLabel
