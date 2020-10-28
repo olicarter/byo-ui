@@ -6,6 +6,7 @@ import { Layout } from '../Layout';
 import { Markdown } from '../Markdown';
 import { Section } from '../Section';
 import { UserOrders } from '../UserOrders';
+import { ChangeUserAddress } from '../ChangeUserAddress';
 
 export const AccountPage = () => {
   const { logout } = useAuth();
@@ -17,6 +18,9 @@ export const AccountPage = () => {
       </Section>
       <Section>
         <UserOrders />
+      </Section>
+      <Section>
+        <ChangeUserAddress />
       </Section>
       <Section>
         <FloatingButton
