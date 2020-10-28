@@ -3,7 +3,6 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 
 import {
   GET_USERS_BY_NETLIFY_ID,
-  UPDATE_ADREESS_BY_NETLIFY_ID,
   CREATE_ADREESS_BY_NETLIFY_ID,
   SET_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
@@ -38,8 +37,6 @@ export const UserAddressForm = () => {
   }, [auth0Id, getUsersByAuth0Id]);
 
   let currentError = 'work please';
-
-  const [updateAddress] = useMutation(UPDATE_ADREESS_BY_NETLIFY_ID);
   const [createAddress] = useMutation(CREATE_ADREESS_BY_NETLIFY_ID);
   const [deliveryFirstName, setDeliveryFirstName] = useState('');
   const [deliveryLastName, setDeliveryLastName] = useState('');
@@ -47,7 +44,6 @@ export const UserAddressForm = () => {
   const [streetName, setStreetName] = useState('');
   const [flatNumber, setFlatNumber] = useState('');
   const [postCode, setPostCode] = useState('');
-  let [, setError] = useState('');
   const [isAddressChanged, setIsAddressChanged] = useState(false);
 
   useEffect(() => {
@@ -80,17 +76,10 @@ export const UserAddressForm = () => {
     else if (postCode !== currentPostCode) setIsAddressChanged(true);
   }, [currentPostCode]);
 
-  useEffect(() => {
-    setError(currentError);
-  }, [currentError]);
-
   const [{ orders = [] } = {}] = allUsers || [];
   const { id: unsubmittedOrderId } =
     orders.find(({ submitted }) => !submitted) || {};
   const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
-
-  console.log('unsubmittedOrderId', unsubmittedOrderId);
-  console.log('presentAddressId', addressId);
 
   /* @todo  (if address is null.. create on order items checkout)*/
 
@@ -150,13 +139,6 @@ export const UserAddressForm = () => {
           <TextInput onChange={setPhoneNumber} value={phoneNumber} />
         </FormGroup>
       </FormGroup>
-      {/* {isAddressChanged ? (
-        <FormGroup>
-          <Button borderRadius onClick={handleSubmit}>
-            Update address
-          </Button>
-        </FormGroup>
-      ) : null} */}
       <FormGroup>
         <Button borderRadius onClick={handleSubmit}>
           Update address
