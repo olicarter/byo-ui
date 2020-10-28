@@ -72,12 +72,12 @@ export const Checkout = () => {
 
       <UserAddressForm />
 
-      {containersTotal > 0 ? (
+      {/* {containersTotal > 0 ? (
         <div>
           <Label color="grey">£{productsTotal} goods</Label>
           <Label color="grey">£{containersTotal} refundable containers</Label>
         </div>
-      ) : null}
+      ) : null} */}
       <FormGroup
         label={`£${total} total`}
         largeLabel

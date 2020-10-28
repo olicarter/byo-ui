@@ -30,8 +30,19 @@ export const SVG = styled.svg(
   }) => ({
     fill: black,
     height: '2rem',
+    overflow: 'visible',
   }),
 );
+
+export const Path = styled.path(() => ({
+  transitionDuration: '300ms',
+  ':nth-of-type(2)': {
+    transitionDelay: '33ms',
+  },
+  ':nth-of-type(3)': {
+    transitionDelay: '66ms',
+  },
+}));
 
 export const Logo = styled.img(() => ({
   height: '2rem',
@@ -73,9 +84,6 @@ export const Link = styled(RouterLink)(
     outline: 'none',
     padding: '1rem',
     textDecoration: 'none',
-    path: {
-      transitionDuration: '300ms',
-    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         color: primary,

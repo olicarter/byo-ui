@@ -51,11 +51,9 @@ export const ProductCard = ({
       <Styled.Content>
         <Styled.Header>
           <Styled.Name>{name}</Styled.Name>
-          <Styled.Icon
-            onClick={() => push(`/products/${slug}`)}
-            path={mdiInformationOutline}
-            size={0.8}
-          />
+          <Styled.InfoIcon onClick={() => push(`/products/${slug}`)}>
+            <Icon path={mdiInformationOutline} size={0.8} />
+          </Styled.InfoIcon>
         </Styled.Header>
         <Styled.Info>
           {!!orderItems.length ? (
