@@ -1,13 +1,17 @@
 import React from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, useHistory, useRouteMatch } from 'react-router-dom';
 
-export const ProtectedRoute = ({ children, ...args }) => {
+export const ProtectedRoute = ({ children, path, ...args }) => {
   const { push } = useHistory();
 
-  if (!localStorage.getItem('byo.token')) {
-    push('/login');
+  if (useRouteMatch(path) && !localStorage.getItem('byo.token')) {
+    push({ pathname: '/login', search: `from=${path}` });
     return null;
   }
 
-  return <Route {...args}>{children}</Route>;
+  return (
+    <Route path={path} {...args}>
+      {children}
+    </Route>
+  );
 };

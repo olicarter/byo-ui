@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { parse } from 'qs';
 
-import { AUTHENTICATE_USER } from './AuthContext.gql';
+import { AUTHENTICATE_USER, UNAUTHENTICATE_USER } from './AuthContext.gql';
 
 export const AuthContext = createContext({});
 
@@ -22,8 +22,15 @@ export const AuthProvider = ({ children }) => {
       const { token = null, item = null } = authenticateUserWithPassword || {};
       setToken(token);
       setUser(item);
-      const { from } = parse(search, { ignoreQueryPrefix: true });
-      if (from) push(from);
+    },
+  });
+
+  const [unauthenticateUser] = useMutation(UNAUTHENTICATE_USER, {
+    onCompleted: ({ unauthenticateUser }) => {
+      const { success } = unauthenticateUser || {};
+      if (success) {
+        setToken(null);
+      }
     },
   });
 
@@ -36,16 +43,22 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('byo.token', token);
       setIsAuthenticated(true);
     } else {
+      localStorage.removeItem('byo.token');
       setIsAuthenticated(false);
       setUser(null);
     }
   }, [token]);
 
-  const login = (email, password) => {
-    authenticateUser({ variables: { email, password } });
+  const login = async (email, password) => {
+    await authenticateUser({ variables: { email, password } });
+    const { from } = parse(search, { ignoreQueryPrefix: true });
+    push(from);
   };
 
-  const logout = () => {};
+  const logout = async returnTo => {
+    await unauthenticateUser();
+    if (returnTo) push(returnTo);
+  };
 
   return (
     <AuthContext.Provider
