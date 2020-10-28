@@ -2,25 +2,6 @@ import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 
-export const TagBar = styled.div(() => ({
-  alignItems: 'center',
-  display: 'flex',
-  overflowX: 'scroll',
-  transitionDuration: '100ms',
-}));
-
-export const Nav = styled.nav(() => ({
-  display: 'flex',
-  margin: 0,
-  padding: 0,
-}));
-
-export const NavItems = styled.ul(() => ({
-  display: 'flex',
-  margin: 0,
-  padding: '0 0.5rem',
-}));
-
 export const NavItem = styled.li(() => ({
   display: 'flex',
   flexShrink: 0,

@@ -3,6 +3,7 @@ import { transparentize } from 'polished';
 
 export const OrderSummary = styled.div(({ theme: { palette: { black } } }) => ({
   color: transparentize(0.5, black),
+  cursor: 'default',
   display: 'flex',
   fontWeight: 700,
   justifyContent: 'space-between',

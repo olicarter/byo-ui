@@ -36,6 +36,8 @@ export const Basket = () => {
   const orderItemProducts = uniqWith(
     orderItems,
     (a, b) => a.productVariant.product.id === b.productVariant.product.id,
+  ).sort((a, b) =>
+    a.productVariant.product.name.localeCompare(b.productVariant.product.name),
   );
 
   const meetsMinOrderValue = BasketTotal() >= minOrderValue;

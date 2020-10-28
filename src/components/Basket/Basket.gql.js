@@ -1,13 +1,14 @@
 import { gql } from '@apollo/client';
 
-import { User } from '../../fragments';
+import { Setting, User } from '../../fragments';
 
 export const GET_SETTINGS = gql`
   query BasketGetSettings {
     allSettings {
-      minOrderValue
+      ...Setting
     }
   }
+  ${Setting}
 `;
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
