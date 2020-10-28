@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 import { User } from '../../fragments';
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
-  query($netlifyId: String!) {
-    allUsers(where: { netlifyId: $netlifyId }) {
+  query AuthContextGetUsersByAuth0Id($auth0Id: String!) {
+    allUsers(where: { auth0Id: $auth0Id }) {
       ...User
     }
   }
@@ -12,18 +12,18 @@ export const GET_USERS_BY_NETLIFY_ID = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation(
+  mutation AuthContextCreateUser(
     $email: String!
     $firstName: String!
     $lastName: String!
-    $netlifyId: String!
+    $auth0Id: String!
   ) {
     createUser(
       data: {
         email: $email
         firstName: $firstName
         lastName: $lastName
-        netlifyId: $netlifyId
+        auth0Id: $auth0Id
       }
     ) {
       ...User

@@ -15,19 +15,19 @@ import * as Styled from './ProductVariant.styled';
 export const ProductVariant = ({
   variant: { id, container, increment, incrementPrice, tags = [], unit },
 }) => {
-  const { isAuthenticated, openLoginModal, user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
+  const { isAuthenticated, loginWithRedirect, user: authUser } = useAuth();
+  const { sub: auth0Id } = authUser || {};
 
   const [incrementLoading, setIncrementLoading] = useState(false);
   const [decrementLoading, setDecrementLoading] = useState(false);
 
   const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
+    variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUser();
+  }, [auth0Id, getUser]);
 
   const [user] = allUsers || [];
   const { id: userId, orders = [] } = user || {};
@@ -37,8 +37,6 @@ export const ProductVariant = ({
     orderItems.find(
       ({ productVariant: { id: variantId } }) => id === variantId,
     ) || {};
-
-  console.log('userId', userId);
 
   const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
     onCompleted: () => setIncrementLoading(false),
@@ -123,14 +121,16 @@ export const ProductVariant = ({
   };
 
   const incrementOrderItem = () => {
-    if (!isAuthenticated) return openLoginModal();
+    if (!isAuthenticated)
+      return loginWithRedirect({ redirectUri: window.location.href });
     setIncrementLoading(true);
     if (!!quantity) handleUpdateOrderItem(quantity + 1);
     else handleCreateOrderItem();
   };
 
   const decrementOrderItem = () => {
-    if (!isAuthenticated) return openLoginModal();
+    if (!isAuthenticated)
+      return loginWithRedirect({ redirectUri: window.location.href });
     if (!quantity) return;
     setDecrementLoading(true);
     if (quantity > 1) handleUpdateOrderItem(quantity - 1);

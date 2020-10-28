@@ -14,7 +14,7 @@ export const FormGroup = styled.div(({ flex, horizontal, margin }) => ({
 }));
 
 export const Label = styled.div(() => ({
-  margin: '0 0 0.25rem',
+  margin: '0 0 0.5rem',
   whiteSpace: 'pre',
 }));
 
@@ -28,8 +28,8 @@ export const Info = styled.p(
   }) => ({
     color: palette[color] || grey,
     cursor: 'default',
-    fontSize: '0.8rem',
-    margin: '0 0 0.5rem',
+    fontSize: '1rem',
+    margin: '0 0 1rem',
     padding: 0,
   }),
 );

@@ -21,16 +21,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
-  const { id: netlifyUserId } = user || {};
+  const { sub: auth0Id } = user || {};
 
-  const [getUsersByNetlifyId] = useLazyQuery(GET_USERS_BY_NETLIFY_ID);
+  const [getUsersByAuth0Id] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
+    variables: { auth0Id },
+  });
 
   useEffect(() => {
-    if (netlifyUserId)
-      getUsersByNetlifyId({
-        variables: { netlifyId: netlifyUserId },
-      });
-  }, [getUsersByNetlifyId, netlifyUserId]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const openLoginModal = () => {
     setLoginModalVisible(true);
@@ -40,14 +39,8 @@ export const AuthProvider = ({ children }) => {
     setLoginModalVisible(false);
   };
 
-  const login = async (email, password) => {
-    try {
-      const loginRes = await auth.login(email, password, true);
-      if (loginRes) setIsAuthenticated(true);
-      return loginRes;
-    } catch (error) {
-      return { error };
-    }
+  const login = (email, password) => {
+    // authenticateUser({ variables: { email, password } });
   };
 
   const signup = async (email, password) => {
@@ -67,10 +60,6 @@ export const AuthProvider = ({ children }) => {
       return { error };
     }
   };
-
-  useEffect(() => {
-    setIsAuthenticated(!!auth.currentUser());
-  }, []);
 
   useEffect(() => {
     setUser(auth.currentUser());

@@ -12,16 +12,12 @@ import { Button } from '../Button';
 
 export const UserDetailsForm = () => {
   const { user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
+  const { sub: auth0Id } = authUser || {};
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: {
-        netlifyId,
-      },
-    },
-  );
+  const [
+    getUser,
+    { data: { allUsers } = {} },
+  ] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, { variables: { auth0Id } });
 
   let [
     {
@@ -33,8 +29,8 @@ export const UserDetailsForm = () => {
   ] = allUsers || [];
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUser();
+  }, [auth0Id, getUser]);
 
   const [updateUser] = useMutation(UPDATE_USER_BY_NETLIFY_ID);
   const [firstName, setFirstName] = useState('');

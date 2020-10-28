@@ -4,7 +4,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import { useAuth } from '../../contexts';
-import { GET_PRODUCTS, GET_USERS_BY_NETLIFY_ID } from './Products.gql';
+import { GET_PRODUCTS, GET_USERS_BY_AUTH0_ID } from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
@@ -12,18 +12,24 @@ import { ProductCard } from '../ProductCard';
 export const Products = () => {
   const { push } = useHistory();
   const { search } = useLocation();
-  const { isAuthenticated, openLoginModal, user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { isAuthenticated, user } = useAuth();
+  const { sub: auth0Id } = user || {};
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
 
-  const [getUsersByNetlifyId] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
-    variables: { netlifyId },
-  });
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
+    GET_USERS_BY_AUTH0_ID,
+    {
+      variables: { auth0Id },
+    },
+  );
+
+  const [{ orders = [] } = {}] = allUsers || [];
+  const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId();
-  }, [netlifyId, getUsersByNetlifyId]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,
@@ -47,11 +53,17 @@ export const Products = () => {
         ))}
       </Grid>
       {isAuthenticated ? (
-        <FloatingButton onClick={() => push('/basket')}>
-          View basket
-        </FloatingButton>
+        <>
+          {!!orderItems.length ? (
+            <FloatingButton onClick={() => push('/basket')}>
+              View basket
+            </FloatingButton>
+          ) : null}
+        </>
       ) : (
-        <FloatingButton onClick={openLoginModal}>Log in</FloatingButton>
+        <FloatingButton onClick={() => push('/login')}>
+          Log in to order
+        </FloatingButton>
       )}
     </>
   );

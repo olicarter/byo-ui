@@ -1,20 +1,19 @@
 import { gql } from '@apollo/client';
 
-import { Order, User } from '../../fragments';
+import { Order, Setting, User } from '../../fragments';
 
 export const GET_SETTINGS = gql`
   query CheckoutGetSettings {
     allSettings {
-      chooseDeliverySlotInfo
-      minOrderValue
-      orderSubmissionInfo
+      ...Setting
     }
   }
+  ${Setting}
 `;
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
-  query CheckoutGetUsersByNetlifyId($netlifyId: String!) {
-    allUsers(where: { netlifyId: $netlifyId }) {
+  query CheckoutGetUsersByAuth0Id($auth0Id: String!) {
+    allUsers(where: { auth0Id: $auth0Id }) {
       ...User
     }
   }

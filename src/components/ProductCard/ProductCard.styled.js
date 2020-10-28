@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import MdiIcon from '@mdi/react';
 
 export const Content = styled.div(() => ({
@@ -41,22 +42,21 @@ export const Icon = styled(MdiIcon)(
   }),
 );
 
-export const Origin = styled.span(({ theme: { palette: { grey } } }) => ({
-  color: grey,
+export const Origin = styled.span(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.33, black),
   display: 'flex',
   fontSize: '0.8rem',
   fontWeight: 400,
   lineHeight: 1,
   margin: 0,
   paddingBottom: 0,
-  textTransform: 'capitalize',
   '> span': {
     marginLeft: '0.25rem',
   },
 }));
 
-export const Info = styled.p(({ theme: { palette: { grey } } }) => ({
-  color: grey,
+export const Info = styled.p(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.33, black),
   fontSize: '0.8rem',
   margin: 0,
 }));
@@ -86,10 +86,10 @@ export const OrderSummary = styled.div(() => ({
 export const ContainersTotalPrice = styled.span(
   ({
     theme: {
-      palette: { grey },
+      palette: { black },
     },
   }) => ({
-    color: grey,
+    color: transparentize(0.33, black),
     whiteSpace: 'pre',
   }),
 );

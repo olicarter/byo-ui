@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { saturate, transparentize } from 'polished';
 import { default as MdiIcon } from '@mdi/react';
 
 const height = 'auto';
@@ -6,24 +7,24 @@ const height = 'auto';
 export const ProductVariant = styled.div(
   ({
     theme: {
-      palette: { lightGrey },
+      palette: { black },
     },
   }) => ({
     alignItems: 'stretch',
     display: 'flex',
     height,
     position: 'relative',
-    ':not(:last-of-type)': {
-      ':after': {
-        backgroundColor: lightGrey,
-        bottom: 0,
-        content: '""',
-        height: '1px',
-        margin: '0 1rem',
-        position: 'absolute',
-        width: 'calc(100% - 2rem)',
-      },
+    // ':not(:last-of-type)': {
+    ':before': {
+      backgroundColor: transparentize(0.9, black),
+      top: 0,
+      content: '""',
+      height: '2px',
+      // margin: '0 24px',
+      position: 'absolute',
+      width: '100%',
     },
+    // },
   }),
 );
 
@@ -51,8 +52,12 @@ export const DecrementButton = styled(SquareButton)(
     quantity,
   }) => ({
     color: red,
-    opacity: quantity ? 1 : 0.1,
-    pointerEvents: quantity ? 'all' : 'none',
+    display: quantity ? 'flex' : 'none',
+    '@media (hover: hover) and (pointer: fine)': {
+      ':hover': {
+        color: saturate(1.5, red),
+      },
+    },
   }),
 );
 
@@ -63,16 +68,30 @@ export const IncrementButton = styled(SquareButton)(
     },
   }) => ({
     color: green,
+    transitionDuration: '150ms',
+    '@media (hover: hover) and (pointer: fine)': {
+      ':hover': {
+        color: saturate(1.5, green),
+      },
+    },
   }),
 );
 
-export const Info = styled.div(() => ({
-  display: 'flex',
-  flex: 1,
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '0.5rem 0',
-}));
+export const Info = styled.div(
+  ({
+    theme: {
+      palette: { black },
+    },
+    quantity,
+  }) => ({
+    color: black,
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: `0.5rem ${quantity ? 0 : 0.5}rem`,
+  }),
+);
 
 export const Quantity = styled.div(
   ({
@@ -92,8 +111,8 @@ export const Quantity = styled.div(
 
 export const Price = styled(Quantity)(() => ({}));
 
-export const Tags = styled(Quantity)(({ theme: { palette: { grey } } }) => ({
-  color: grey,
+export const Tags = styled(Quantity)(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.33, black),
   fontWeight: 400,
 }));
 

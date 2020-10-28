@@ -145,11 +145,11 @@ export const LoginModal = () => {
           setButtonText('Storing your details...');
           setIsContinueDisabled(true);
           const signupRes = await signup(email, password);
-          const { error: signupError = {}, id: netlifyId } = signupRes;
+          const { error: signupError = {}, sub: auth0Id } = signupRes;
           /** @todo handle error better */
           if (signupError.message) return console.error(signupError.message);
           await createUser({
-            variables: { email, firstName, lastName, netlifyId },
+            variables: { email, firstName, lastName, auth0Id },
           });
           setButtonText('Logging in...');
           setIsContinueDisabled(true);

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { parse } from 'qs';
 import { useQuery } from '@apollo/client';
 import { useChain, useTransition } from 'react-spring';
@@ -12,28 +12,23 @@ import {
   mdiInstagram,
   mdiMenu,
   mdiStoreOutline,
+  mdiThemeLightDark,
 } from '@mdi/js';
 
-import { useAuth, useTheme } from '../../contexts';
+import { useTheme } from '../../contexts';
 import { GET_SETTINGS } from './TopBar.gql';
 import * as Styled from './TopBar.styled';
 import logo from './byo_logo.png';
 import { BasketIcon } from '../BasketIcon';
-import { Button } from '../Button';
 
 export const TopBar = () => {
   const { pathname, search } = useLocation();
-  const { isAuthenticated, openLoginModal } = useAuth();
-
-  const tagBarVisible = !!useRouteMatch({ exact: true, path: '/products' });
 
   const { 'menu-visible': menuVisible } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
-  const { isDesktop } = useTheme();
-
-  const [menuItemsRight, setMenuItemsRight] = useState([]);
+  const { isDesktop, toggleTheme } = useTheme();
 
   const {
     data: { allSettings: [{ facebookUrl, instagramUrl } = {}] = [] } = {},
@@ -53,59 +48,43 @@ export const TopBar = () => {
       to: '/about',
     },
   ];
-  useEffect(() => {
-    if (isAuthenticated) {
-      setMenuItemsRight([
-        {
-          key: 'facebook',
-          as: 'a',
-          href: facebookUrl,
-          target: '_blank',
-          icon: mdiFacebook,
-          title: 'Facebook',
-        },
-        {
-          key: 'instagram',
-          as: 'a',
-          href: instagramUrl,
-          target: '_blank',
-          icon: mdiInstagram,
-          title: 'Instagram',
-        },
-        {
-          key: 'basket',
-          title: 'Basket',
-          to: '/basket',
-          component: <BasketIcon />,
-        },
-        {
-          key: 'account',
-          to: '/account',
-          icon: mdiAccountCircleOutline,
-          title: 'Account',
-        },
-      ]);
-    } else {
-      setMenuItemsRight([
-        {
-          key: 'facebook',
-          as: 'a',
-          href: facebookUrl,
-          target: '_blank',
-          icon: mdiFacebook,
-          title: 'Facebook',
-        },
-        {
-          key: 'instagram',
-          as: 'a',
-          href: instagramUrl,
-          target: '_blank',
-          icon: mdiInstagram,
-          title: 'Instagram',
-        },
-      ]);
-    }
-  }, [isAuthenticated, facebookUrl, instagramUrl]);
+
+  const menuItemsRight = [
+    {
+      key: 'themeToggle',
+      icon: mdiThemeLightDark,
+      onClick: toggleTheme,
+      title: 'Switch theme',
+    },
+    {
+      key: 'facebook',
+      as: 'a',
+      href: facebookUrl,
+      target: '_blank',
+      icon: mdiFacebook,
+      title: 'Facebook',
+    },
+    {
+      key: 'instagram',
+      as: 'a',
+      href: instagramUrl,
+      target: '_blank',
+      icon: mdiInstagram,
+      title: 'Instagram',
+    },
+    {
+      key: 'basket',
+      title: 'Basket',
+      to: '/basket',
+      component: <BasketIcon />,
+    },
+    {
+      key: 'account',
+      to: '/account',
+      icon: mdiAccountCircleOutline,
+      title: 'Account',
+    },
+  ];
 
   const menuRef = useRef();
   const menuTransitions = useTransition(menuVisible, null, {
@@ -155,7 +134,6 @@ export const TopBar = () => {
 
   return (
     <>
-      <Styled.Spacer tagBarVisible={tagBarVisible} />
       <Styled.Wrapper>
         <Styled.TopBar className="TopBar">
           <Styled.Group>
@@ -195,11 +173,21 @@ export const TopBar = () => {
               {isDesktop ? (
                 <>
                   {menuItemsRight.map(
-                    ({ as, component, href, target, icon, title, to }) => (
+                    ({
+                      as,
+                      component,
+                      href,
+                      icon,
+                      onClick,
+                      target,
+                      title,
+                      to,
+                    }) => (
                       <Styled.NavItem>
                         <Styled.LinkIcon
                           as={as}
                           href={href}
+                          onClick={onClick}
                           target={target}
                           to={to}
                         >
@@ -210,7 +198,7 @@ export const TopBar = () => {
                       </Styled.NavItem>
                     ),
                   )}
-                  {isAuthenticated ? null : (
+                  {/* {isAuthenticated ? null : (
                     <Styled.NavItem>
                       <Styled.LinkIcon>
                         <Button borderRadius onClick={openLoginModal}>
@@ -218,7 +206,7 @@ export const TopBar = () => {
                         </Button>
                       </Styled.LinkIcon>
                     </Styled.NavItem>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <Styled.NavItem>
@@ -252,12 +240,27 @@ export const TopBar = () => {
               {menuItemsTransitions.map(
                 ({
                   item: menuItemsItem,
-                  item: { as, component, href, target, icon, title, to },
+                  item: {
+                    as,
+                    component,
+                    href,
+                    onClick,
+                    target,
+                    icon,
+                    title,
+                    to,
+                  },
                   key,
                   props,
                 }) =>
                   menuItemsItem && (
-                    <Styled.Link as={as} href={href} target={target} to={to}>
+                    <Styled.Link
+                      as={as}
+                      href={href}
+                      onClick={onClick}
+                      target={target}
+                      to={to}
+                    >
                       <Styled.MenuItem key={key} style={props}>
                         <span>{title}</span>
                         {component || (

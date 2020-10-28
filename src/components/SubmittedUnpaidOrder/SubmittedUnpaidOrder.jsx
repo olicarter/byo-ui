@@ -9,18 +9,18 @@ import { SubTitle } from '../Typography';
 
 export const SubmittedUnpaidOrder = () => {
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const [
     getUser,
     { data: { allUsers } = {}, loading: getUserLoading },
   ] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
+    variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUser();
+  }, [auth0Id, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const submittedUnpaidOrder = orders.find(

@@ -19,7 +19,7 @@ import { DeliveryAddressForm } from '../DeliveryAddressForm';
 export const Checkout = () => {
   const { push } = useHistory();
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const {
     data: {
@@ -29,16 +29,16 @@ export const Checkout = () => {
     } = {},
   } = useQuery(GET_SETTINGS);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: { netlifyId },
+      variables: { auth0Id },
     },
   );
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { id: unsubmittedOrderId, deliverySlot, orderItems = [] } =
@@ -53,6 +53,12 @@ export const Checkout = () => {
   const productsTotal = products.toFixed(2);
   const containersTotal = containers.toFixed(2);
   total = total.toFixed(2);
+
+  /** @todo only allow access to checkout page if min order value is met */
+  // if (total < minOrderValue) {
+  //   push('/basket');
+  //   return null;
+  // }
 
   return (
     <>
@@ -77,16 +83,13 @@ export const Checkout = () => {
         label={`£${total} total`}
         largeLabel
         info={total >= minOrderValue ? orderSubmissionInfo : undefined}
-        errorInfo={
-          productsTotal && containersTotal && total < minOrderValue
-            ? `Minimum order value is £${minOrderValue}`
-            : undefined
-        }
+        // errorInfo={
+        //   productsTotal && containersTotal && total < minOrderValue
+        //     ? `Minimum order value is £${minOrderValue}`
+        //     : undefined
+        // }
       ></FormGroup>
-      <FloatingButton
-        disabled={total < minOrderValue || !deliverySlot}
-        onClick={submitOrder}
-      >
+      <FloatingButton disabled={!deliverySlot} onClick={submitOrder}>
         Place order for <BasketTotal showCurrencySymbol />
       </FloatingButton>
     </>

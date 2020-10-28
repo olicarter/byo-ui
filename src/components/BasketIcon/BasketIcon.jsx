@@ -9,16 +9,16 @@ import * as Styled from './BasketIcon.styled';
 
 export const BasketIcon = () => {
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const [
-    getUsersByNetlifyId,
+    getUsersByAuth0Id,
     { data: { allUsers } = {} },
-  ] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, { variables: { netlifyId } });
+  ] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, { variables: { auth0Id } });
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId();
-  }, [netlifyId, getUsersByNetlifyId]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};

@@ -1,23 +1,9 @@
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 
-export const TagBar = styled.div(() => ({
-  alignItems: 'center',
-  display: 'flex',
-  height: '2.5rem',
-  overflowX: 'scroll',
-}));
-
-export const Nav = styled.nav(() => ({}));
-
-export const NavItems = styled.ul(() => ({
-  display: 'flex',
-  height: '100%',
-  margin: 0,
-  padding: '0 0.5rem',
-}));
-
 export const NavItem = styled.li(() => ({
+  display: 'flex',
   flexShrink: 0,
   listStyle: 'none',
   margin: 0,
@@ -28,7 +14,7 @@ export const Tag = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, grey, primary, red },
+      palette: { black, grey, primary },
     },
     to,
   }) => ({
@@ -40,16 +26,12 @@ export const Tag = styled(RouterLink)(
     display: 'flex',
     fontSize: '1rem',
     fontWeight: 700,
-    padding: '0.5rem',
+    padding: '1rem 0.5rem',
     textDecoration: 'none',
     userSelect: 'none',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        get color() {
-          if (selected) return red;
-          if (to) return primary;
-          return grey;
-        },
+        color: to ? primary : transparentize(0.33, black),
       },
     },
   }),

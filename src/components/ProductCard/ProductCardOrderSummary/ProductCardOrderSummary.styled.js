@@ -1,19 +1,15 @@
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 
-export const OrderSummary = styled.div(() => ({
+export const OrderSummary = styled.div(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.5, black),
+  cursor: 'default',
   display: 'flex',
   fontWeight: 700,
   justifyContent: 'space-between',
   padding: '0.5rem',
 }));
 
-export const ContainersTotalPrice = styled.span(
-  ({
-    theme: {
-      palette: { grey },
-    },
-  }) => ({
-    color: grey,
-    whiteSpace: 'pre',
-  }),
-);
+export const ContainersTotalPrice = styled.span(() => ({
+  whiteSpace: 'pre',
+}));

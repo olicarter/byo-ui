@@ -14,7 +14,7 @@ import { Select } from '../Select';
 
 export const DeliverySlotPicker = () => {
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const {
     data: { allDeliverySlots } = {},
@@ -25,12 +25,12 @@ export const DeliverySlotPicker = () => {
     getUser,
     { data: { allUsers } = {}, loading: getUserLoading },
   ] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
+    variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUser();
+  }, [auth0Id, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { id: unsubmittedOrderId, deliverySlot } =

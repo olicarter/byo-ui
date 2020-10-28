@@ -1,11 +1,10 @@
 import React from 'react';
-import MarkdownToJSX from 'markdown-to-jsx';
 
 import * as Styled from './Markdown.styled';
 import { SubTitle, Title } from '../Typography';
 
 export const Markdown = ({ children = '' }) => (
-  <MarkdownToJSX
+  <Styled.Markdown
     options={{
       overrides: {
         h1: Title,
@@ -15,5 +14,5 @@ export const Markdown = ({ children = '' }) => (
     }}
   >
     {children}
-  </MarkdownToJSX>
+  </Styled.Markdown>
 );

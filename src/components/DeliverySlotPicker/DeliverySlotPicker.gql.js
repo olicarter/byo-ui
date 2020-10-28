@@ -12,8 +12,8 @@ export const GET_DELIVERY_SLOTS = gql`
 `;
 
 export const GET_USER = gql`
-  query DeliverySlotPickerGetUser($netlifyId: String!) {
-    allUsers(where: { netlifyId: $netlifyId }) {
+  query DeliverySlotPickerGetUsersByAuth0Id($auth0Id: String!) {
+    allUsers(where: { auth0Id: $auth0Id }) {
       ...User
     }
   }

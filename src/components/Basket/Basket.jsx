@@ -13,22 +13,22 @@ import { ProductCard } from '../ProductCard';
 export const Basket = () => {
   const { push } = useHistory();
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const {
     data: { allSettings: [{ minOrderValue } = {}] = [] } = {},
   } = useQuery(GET_SETTINGS);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: { netlifyId },
+      variables: { auth0Id },
     },
   );
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};
@@ -36,6 +36,8 @@ export const Basket = () => {
   const orderItemProducts = uniqWith(
     orderItems,
     (a, b) => a.productVariant.product.id === b.productVariant.product.id,
+  ).sort((a, b) =>
+    a.productVariant.product.name.localeCompare(b.productVariant.product.name),
   );
 
   const meetsMinOrderValue = BasketTotal() >= minOrderValue;

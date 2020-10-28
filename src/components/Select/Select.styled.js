@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import { darken, readableColor } from 'polished';
+import { darken, readableColor, transparentize } from 'polished';
 
 export const SelectWrapper = styled.div(
   ({
     theme: {
-      palette: { black, grey, lightGrey, primary, white },
+      palette: { black, primary, white },
     },
   }) => ({
-    backgroundColor: lightGrey,
-    color: readableColor(primary, grey, white),
-    fontSize: '0.8rem',
+    backgroundColor: transparentize(0.9, black),
+    color: readableColor(primary, black, white),
+    fontSize: '1.1rem',
     fontWeight: 700,
-    height: '2rem',
-    lineHeight: '2rem',
+    height: '3rem',
+    lineHeight: '3rem',
     textAlign: 'center',
     userSelect: 'none',
   }),
@@ -27,7 +27,7 @@ export const Select = styled.select(
     },
   }) => ({
     appearance: 'none',
-    backgroundColor: lightGrey,
+    backgroundColor: 'inherit',
     border: 'none',
     borderRadius: borderRadius ? '0.5rem' : 0,
     color: readableColor(primary, black, white),
@@ -43,7 +43,7 @@ export const Select = styled.select(
     width: '100%',
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        backgroundColor: darken(0.05, lightGrey),
+        backgroundColor: darken(0.05, transparentize(0.9, black)),
       },
     },
   }),
