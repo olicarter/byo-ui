@@ -8,6 +8,7 @@ import * as Styled from './UserOrders.styled';
 import { Card } from '../Card';
 import { SubTitle } from '../Typography';
 import { UserOrdersProductOrderItems } from './UserOrdersProductOrderItems';
+import { UserAddress } from '../UserAddress';
 
 export const UserOrders = () => {
   const { user: authUser } = useAuth();
@@ -129,6 +130,7 @@ export const UserOrders = () => {
           );
         },
       )}
+      <UserAddress />
     </Styled.Column>
   );
 };

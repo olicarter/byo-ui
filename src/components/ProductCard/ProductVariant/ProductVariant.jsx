@@ -38,6 +38,8 @@ export const ProductVariant = ({
       ({ productVariant: { id: variantId } }) => id === variantId,
     ) || {};
 
+  console.log('userId', userId);
+
   const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
     onCompleted: () => setIncrementLoading(false),
     update: (cache, { data: { createOrderItem } }) => {

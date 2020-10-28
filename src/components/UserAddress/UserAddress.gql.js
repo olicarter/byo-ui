@@ -11,7 +11,7 @@ export const GET_USERS_BY_NETLIFY_ID = gql`
   ${User}
 `;
 
-export const UPDATE_ADREESS_BY_NETLIFY_ID = gql`
+export const UPDATE_ADDRESS_BY_NETLIFY_ID = gql`
   mutation UpdateUserAdress(
     $id: ID!
     $firstName: String!

@@ -14,7 +14,7 @@ import { DeliverySlotPicker } from '../DeliverySlotPicker';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
 import { Label } from '../Label';
-import { UserAddressForm } from '../UserAddressForm';
+import { DeliveryAddressForm } from '../DeliveryAddressForm';
 
 export const Checkout = () => {
   const { push } = useHistory();
@@ -65,7 +65,7 @@ export const Checkout = () => {
         <DeliverySlotPicker />
       </FormGroup>
 
-      <UserAddressForm />
+      <DeliveryAddressForm />
 
       {containersTotal > 0 ? (
         <div>

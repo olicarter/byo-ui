@@ -5,7 +5,6 @@ import { useAuth } from '../../contexts';
 import * as Styled from './App.styled';
 import { About } from '../About';
 import { Basket } from '../Basket';
-import { Button } from '../Button';
 import { CategoryBar } from '../CategoryBar';
 import { Checkout } from '../Checkout';
 import { FloatingButton } from '../FloatingButton';
