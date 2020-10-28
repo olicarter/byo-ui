@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import {
-  GET_USERS_BY_NETLIFY_ID,
+  GET_AUTHENTICATED_USER,
   SET_ORDER_ADDRESS,
   UPDATE_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
@@ -13,14 +13,7 @@ import { TextInput } from '../TextInput';
 export const UserAddressForm = () => {
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
-
-  const [{ address } = {}] = allUsers || [];
+  const [{ address, orders } = {}] = authenticatedUser || [];
   const [{ id: addressId } = {}] = address || [];
   let {
     firstName: currentFirstName,
@@ -30,10 +23,6 @@ export const UserAddressForm = () => {
     flatNumber: currentFlatNumber,
     postCode: currentPostCode,
   } = address || {};
-
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

@@ -24,60 +24,6 @@ import { TagBar } from '../TagBar';
 import { TopBar } from '../TopBar';
 import { ProductSearch } from '../ProductSearch';
 
-<<<<<<< HEAD
-export const App = () => (
-  <Styled.App>
-    <TopBar />
-
-    <Styled.Main>
-      <Route exact path="/">
-        <Layout center>
-          <Section>
-            <Home />
-          </Section>
-        </Layout>
-      </Route>
-
-      <Route exact path="/about">
-        <Layout center>
-          <Section>
-            <About />
-          </Section>
-        </Layout>
-      </Route>
-
-      <Route exact path="/products">
-        <Layout>
-          <Section>
-            <Markdown># Products</Markdown>
-          </Section>
-          <Section margin="0" padding="0">
-            <ProductSearch />
-            <CategoryBar />
-            <TagBar />
-          </Section>
-          <Section>
-            <Products />
-          </Section>
-        </Layout>
-      </Route>
-
-      <Route exact path="/products/:productSlug">
-        <Layout center>
-          <Product />
-        </Layout>
-      </Route>
-
-      <ProtectedRoute path="/account" component={AccountPage} />
-
-      <ProtectedRoute path="/basket" component={BasketPage} />
-
-      <ProtectedRoute path="/checkout" component={CheckoutPage} />
-    </Styled.Main>
-
-    <Footer />
-  </Styled.App>
-=======
 const Logo = () => (
   <Styled.Center>
     <Styled.Content>
@@ -100,7 +46,6 @@ const Logo = () => (
       </Styled.Icon>
     </Styled.Content>
   </Styled.Center>
->>>>>>> c6d2985195c60ac92292ad158d548f3a72eed942
 );
 
 export const App = () => {
