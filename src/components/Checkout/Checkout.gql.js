@@ -13,8 +13,8 @@ export const GET_SETTINGS = gql`
 `;
 
 export const GET_USERS_BY_NETLIFY_ID = gql`
-  query CheckoutGetUsersByNetlifyId($netlifyId: String!) {
-    allUsers(where: { netlifyId: $netlifyId }) {
+  query CheckoutGetUsersByAuth0Id($auth0Id: String!) {
+    allUsers(where: { auth0Id: $auth0Id }) {
       ...User
     }
   }

@@ -31,7 +31,6 @@ export const ProductCardOrderSummary = ({ orderItems }) => {
 
   return (
     <Styled.OrderSummary>
-      <span>{/* {getQuantity({ orderItems, units: allUnits })} */}</span>
       <span>
         £{sumOrderItems(orderItems).total.toFixed(2)}
         {orderItemsWithRefundableContainers.length ? (
@@ -39,7 +38,8 @@ export const ProductCardOrderSummary = ({ orderItems }) => {
             {' '}
             + £{totalRefundableContainersPrice}
           </Styled.ContainersTotalPrice>
-        ) : null}
+        ) : null}{' '}
+        in basket
       </span>
     </Styled.OrderSummary>
   );

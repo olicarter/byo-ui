@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export const Section = styled.section(({ padding }) => ({
+export const Section = styled.section(({ margin, padding }) => ({
   display: 'flex',
   flexDirection: 'column',
-  margin: '1rem 0 0',
+  margin,
   padding,
 }));

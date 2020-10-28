@@ -18,7 +18,7 @@ export const CategoryBar = () => {
   return (
     <Styled.CategoryBar>
       <Styled.Nav>
-        <Styled.NavItems>
+        <Styled.NavItems className="NavItems">
           {loading ? (
             <Styled.NavItem>
               <Styled.Tag as="span">loading categories</Styled.Tag>

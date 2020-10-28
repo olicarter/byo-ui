@@ -4,7 +4,7 @@ export const Footer = styled.footer(() => ({
   display: 'flex',
   justifyContent: 'center',
   opacity: 0.5,
-  padding: '3rem 1rem 8rem',
+  padding: '3rem 1rem 3rem',
 }));
 
 export const MadeWithText = styled.span(({ theme: { palette: { grey } } }) => ({

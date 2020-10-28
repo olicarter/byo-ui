@@ -42,7 +42,7 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
               {unit.pluralAbbreviated}
               {container ? ` + ${container.type}` : ''}
             </Styled.OrderItemProduct>
-            £{+parseFloat(incrementPrice * quantity)}
+            £{Number(+parseFloat(incrementPrice * quantity)).toFixed(2)}
           </Styled.Row>
         ),
       )}

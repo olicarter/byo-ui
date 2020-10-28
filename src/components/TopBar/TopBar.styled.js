@@ -3,16 +3,16 @@ import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 import { animated } from 'react-spring';
 
-export const Spacer = styled.div(({ tagBarVisible }) => ({
-  height: '4rem',
-}));
+// export const Spacer = styled.div(({ tagBarVisible }) => ({
+//   height: '4rem',
+// }));
 
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
-  background: transparentize(0.4, white),
-  backdropFilter: 'blur(16px)',
-  left: 0,
-  position: 'fixed',
-  top: 0,
+  // background: transparentize(0.4, white),
+  // backdropFilter: 'blur(16px)',
+  // left: 0,
+  // position: 'fixed',
+  // top: 0,
   width: '100%',
   zIndex: 1,
 }));

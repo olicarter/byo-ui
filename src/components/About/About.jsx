@@ -1,9 +1,9 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import Markdown from 'markdown-to-jsx';
 
 import { GET_ALL_SETTINGS } from './About.gql';
 import * as Styled from './About.styled';
+import { Markdown } from '../Markdown';
 import { SubTitle, Title } from '../Typography';
 
 export const About = () => {

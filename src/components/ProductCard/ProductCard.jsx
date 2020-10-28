@@ -16,15 +16,15 @@ export const ProductCard = ({
 }) => {
   const { push } = useHistory();
   const { user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
+  const { sub: auth0Id } = authUser || {};
 
   const [getUserOrders, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { netlifyId },
+    variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (netlifyId) getUserOrders();
-  }, [netlifyId, getUserOrders]);
+    if (auth0Id) getUserOrders();
+  }, [auth0Id, getUserOrders]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { orderItems: allOrderItems = [] } =
@@ -33,16 +33,6 @@ export const ProductCard = ({
     ({ productVariant: { product: { id: orderItemProductId } = {} } = {} }) =>
       orderItemProductId === productId,
   );
-
-  const [productVariantsVisible, setProductVariantsVisible] = useState(null);
-
-  useEffect(() => {
-    if (!!orderItems.length && productVariantsVisible === null)
-      setProductVariantsVisible(true);
-  }, [orderItems, productVariantsVisible]);
-
-  // const showProductVariants = () => setProductVariantsVisible(true);
-  // const hideProductVariants = () => setProductVariantsVisible(false);
 
   const defaultDeliveryInfo = (() => {
     if (
@@ -68,8 +58,8 @@ export const ProductCard = ({
           />
         </Styled.Header>
         <Styled.Info>
-          {productVariantsVisible ? (
-            deliveryInfo || defaultDeliveryInfo
+          {!!orderItems.length ? (
+            <Styled.Origin>{deliveryInfo || defaultDeliveryInfo}</Styled.Origin>
           ) : (
             <div>
               {origin ? (

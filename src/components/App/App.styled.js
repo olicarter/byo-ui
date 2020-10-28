@@ -11,11 +11,6 @@ export const MaxWidthLayout = styled.div(() => ({
   padding: '1rem',
 }));
 
-export const MaxWidth = styled.div(() => ({
-  maxWidth: '800px',
-  width: '100%',
-}));
-
 export const Main = styled.div(() => ({
   flex: 1,
 }));

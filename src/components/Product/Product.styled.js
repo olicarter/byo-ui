@@ -32,11 +32,13 @@ export const Info = styled.span(({ theme: { palette: { black } } }) => ({
   fontWeight: 600,
 }));
 
-export const Icon = styled(MdiIcon)(() => ({
+export const Icon = styled(MdiIcon)(({ theme: { palette: { black } } }) => ({
+  color: black,
   flexShrink: 0,
 }));
 
-export const SectionTitle = styled.h3(() => ({
+export const SectionTitle = styled.h3(({ theme: { palette: { black } } }) => ({
+  color: black,
   fontSize: '1.5rem',
   fontWeight: 700,
   margin: '0 0 0.5rem',

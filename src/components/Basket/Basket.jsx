@@ -13,7 +13,7 @@ import { ProductCard } from '../ProductCard';
 export const Basket = () => {
   const { push } = useHistory();
   const { user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { sub: auth0Id } = user || {};
 
   const {
     data: { allSettings: [{ minOrderValue } = {}] = [] } = {},
@@ -22,13 +22,13 @@ export const Basket = () => {
   const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: { netlifyId },
+      variables: { auth0Id },
     },
   );
 
   useEffect(() => {
-    if (netlifyId) getUser();
-  }, [netlifyId, getUser]);
+    if (auth0Id) getUser();
+  }, [auth0Id, getUser]);
 
   const [{ orders = [] } = {}] = allUsers || [];
   const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};

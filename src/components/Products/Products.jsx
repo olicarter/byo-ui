@@ -12,18 +12,18 @@ import { ProductCard } from '../ProductCard';
 export const Products = () => {
   const { push } = useHistory();
   const { search } = useLocation();
-  const { isAuthenticated, openLoginModal, user } = useAuth();
-  const { id: netlifyId } = user || {};
+  const { isAuthenticated, user } = useAuth();
+  const { sub: auth0Id } = user || {};
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
 
-  const [getUsersByNetlifyId] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
-    variables: { netlifyId },
+  const [getUsersByAuth0Id] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
+    variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId();
-  }, [netlifyId, getUsersByNetlifyId]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,
@@ -51,7 +51,9 @@ export const Products = () => {
           View basket
         </FloatingButton>
       ) : (
-        <FloatingButton onClick={openLoginModal}>Log in</FloatingButton>
+        <FloatingButton onClick={() => push('/login')}>
+          Log in to order
+        </FloatingButton>
       )}
     </>
   );

@@ -9,7 +9,7 @@ export const User = gql`
     firstName
     lastName
     email
-    netlifyId
+    auth0Id
     ...Orders
     address {
       ...Address

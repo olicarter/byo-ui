@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import * as Styled from './TextInput.styled';
 
-export const TextInput = ({
-  autoFocus = false,
-  onChange,
-  type = 'text',
-  value,
-}) => (
-  <Styled.TextInput
-    autoFocus={autoFocus}
-    onChange={e => typeof onChange === 'function' && onChange(e.target.value)}
-    type={type}
-    value={value}
-  />
+export const TextInput = forwardRef(
+  ({ autoFocus = false, name, onChange, type = 'text', value }, ref) => (
+    <Styled.TextInput
+      autoFocus={autoFocus}
+      name={name}
+      onChange={e => typeof onChange === 'function' && onChange(e.target.value)}
+      ref={ref}
+      type={type}
+      value={value}
+    />
+  ),
 );

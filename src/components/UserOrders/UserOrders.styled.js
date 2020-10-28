@@ -1,16 +1,9 @@
 import styled from 'styled-components';
 
-export const Column = styled.div(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  flexBasis: '100%',
-  flex: '1',
-  width: '100%',
-}));
-
-export const CardContent = styled.div(() => ({
+export const CardContent = styled.div(({ theme: { palette: { black } } }) => ({
+  color: black,
   cursor: 'default',
-  padding: '1rem',
+  padding: '0.5rem',
 }));
 
 export const Section = styled.section(() => ({
@@ -22,14 +15,14 @@ export const Section = styled.section(() => ({
 export const Row = styled.div(({ bold }) => ({
   display: 'flex',
   flexDirection: 'row',
-  fontSize: '0.9rem',
+  fontSize: '1rem',
   fontWeight: bold ? 700 : 'normal',
   justifyContent: 'space-between',
   width: '100%',
 }));
 
 export const Header = styled(Row)(() => ({
-  fontSize: '1.2rem',
+  fontSize: '1.4rem',
   fontWeight: 600,
 }));
 

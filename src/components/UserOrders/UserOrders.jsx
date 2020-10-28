@@ -11,9 +11,9 @@ import { UserOrdersProductOrderItems } from './UserOrdersProductOrderItems';
 
 export const UserOrders = () => {
   const { user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
+  const { sub: auth0Id } = authUser || {};
 
-  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
   );
 
@@ -21,13 +21,11 @@ export const UserOrders = () => {
   const submittedOrders = orders.filter(({ paid, submitted }) => submitted);
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId({ variables: { netlifyId } });
-  }, [netlifyId, getUsersByNetlifyId]);
+    if (auth0Id) getUsersByAuth0Id({ variables: { auth0Id } });
+  }, [auth0Id, getUsersByAuth0Id]);
 
   return (
-    <Styled.Column>
-      <SubTitle>Your orders</SubTitle>
-
+    <>
       {submittedOrders.map(
         ({
           id,
@@ -129,6 +127,6 @@ export const UserOrders = () => {
           );
         },
       )}
-    </Styled.Column>
+    </>
   );
 };

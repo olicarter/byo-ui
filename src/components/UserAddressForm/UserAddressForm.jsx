@@ -12,12 +12,12 @@ import { TextInput } from '../TextInput';
 
 export const UserAddressForm = () => {
   const { user: authUser } = useAuth();
-  const { id: netlifyId } = authUser || {};
+  const { sub: auth0Id } = authUser || {};
 
-  const [getUsersByNetlifyId, { data: { allUsers } = {} }] = useLazyQuery(
+  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
     GET_USERS_BY_NETLIFY_ID,
     {
-      variables: { netlifyId },
+      variables: { auth0Id },
     },
   );
 
@@ -31,8 +31,8 @@ export const UserAddressForm = () => {
   } = address || {};
 
   useEffect(() => {
-    if (netlifyId) getUsersByNetlifyId();
-  }, [netlifyId, getUsersByNetlifyId]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   let currentError = 'work please';
 
@@ -115,7 +115,7 @@ export const UserAddressForm = () => {
         <FormGroup label="Flat #" flex={1} margin="0">
           <TextInput onChange={setFlatNumber} value={flatNumber} />
         </FormGroup>
-        <FormGroup label="Street name" flex={2} margin="0">
+        <FormGroup label="Street name" flex={1} margin="0">
           <TextInput onChange={setStreetName} value={streetName} />
         </FormGroup>
       </FormGroup>
@@ -123,7 +123,7 @@ export const UserAddressForm = () => {
         <FormGroup label="Post code" flex={1} margin="0">
           <TextInput onChange={setPostCode} value={postCode} />
         </FormGroup>
-        <FormGroup label="Mobile number" flex={2} margin="0">
+        <FormGroup label="Mobile number" flex={1} margin="0">
           <TextInput onChange={setPhoneNumber} value={phoneNumber} />
         </FormGroup>
       </FormGroup>
