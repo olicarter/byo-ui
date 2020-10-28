@@ -4,6 +4,8 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import {
   GET_USERS_BY_NETLIFY_ID,
   UPDATE_ADREESS_BY_NETLIFY_ID,
+  CREATE_ADREESS_BY_NETLIFY_ID,
+  SET_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
 import { useAuth } from '../../contexts';
 import { Button } from '../Button';
@@ -22,6 +24,7 @@ export const UserAddressForm = () => {
   );
 
   const [{ address, firstName, lastName } = {}] = allUsers || [];
+  const { id: addressId } = ({} = address || {});
   let {
     id,
     phoneNumber: currentPhoneNumber,
@@ -37,6 +40,7 @@ export const UserAddressForm = () => {
   let currentError = 'work please';
 
   const [updateAddress] = useMutation(UPDATE_ADREESS_BY_NETLIFY_ID);
+  const [createAddress] = useMutation(CREATE_ADREESS_BY_NETLIFY_ID);
   const [deliveryFirstName, setDeliveryFirstName] = useState('');
   const [deliveryLastName, setDeliveryLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -80,18 +84,37 @@ export const UserAddressForm = () => {
     setError(currentError);
   }, [currentError]);
 
+  const [{ orders = [] } = {}] = allUsers || [];
+  const { id: unsubmittedOrderId } =
+    orders.find(({ submitted }) => !submitted) || {};
+  const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
+
+  console.log('unsubmittedOrderId', unsubmittedOrderId);
+  console.log('presentAddressId', addressId);
+
+  /* @todo  (if address is null.. create on order items checkout)*/
+
   const handleSubmit = () => {
-    updateAddress({
-      variables: {
-        id: id,
-        firstName: deliveryFirstName,
-        lastName: deliveryLastName,
-        phoneNumber: phoneNumber,
-        street: streetName,
-        flatNumber: flatNumber,
-        postCode: postCode,
-      },
-    });
+    // logic need to be fixed when null
+    if (address === null) {
+      createAddress({
+        variables: {
+          firstName: deliveryFirstName,
+          lastName: deliveryLastName,
+          phoneNumber: phoneNumber,
+          street: streetName,
+          flatNumber: flatNumber,
+          postCode: postCode,
+        },
+      });
+      setOrderAddress({
+        variables: { id: unsubmittedOrderId, addressId: addressId },
+      });
+    } else {
+      setOrderAddress({
+        variables: { id: unsubmittedOrderId, addressId: addressId },
+      });
+    }
   };
 
   return (
@@ -127,13 +150,18 @@ export const UserAddressForm = () => {
           <TextInput onChange={setPhoneNumber} value={phoneNumber} />
         </FormGroup>
       </FormGroup>
-      {isAddressChanged ? (
+      {/* {isAddressChanged ? (
         <FormGroup>
           <Button borderRadius onClick={handleSubmit}>
             Update address
           </Button>
         </FormGroup>
-      ) : null}
+      ) : null} */}
+      <FormGroup>
+        <Button borderRadius onClick={handleSubmit}>
+          Update address
+        </Button>
+      </FormGroup>
     </FormGroup>
   );
 };
