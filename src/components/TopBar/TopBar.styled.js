@@ -3,16 +3,7 @@ import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 import { animated } from 'react-spring';
 
-// export const Spacer = styled.div(({ tagBarVisible }) => ({
-//   height: '4rem',
-// }));
-
 export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
-  // background: transparentize(0.4, white),
-  // backdropFilter: 'blur(16px)',
-  // left: 0,
-  // position: 'fixed',
-  // top: 0,
   width: '100%',
   zIndex: 1,
 }));
@@ -30,6 +21,17 @@ export const Group = styled.div(() => ({
   alignItems: 'center',
   display: 'flex',
 }));
+
+export const SVG = styled.svg(
+  ({
+    theme: {
+      palette: { black, primary, red, teal },
+    },
+  }) => ({
+    fill: black,
+    height: '2rem',
+  }),
+);
 
 export const Logo = styled.img(() => ({
   height: '2rem',
@@ -58,7 +60,7 @@ export const Link = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, primary },
+      palette: { black, primary, red, teal },
     },
   }) => ({
     background: 'none',
@@ -71,9 +73,21 @@ export const Link = styled(RouterLink)(
     outline: 'none',
     padding: '1rem',
     textDecoration: 'none',
+    path: {
+      transitionDuration: '300ms',
+    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         color: primary,
+        'path:nth-of-type(1)': {
+          fill: teal,
+        },
+        'path:nth-of-type(2)': {
+          fill: primary,
+        },
+        'path:nth-of-type(3)': {
+          fill: red,
+        },
       },
     },
   }),

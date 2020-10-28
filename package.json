@@ -18,6 +18,7 @@
     "netlify-identity-widget": "^1.9.1",
     "polished": "^3.6.6",
     "react": "^16.13.1",
+    "react-apollo-network-status": "^5.0.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.9.6",
     "react-router-dom": "^5.2.0",

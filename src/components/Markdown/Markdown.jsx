@@ -10,6 +10,7 @@ export const Markdown = ({ children = '' }) => (
         h1: Title,
         h2: SubTitle,
         img: Styled.Image,
+        p: Styled.Paragraph,
       },
     }}
   >

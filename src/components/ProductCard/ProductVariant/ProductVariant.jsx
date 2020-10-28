@@ -21,13 +21,16 @@ export const ProductVariant = ({
   const [incrementLoading, setIncrementLoading] = useState(false);
   const [decrementLoading, setDecrementLoading] = useState(false);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
+  const [
+    getUsersByAuth0Id,
+    { data: { allUsers } = {}, loading: getUsersByAuth0IdLoading },
+  ] = useLazyQuery(GET_USER, {
     variables: { auth0Id },
   });
 
   useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
+    if (auth0Id) getUsersByAuth0Id();
+  }, [auth0Id, getUsersByAuth0Id]);
 
   const [user] = allUsers || [];
   const { id: userId, orders = [] } = user || {};
@@ -176,7 +179,10 @@ export const ProductVariant = ({
         ) : null}
       </Styled.Info>
 
-      <Styled.IncrementButton onClick={incrementOrderItem}>
+      <Styled.IncrementButton
+        disabled={getUsersByAuth0IdLoading}
+        onClick={incrementOrderItem}
+      >
         {incrementLoading ? (
           loadingIcon
         ) : (
