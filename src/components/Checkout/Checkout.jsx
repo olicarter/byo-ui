@@ -54,10 +54,10 @@ export const Checkout = () => {
   const containersTotal = containers.toFixed(2);
   total = total.toFixed(2);
 
-  if (total < minOrderValue) {
-    push('/basket');
-    return null;
-  }
+  // if (total < minOrderValue) {
+  //   push('/basket');
+  //   return null;
+  // }
 
   return (
     <>
