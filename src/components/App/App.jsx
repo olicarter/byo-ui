@@ -17,6 +17,7 @@ import { ProtectedRoute } from '../ProtectedRoute';
 import { Section } from '../Section';
 import { TagBar } from '../TagBar';
 import { TopBar } from '../TopBar';
+import { ProductSearch } from '../ProductSearch';
 
 export const App = () => (
   <Styled.App>
@@ -45,6 +46,7 @@ export const App = () => (
             <Markdown># Products</Markdown>
           </Section>
           <Section margin="0" padding="0">
+            <ProductSearch />
             <CategoryBar />
             <TagBar />
           </Section>

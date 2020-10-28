@@ -36,8 +36,39 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
   ${Address}
 `;
 
+export const UPDATE_ORDER_ADDRESS = gql`
+  mutation UserAddressFormUpdateOrderAddress(
+    $id: ID!
+    $firstName: String!
+    $lastName: String!
+    $phoneNumber: String!
+    $street: String!
+    $flatNumber: String!
+    $postCode: String!
+  ) {
+    updateOrder(
+      id: $id
+      data: {
+        address: {
+          create: {
+            firstName: $firstName
+            lastName: $lastName
+            phoneNumber: $phoneNumber
+            street: $street
+            flatNumber: $flatNumber
+            postCode: $postCode
+          }
+        }
+      }
+    ) {
+      ...Order
+    }
+  }
+  ${Order}
+`;
+
 export const SET_ORDER_ADDRESS = gql`
-  mutation UpdateOrder($id: ID!, $addressId: ID!) {
+  mutation UserAddressFormSetOrderAddress($id: ID!, $addressId: ID!) {
     updateOrder(id: $id, data: { address: { connect: { id: $addressId } } }) {
       ...Order
     }
