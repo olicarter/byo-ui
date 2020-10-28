@@ -22,25 +22,23 @@ export const Group = styled.div(() => ({
   display: 'flex',
 }));
 
-export const SVG = styled.svg(
-  ({
-    theme: {
-      palette: { black, primary, red, teal },
-    },
-  }) => ({
-    fill: black,
-    height: '2rem',
-    overflow: 'visible',
-  }),
-);
+export const SVG = styled.svg(({ theme: { palette: { black } } }) => ({
+  clipRule: 'evenodd',
+  fill: black,
+  fillRule: 'evenodd',
+  height: '2rem',
+  overflow: 'visible',
+  strokeLinejoin: 'round',
+  strokeMiterlimit: 2,
+}));
 
 export const Path = styled.path(() => ({
-  transitionDuration: '300ms',
+  transitionDuration: '200ms',
   ':nth-of-type(2)': {
-    transitionDelay: '33ms',
+    transitionDelay: '20ms',
   },
   ':nth-of-type(3)': {
-    transitionDelay: '66ms',
+    transitionDelay: '40ms',
   },
 }));
 

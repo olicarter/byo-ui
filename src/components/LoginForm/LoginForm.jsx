@@ -1,26 +1,16 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useAuth } from '../../contexts';
-import { Button } from '../Button';
+import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
 import { TextInput } from '../TextInput';
 
 export const LoginForm = () => {
-  const { state: { from: { pathname } = {} } = {} } = useLocation();
-  const { login, loginWithRedirect } = useAuth();
+  const { login } = useAuth();
   const { handleSubmit, register, errors } = useForm();
 
   const onSubmit = ({ email, password }) => login(email, password);
-
-  useEffect(() => {
-    loginWithRedirect({
-      redirectUri: pathname
-        ? `${window.location.origin}${pathname}`
-        : window.location.origin,
-    });
-  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,9 +46,7 @@ export const LoginForm = () => {
       </FormGroup>
 
       <FormGroup>
-        <Button borderRadius type="submit">
-          Log in
-        </Button>
+        <FloatingButton type="submit">Log in</FloatingButton>
       </FormGroup>
     </form>
   );

@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+
+import {
+  GET_AUTHENTICATED_USER,
+  UPDATE_ADREESS_BY_NETLIFY_ID,
+} from './ChangeUserAddress.gql';
 import { FormGroup } from '../FormGroup';
 import { TextInput } from '../TextInput';
 import { Button } from '../Button';
-import { useAuth } from '../../contexts';
-
-import { useLazyQuery, useMutation } from '@apollo/client';
-
-import {
-  GET_USERS_BY_NETLIFY_ID,
-  UPDATE_ADREESS_BY_NETLIFY_ID,
-} from './ChangeUserAddress.gql';
 
 export const ChangeUserAddress = () => {
-  const { user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
-
-  const [{ address } = {}] = allUsers || [];
+  const { address } = authenticatedUser || {};
 
   let {
     id,

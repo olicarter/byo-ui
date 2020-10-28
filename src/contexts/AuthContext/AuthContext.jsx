@@ -1,89 +1,62 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
-import GoTrue from 'gotrue-js';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { parse } from 'qs';
 
-import { GET_USERS_BY_NETLIFY_ID } from './AuthContext.gql';
-import { LoginModal } from '../../components';
-
-const { REACT_APP_NETLIFY_IDENTITY_API_URL } = process.env;
-
-const auth = new GoTrue({
-  APIUrl: REACT_APP_NETLIFY_IDENTITY_API_URL,
-  setCookie: true, // required for "remember me" functionality
-});
+import { AUTHENTICATE_USER } from './AuthContext.gql';
 
 export const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const { push } = useHistory();
+  const { search } = useLocation();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [token, setToken] = useState(null);
 
-  const { sub: auth0Id } = user || {};
-
-  const [getUsersByAuth0Id] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
-    variables: { auth0Id },
+  const [authenticateUser] = useMutation(AUTHENTICATE_USER, {
+    onCompleted: ({ authenticateUserWithPassword }) => {
+      const { token = null, item = null } = authenticateUserWithPassword || {};
+      setToken(token);
+      setUser(item);
+      const { from } = parse(search, { ignoreQueryPrefix: true });
+      if (from) push(from);
+    },
   });
 
   useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
-
-  const openLoginModal = () => {
-    setLoginModalVisible(true);
-  };
-
-  const closeLoginModal = () => {
-    setLoginModalVisible(false);
-  };
-
-  const login = (email, password) => {
-    // authenticateUser({ variables: { email, password } });
-  };
-
-  const signup = async (email, password) => {
-    try {
-      return auth.signup(email, password);
-    } catch (error) {
-      return { error };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await user.logout();
-      setIsAuthenticated(false);
-      setUser(null);
-    } catch (error) {
-      return { error };
-    }
-  };
+    setToken(localStorage.getItem('byo.token') || null);
+  }, []);
 
   useEffect(() => {
-    setUser(auth.currentUser());
-  }, [isAuthenticated]);
+    if (token) {
+      localStorage.setItem('byo.token', token);
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  }, [token]);
+
+  const login = (email, password) => {
+    authenticateUser({ variables: { email, password } });
+  };
+
+  const logout = () => {};
 
   return (
     <AuthContext.Provider
       value={{
-        auth,
-        closeLoginModal,
-        errorMessages: {
-          EMAIL_NOT_CONFIRMED: 'invalid_grant: Email not confirmed',
-          INVALID_EMAIL_OR_PASSWORD:
-            'invalid_grant: No user found with that email, or password invalid.',
-        },
         isAuthenticated,
         login,
         logout,
-        openLoginModal,
-        signup,
+        token,
         user,
       }}
     >
-      {loginModalVisible ? <LoginModal /> : null}
       {children}
     </AuthContext.Provider>
   );

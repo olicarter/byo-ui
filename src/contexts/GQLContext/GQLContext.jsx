@@ -5,32 +5,25 @@ import {
   createHttpLink,
   InMemoryCache,
 } from '@apollo/client';
-import { createNetworkStatusNotifier } from 'react-apollo-network-status';
-
-// import * as Styled from './GQLContext.styled';
-import { useAuth } from '../AuthContext';
+import { setContext } from '@apollo/client/link/context';
 
 const { REACT_APP_KEYSTONE_GRAPHQL_URI } = process.env;
 
-const { link, useApolloNetworkStatus } = createNetworkStatusNotifier();
-
-// export const GlobalLoadingIndicator = () => {
-//   const status = useApolloNetworkStatus();
-
-//   return (
-//     <Styled.GlobalLoadingIndicator loading={status.numPendingQueries > 0} />
-//   );
-// };
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('byo.token');
+  return {
+    headers: {
+      ...headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  };
+});
 
 export const GQLContext = createContext({});
 
 export const useGQL = () => useContext(GQLContext);
 
 export const GQLProvider = ({ children }) => {
-  const {
-    user: { token: { access_token: accessToken } = {} } = {},
-  } = useAuth();
-
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     defaultOptions: {
@@ -46,18 +39,13 @@ export const GQLProvider = ({ children }) => {
         errorPolicy: 'all',
       },
     },
-    link: link.concat(
-      createHttpLink({
-        headers: {
-          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-        uri: REACT_APP_KEYSTONE_GRAPHQL_URI,
-      }),
+    link: authLink.concat(
+      createHttpLink({ uri: REACT_APP_KEYSTONE_GRAPHQL_URI }),
     ),
   });
 
   return (
-    <GQLContext.Provider value={{ useApolloNetworkStatus }}>
+    <GQLContext.Provider>
       <ApolloProvider client={client}>{children}</ApolloProvider>
     </GQLContext.Provider>
   );

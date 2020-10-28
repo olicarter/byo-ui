@@ -1,26 +1,12 @@
-import { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
-import { useAuth } from '../../contexts';
 import { sumOrderItems } from '../../helpers';
-import { GET_USERS_BY_NETLIFY_ID } from './BasketTotal.gql';
+import { GET_AUTHENTICATED_USER } from './BasketTotal.gql';
 
 export const BasketTotal = ({ showCurrencySymbol } = {}) => {
-  const { user } = useAuth();
-  const { sub: auth0Id } = user || {};
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [getUser, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
-
-  useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};
 
   let { total } = sumOrderItems(orderItems);

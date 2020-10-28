@@ -1,33 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
-import { useAuth } from '../../contexts';
-import { GET_USER } from './SubmittedUnpaidOrder.gql';
+import { GET_AUTHENTICATED_USER } from './SubmittedUnpaidOrder.gql';
 import * as Styled from './SubmittedUnpaidOrder.styled';
 import { SubTitle } from '../Typography';
 
 export const SubmittedUnpaidOrder = () => {
-  const { user } = useAuth();
-  const { sub: auth0Id } = user || {};
+  const {
+    data: { authenticatedUser } = {},
+    loading: getAuthenticatedUserLoading,
+  } = useLazyQuery(GET_AUTHENTICATED_USER);
 
-  const [
-    getUser,
-    { data: { allUsers } = {}, loading: getUserLoading },
-  ] = useLazyQuery(GET_USER, {
-    variables: { auth0Id },
-  });
-
-  useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const submittedUnpaidOrder = orders.find(
     ({ paid, submitted }) => submitted && !paid,
   );
 
-  if (getUserLoading || !submittedUnpaidOrder) return null;
+  if (getAuthenticatedUserLoading || !submittedUnpaidOrder) return null;
 
   const { deliverySlot: { startTime, endTime } = {} } =
     submittedUnpaidOrder || {};

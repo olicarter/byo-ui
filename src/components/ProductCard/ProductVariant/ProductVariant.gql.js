@@ -2,9 +2,9 @@ import { gql } from '@apollo/client';
 
 import { Order, OrderItem, User } from '../../../fragments';
 
-export const GET_USER = gql`
-  query AddToOrderButtonGetUserOrders($auth0Id: String!) {
-    allUsers(where: { auth0Id: $auth0Id }) {
+export const GET_AUTHENTICATED_USER = gql`
+  query ProductVariantGetAuthenticatedUser {
+    authenticatedUser {
       ...User
     }
   }

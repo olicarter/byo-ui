@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
 import { mdiInformationOutline, mdiMapMarker } from '@mdi/js';
 
-import { useAuth } from '../../contexts';
 import * as Styled from './ProductCard.styled';
-import { GET_USER } from './ProductCard.gql';
+import { GET_AUTHENTICATED_USER } from './ProductCard.gql';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Card } from '../Card';
@@ -15,18 +14,10 @@ export const ProductCard = ({
   product: { id: productId, name, deliveryInfo, origin, slug, variants },
 }) => {
   const { push } = useHistory();
-  const { user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
 
-  const [getUserOrders, { data: { allUsers } = {} }] = useLazyQuery(GET_USER, {
-    variables: { auth0Id },
-  });
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (auth0Id) getUserOrders();
-  }, [auth0Id, getUserOrders]);
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const { orderItems: allOrderItems = [] } =
     orders.find(({ submitted }) => !submitted) || {};
   const orderItems = allOrderItems.filter(

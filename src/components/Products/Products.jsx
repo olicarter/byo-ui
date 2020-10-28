@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import { useAuth } from '../../contexts';
-import { GET_PRODUCTS, GET_USERS_BY_NETLIFY_ID } from './Products.gql';
+import { GET_PRODUCTS, GET_AUTHENTICATED_USER } from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
@@ -17,13 +17,7 @@ export const Products = () => {
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
 
-  const [getUsersByAuth0Id] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, {
-    variables: { auth0Id },
-  });
-
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
+  const { data } = useQuery(GET_AUTHENTICATED_USER);
 
   const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,

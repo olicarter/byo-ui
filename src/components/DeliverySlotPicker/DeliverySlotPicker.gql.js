@@ -11,9 +11,9 @@ export const GET_DELIVERY_SLOTS = gql`
   ${DeliverySlot}
 `;
 
-export const GET_USER = gql`
-  query DeliverySlotPickerGetUsersByAuth0Id($auth0Id: String!) {
-    allUsers(where: { auth0Id: $auth0Id }) {
+export const GET_AUTHENTICATED_USER = gql`
+  query BasketIconGetAuthenticatedUser {
+    authenticatedUser {
       ...User
     }
   }

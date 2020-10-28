@@ -2,35 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 
 import {
-  GET_USERS_BY_NETLIFY_ID,
+  GET_AUTHENTICATED_USER,
   UPDATE_USER_BY_NETLIFY_ID,
 } from './UserDetailsForm.gql';
 import { Label } from '../Label';
 import * as Styled from './UserDetailsForm.styled';
-import { useAuth } from '../../contexts';
 import { Button } from '../Button';
 
 export const UserDetailsForm = () => {
-  const { user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
+  const { data: { authenticatedUser } = {} } = useLazyQuery(
+    GET_AUTHENTICATED_USER,
+  );
 
-  const [
-    getUser,
-    { data: { allUsers } = {} },
-  ] = useLazyQuery(GET_USERS_BY_NETLIFY_ID, { variables: { auth0Id } });
-
-  let [
-    {
-      id,
-      firstName: currentFirstName = '',
-      lastName: currentLastName = '',
-      email: currentEmail = '',
-    } = {},
-  ] = allUsers || [];
-
-  useEffect(() => {
-    if (auth0Id) getUser();
-  }, [auth0Id, getUser]);
+  let {
+    id,
+    firstName: currentFirstName = '',
+    lastName: currentLastName = '',
+    email: currentEmail = '',
+  } = authenticatedUser || {};
 
   const [updateUser] = useMutation(UPDATE_USER_BY_NETLIFY_ID);
   const [firstName, setFirstName] = useState('');

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import React, { useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
 import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
 import { useAuth } from '../../../contexts';
@@ -7,7 +8,7 @@ import { OrderItems, Orders } from '../../../fragments';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
-  GET_USER,
+  GET_AUTHENTICATED_USER,
   UPDATE_ORDER_ITEM,
 } from './ProductVariant.gql';
 import * as Styled from './ProductVariant.styled';
@@ -15,25 +16,19 @@ import * as Styled from './ProductVariant.styled';
 export const ProductVariant = ({
   variant: { id, container, increment, incrementPrice, tags = [], unit },
 }) => {
-  const { isAuthenticated, loginWithRedirect, user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
+  const { push } = useHistory();
+  const { pathname } = useLocation();
+  const { isAuthenticated } = useAuth();
 
   const [incrementLoading, setIncrementLoading] = useState(false);
   const [decrementLoading, setDecrementLoading] = useState(false);
 
-  const [
-    getUsersByAuth0Id,
-    { data: { allUsers } = {}, loading: getUsersByAuth0IdLoading },
-  ] = useLazyQuery(GET_USER, {
-    variables: { auth0Id },
-  });
+  const {
+    data: { authenticatedUser } = {},
+    loading: getAuthenticatedUserLoading,
+  } = useQuery(GET_AUTHENTICATED_USER);
 
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
-
-  const [user] = allUsers || [];
-  const { id: userId, orders = [] } = user || {};
+  const { id: userId, orders = [] } = authenticatedUser || {};
   const unsubmittedOrder = orders.find(({ submitted }) => !submitted) || {};
   const { id: unsubmittedOrderId, orderItems = [] } = unsubmittedOrder;
   const { id: orderItemId, quantity } =
@@ -45,7 +40,7 @@ export const ProductVariant = ({
     onCompleted: () => setIncrementLoading(false),
     update: (cache, { data: { createOrderItem } }) => {
       if (!unsubmittedOrderId) {
-        const userCacheId = cache.identify(user);
+        const userCacheId = cache.identify(authenticatedUser);
         const { orders: currentOrders = [] } = cache.readFragment({
           id: userCacheId,
           fragment: Orders,
@@ -124,16 +119,14 @@ export const ProductVariant = ({
   };
 
   const incrementOrderItem = () => {
-    if (!isAuthenticated)
-      return loginWithRedirect({ redirectUri: window.location.href });
+    if (!isAuthenticated) return push(`/login?from=${pathname}`);
     setIncrementLoading(true);
     if (!!quantity) handleUpdateOrderItem(quantity + 1);
     else handleCreateOrderItem();
   };
 
   const decrementOrderItem = () => {
-    if (!isAuthenticated)
-      return loginWithRedirect({ redirectUri: window.location.href });
+    if (!isAuthenticated) return push(`/login?from=${pathname}`);
     if (!quantity) return;
     setDecrementLoading(true);
     if (quantity > 1) handleUpdateOrderItem(quantity - 1);
@@ -180,7 +173,7 @@ export const ProductVariant = ({
       </Styled.Info>
 
       <Styled.IncrementButton
-        disabled={getUsersByAuth0IdLoading}
+        disabled={getAuthenticatedUserLoading}
         onClick={incrementOrderItem}
       >
         {incrementLoading ? (

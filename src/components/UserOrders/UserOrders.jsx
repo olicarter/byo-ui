@@ -1,28 +1,17 @@
-import React, { useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
-import { useAuth } from '../../contexts';
-import { GET_USERS_BY_NETLIFY_ID } from './UserOrders.gql';
+import { GET_AUTHENTICATED_USER } from './UserOrders.gql';
 import * as Styled from './UserOrders.styled';
 import { Card } from '../Card';
-import { SubTitle } from '../Typography';
 import { UserOrdersProductOrderItems } from './UserOrdersProductOrderItems';
 
 export const UserOrders = () => {
-  const { user: authUser } = useAuth();
-  const { sub: auth0Id } = authUser || {};
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-  );
-
-  const [{ orders = [] } = {}] = allUsers || [];
+  const { orders = [] } = authenticatedUser || {};
   const submittedOrders = orders.filter(({ paid, submitted }) => submitted);
-
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id({ variables: { auth0Id } });
-  }, [auth0Id, getUsersByAuth0Id]);
 
   return (
     <>
