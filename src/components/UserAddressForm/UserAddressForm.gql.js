@@ -13,8 +13,7 @@ export const GET_AUTHENTICATED_USER = gql`
 
 export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
   mutation CreateUserAdress(
-    $firstName: String!
-    $lastName: String!
+    $name: String!
     $phoneNumber: String!
     $street: String!
     $flatNumber: String!
@@ -22,8 +21,7 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
   ) {
     createAddress(
       data: {
-        firstName: $firstName
-        lastName: $lastName
+        name: $name
         phoneNumber: $phoneNumber
         street: $street
         flatNumber: $flatNumber
@@ -39,8 +37,7 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
 export const UPDATE_ORDER_ADDRESS = gql`
   mutation UserAddressFormUpdateOrderAddress(
     $id: ID!
-    $firstName: String!
-    $lastName: String!
+    $name: String!
     $phoneNumber: String!
     $street: String!
     $flatNumber: String!
@@ -51,8 +48,7 @@ export const UPDATE_ORDER_ADDRESS = gql`
       data: {
         address: {
           create: {
-            firstName: $firstName
-            lastName: $lastName
+            name: $name
             phoneNumber: $phoneNumber
             street: $street
             flatNumber: $flatNumber

@@ -9,7 +9,7 @@ export const TextInput = styled.input(
   }) => ({
     background: white,
     border: 'none',
-    borderBottom: '2px solid',
+    borderBottom: '3px solid',
     borderColor: transparentize(0.66, black),
     caretColor: black,
     color: black,

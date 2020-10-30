@@ -6,10 +6,9 @@ import { Address } from './Address';
 export const User = gql`
   fragment User on User {
     id
-    firstName
-    lastName
+    name
     email
-    auth0Id
+    phone
     ...Orders
     address {
       ...Address

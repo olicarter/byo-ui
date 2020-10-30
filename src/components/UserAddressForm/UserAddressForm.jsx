@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import {
-  GET_USERS_BY_NETLIFY_ID,
+  GET_AUTHENTICATED_USER,
   SET_ORDER_ADDRESS,
   UPDATE_ORDER_ADDRESS,
 } from './UserAddressForm.gql';
@@ -13,30 +13,17 @@ import { TextInput } from '../TextInput';
 export const UserAddressForm = () => {
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const [getUsersByAuth0Id, { data: { allUsers } = {} }] = useLazyQuery(
-    GET_USERS_BY_NETLIFY_ID,
-    {
-      variables: { auth0Id },
-    },
-  );
-
-  const [{ address } = {}] = allUsers || [];
+  const { address, orders = [] } = authenticatedUser || {};
   const [{ id: addressId } = {}] = address || [];
   let {
-    firstName: currentFirstName,
-    lastName: currentLastName,
+    name: currentName,
     phoneNumber: currentPhoneNumber,
     street: currentStreetName,
     flatNumber: currentFlatNumber,
     postCode: currentPostCode,
   } = address || {};
 
-  useEffect(() => {
-    if (auth0Id) getUsersByAuth0Id();
-  }, [auth0Id, getUsersByAuth0Id]);
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [streetName, setStreetName] = useState('');
   const [flatNumber, setFlatNumber] = useState('');
@@ -47,14 +34,9 @@ export const UserAddressForm = () => {
   const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
 
   useEffect(() => {
-    if (!firstName) setFirstName(currentFirstName);
-    else if (firstName !== currentFirstName) setIsAddressChanged(true);
-  }, [firstName, currentFirstName]);
-
-  useEffect(() => {
-    if (!lastName) setLastName(currentLastName);
-    else if (lastName !== currentLastName) setIsAddressChanged(true);
-  }, [lastName, currentLastName]);
+    if (!name) setName(currentName);
+    else if (name !== currentName) setIsAddressChanged(true);
+  }, [name, currentName]);
 
   useEffect(() => {
     if (!phoneNumber) setPhoneNumber(currentPhoneNumber);
@@ -84,8 +66,7 @@ export const UserAddressForm = () => {
       updateOrderAddress({
         variables: {
           id: unsubmittedOrderId,
-          firstName,
-          lastName,
+          name,
           phoneNumber,
           street: streetName,
           flatNumber,
@@ -106,11 +87,8 @@ export const UserAddressForm = () => {
       info="Enter the address you would like your order delivered to."
     >
       <FormGroup horizontal margin="0">
-        <FormGroup label="First name" margin="0">
-          <TextInput onChange={setFirstName} value={firstName} />
-        </FormGroup>
-        <FormGroup label="Last name" margin="0">
-          <TextInput onChange={setLastName} value={lastName} />
+        <FormGroup label="Name" margin="0">
+          <TextInput onChange={setName} value={name} />
         </FormGroup>
       </FormGroup>
       <FormGroup horizontal>

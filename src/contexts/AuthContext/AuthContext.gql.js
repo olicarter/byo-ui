@@ -21,3 +21,19 @@ export const UNAUTHENTICATE_USER = gql`
     }
   }
 `;
+
+export const CREATE_USER = gql`
+  mutation AuthContextCreateUser(
+    $email: String!
+    $password: String!
+    $name: String!
+    $phone: String!
+  ) {
+    createUser(
+      data: { email: $email, password: $password, name: $name, phone: $phone }
+    ) {
+      ...User
+    }
+  }
+  ${User}
+`;

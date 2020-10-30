@@ -10,12 +10,3 @@ export const GET_PRODUCTS = gql`
   }
   ${Product}
 `;
-
-export const GET_AUTHENTICATED_USER = gql`
-  query ProductsGetAuthenticatedUser {
-    authenticatedUser {
-      ...User
-    }
-  }
-  ${User}
-`;

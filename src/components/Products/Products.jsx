@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import { useAuth } from '../../contexts';
-import { GET_PRODUCTS, GET_AUTHENTICATED_USER } from './Products.gql';
+import { GET_PRODUCTS } from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
@@ -12,12 +12,9 @@ import { ProductCard } from '../ProductCard';
 export const Products = () => {
   const { push } = useHistory();
   const { search } = useLocation();
-  const { isAuthenticated, user } = useAuth();
-  const { sub: auth0Id } = user || {};
+  const { isAuthenticated } = useAuth();
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
-
-  const { data } = useQuery(GET_AUTHENTICATED_USER);
 
   const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
     ignoreQueryPrefix: true,
@@ -45,7 +42,7 @@ export const Products = () => {
           View basket
         </FloatingButton>
       ) : (
-        <FloatingButton onClick={() => push('/login')}>
+        <FloatingButton onClick={() => push('/login?from=/products')}>
           Log in to order
         </FloatingButton>
       )}
