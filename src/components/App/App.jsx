@@ -100,6 +100,9 @@ export const App = () => {
             <Section>
               <Markdown># Products</Markdown>
             </Section>
+            <Section>
+              <ProductSearch />
+            </Section>
             <Section margin="0" padding="0">
               <CategoryBar />
               <TagBar />
