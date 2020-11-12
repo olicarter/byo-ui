@@ -5,27 +5,49 @@ import { useAuth } from '../../contexts';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
 import { Label } from '../Label';
+import { PostcodeInput } from '../PostcodeInput';
 import { TextInput } from '../TextInput';
 
 export const RegisterForm = () => {
   const { useRegister } = useAuth();
-  const { handleSubmit, register: registerInput, errors } = useForm();
+  const { handleSubmit, register: registerInput, errors } = useForm({
+    reValidateMode: 'onSubmit',
+  });
 
   const [register, { error: registerError }] = useRegister();
 
-  const onSubmit = ({ email, name, password, phone }) => {
-    register({ variables: { email, name, password, phone } });
+  const onSubmit = ({ email, name, password, phone, postcode }) => {
+    register({
+      variables: {
+        email,
+        name,
+        password,
+        phone,
+      },
+    });
   };
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
+          label="Postcode"
+          info="Enter your postcode to check if we deliver to you"
+          errorInfo={
+            errors.postcode &&
+            errors.postcode.type === 'validate' &&
+            "Sorry, we don't deliver to you yet"
+          }
+        >
+          <PostcodeInput register={registerInput} />
+        </FormGroup>
+
+        <FormGroup
           label="Email"
+          info="Your email is required for placing and keeping track of orders"
           errorInfo={errors.email && errors.email.message}
         >
           <TextInput
-            autoFocus
             name="email"
             ref={registerInput({
               required: 'Please enter your email',
@@ -39,6 +61,7 @@ export const RegisterForm = () => {
 
         <FormGroup
           label="Password"
+          info="You'll need this for logging into your BYO account"
           errorInfo={errors.password && errors.password.message}
         >
           <TextInput
@@ -54,7 +77,11 @@ export const RegisterForm = () => {
           />
         </FormGroup>
 
-        <FormGroup label="Name" errorInfo={errors.name && errors.name.message}>
+        <FormGroup
+          label="Name"
+          info="We need this for delivery and some personalisation when contacting you"
+          errorInfo={errors.name && errors.name.message}
+        >
           <TextInput
             name="name"
             ref={registerInput({
@@ -70,6 +97,7 @@ export const RegisterForm = () => {
 
         <FormGroup
           label="Phone"
+          info="We use this for essential delivery contact only"
           errorInfo={errors.phone && errors.phone.message}
         >
           <TextInput

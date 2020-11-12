@@ -36,6 +36,7 @@ export const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
           label="Email"
+          info="This should be the email you registered with"
           errorInfo={errors.email && errors.email.message}
         >
           <TextInput
@@ -53,6 +54,7 @@ export const LoginForm = () => {
 
         <FormGroup
           label="Password"
+          info="And the password you chose on registration"
           errorInfo={errors.password && errors.password.message}
         >
           <TextInput
