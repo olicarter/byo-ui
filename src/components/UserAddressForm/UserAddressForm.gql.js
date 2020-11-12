@@ -11,13 +11,21 @@ export const GET_AUTHENTICATED_USER = gql`
   ${User}
 `;
 
+export const GET_POSTCODE = gql`
+  query UserAddressFormGetPostcode($postcode: String!) {
+    _allPostcodesMeta(where: { postcode: $postcode }) {
+      count
+    }
+  }
+`;
+
 export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
   mutation CreateUserAdress(
     $name: String!
     $phoneNumber: String!
     $street: String!
     $flatNumber: String!
-    $postCode: String!
+    $postcode: String!
   ) {
     createAddress(
       data: {
@@ -25,7 +33,7 @@ export const CREATE_ADREESS_BY_NETLIFY_ID = gql`
         phoneNumber: $phoneNumber
         street: $street
         flatNumber: $flatNumber
-        postCode: $postCode
+        postcode: $postcode
       }
     ) {
       ...Address
@@ -38,21 +46,19 @@ export const UPDATE_ORDER_ADDRESS = gql`
   mutation UserAddressFormUpdateOrderAddress(
     $id: ID!
     $name: String!
-    $phoneNumber: String!
-    $street: String!
-    $flatNumber: String!
-    $postCode: String!
+    $phone: String!
+    $address: String!
+    $postcode: String!
   ) {
     updateOrder(
       id: $id
       data: {
         address: {
           create: {
+            address: $address
             name: $name
-            phoneNumber: $phoneNumber
-            street: $street
-            flatNumber: $flatNumber
-            postCode: $postCode
+            phone: $phone
+            postcode: $postcode
           }
         }
       }

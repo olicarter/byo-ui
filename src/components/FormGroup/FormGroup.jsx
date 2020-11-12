@@ -12,7 +12,6 @@ export const FormGroup = ({
   label,
   largeLabel,
   margin = '2rem 0 0',
-  width,
 }) => (
   <Styled.FormGroup flex={flex} horizontal={horizontal} margin={margin}>
     {label ? (
