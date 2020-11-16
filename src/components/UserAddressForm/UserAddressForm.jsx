@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { print } from 'graphql';
-import { useMutation, useQuery } from '@apollo/client';
-import { useForm } from 'react-hook-form';
 
 import {
   GET_AUTHENTICATED_USER,
@@ -16,76 +14,6 @@ import { TextInput } from '../TextInput';
 const { REACT_APP_KEYSTONE_GRAPHQL_URI } = process.env;
 
 export const UserAddressForm = () => {
-  const { handleSubmit, register, errors } = useForm();
-
-  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
-
-  const { address, orders = [] } = authenticatedUser || {};
-  // const [{ id: addressId } = {}] = address || [];
-  // let {
-  //   name: currentName,
-  //   phoneNumber: currentPhoneNumber,
-  //   street: currentStreetName,
-  //   flatNumber: currentFlatNumber,
-  //   postCode: currentPostCode,
-  // } = address || {};
-
-  // const [name, setName] = useState('');
-  // const [phoneNumber, setPhoneNumber] = useState('');
-  // const [streetName, setStreetName] = useState('');
-  // const [flatNumber, setFlatNumber] = useState('');
-  // const [postCode, setPostCode] = useState('');
-  // const [isAddressChanged, setIsAddressChanged] = useState(false);
-
-  const [updateOrderAddress] = useMutation(UPDATE_ORDER_ADDRESS);
-  // const [setOrderAddress] = useMutation(SET_ORDER_ADDRESS);
-
-  // useEffect(() => {
-  //   if (!name) setName(currentName);
-  //   else if (name !== currentName) setIsAddressChanged(true);
-  // }, [name, currentName]);
-
-  // useEffect(() => {
-  //   if (!phoneNumber) setPhoneNumber(currentPhoneNumber);
-  //   else if (phoneNumber !== currentPhoneNumber) setIsAddressChanged(true);
-  // }, [currentPhoneNumber]);
-
-  // useEffect(() => {
-  //   if (!streetName) setStreetName(currentStreetName);
-  //   else if (streetName !== currentStreetName) setIsAddressChanged(true);
-  // }, [currentStreetName]);
-
-  // useEffect(() => {
-  //   if (!flatNumber) setFlatNumber(currentFlatNumber);
-  //   else if (flatNumber !== currentFlatNumber) setIsAddressChanged(true);
-  // }, [currentFlatNumber]);
-
-  // useEffect(() => {
-  //   if (!postCode) setPostCode(currentPostCode);
-  //   else if (postCode !== currentPostCode) setIsAddressChanged(true);
-  // }, [currentPostCode]);
-
-  const { id: unsubmittedOrderId } =
-    orders.find(({ submitted }) => !submitted) || {};
-
-  const onValid = ({ address, name, phone, postcode }) => {
-    if (address === null) {
-      updateOrderAddress({
-        variables: {
-          id: unsubmittedOrderId,
-          address,
-          name,
-          phone,
-          postcode,
-        },
-      });
-    } else {
-      // setOrderAddress({
-      //   variables: { id: unsubmittedOrderId, addressId },
-      // });
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <FormGroup

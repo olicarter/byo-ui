@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
+import { useFormContext } from 'react-hook-form';
 
 import {
   GET_AUTHENTICATED_USER,
@@ -12,6 +13,8 @@ import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
 import { Select } from '../Select';
 
 export const DeliverySlotPicker = () => {
+  const { register } = useFormContext();
+
   const {
     data: { allDeliverySlots } = {},
     loading: getDeliverySlotsLoading,
@@ -61,7 +64,11 @@ export const DeliverySlotPicker = () => {
           if (setOrderDeliverySlotLoading) return 'Selecting slot...';
           return undefined;
         })()}
+        name="deliverySlot"
         onChange={handleChange}
+        ref={register({
+          required: 'You must select a delivery slot',
+        })}
         value={unsubmittedOrderDeliverySlotId}
       >
         <option disabled value="">
