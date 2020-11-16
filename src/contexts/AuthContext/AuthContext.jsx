@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { parse } from 'qs';
 
 import {
   AUTHENTICATE_USER,
   CREATE_USER,
+  GET_AUTHENTICATED_USER,
   UNAUTHENTICATE_USER,
 } from './AuthContext.gql';
 
@@ -19,6 +20,8 @@ export const AuthProvider = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+
+  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const useRegister = () =>
     useMutation(CREATE_USER, {
@@ -57,6 +60,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem('byo.token'));
   }, []);
+
+  useEffect(() => {
+    if (authenticatedUser === null) {
+      localStorage.removeItem('byo.token');
+      setIsAuthenticated(false);
+    }
+  }, [authenticatedUser]);
 
   const logout = async returnTo => {
     await unauthenticateUser();

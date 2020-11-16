@@ -6,9 +6,9 @@ import * as Styled from './PostcodeInput.styled';
 
 const { REACT_APP_KEYSTONE_GRAPHQL_URI } = process.env;
 
-export const PostcodeInput = ({ register }) => (
+export const PostcodeInput = ({ autoFocus = false, register }) => (
   <Styled.PostcodeInput
-    autoFocus
+    autoFocus={autoFocus}
     name="postcode"
     ref={register({
       required: 'Please enter your postcode',
@@ -17,6 +17,7 @@ export const PostcodeInput = ({ register }) => (
         message: 'That postcode looks too short',
       },
       validate: async postcode => {
+        /** @todo move to helper */
         const token = localStorage.getItem('byo.token');
         const res = await fetch(REACT_APP_KEYSTONE_GRAPHQL_URI, {
           method: 'POST',
