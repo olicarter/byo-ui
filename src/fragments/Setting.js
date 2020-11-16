@@ -3,11 +3,24 @@ import { gql } from '@apollo/client';
 export const Setting = gql`
   fragment Setting on Setting {
     id
+
+    aboutHeader
+    accountHeader
+    basketHeader
+    checkoutHeader
+    loginHeader
+    registerHeader
+    shopHeader
+
     aboutContent
-    chooseDeliverySlotInfo
-    facebookUrl
+    footerContent
     homeContent
+
+    facebookUrl
     instagramUrl
+
+    chooseDeliverySlotInfo
+
     minOrderValue
     orderSubmissionInfo
   }

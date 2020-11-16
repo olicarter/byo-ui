@@ -2,24 +2,24 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import { useAuth } from '../../contexts';
-import { GET_AUTHENTICATED_USER } from './AccountPage.gql';
+import { GET_ALL_SETTINGS } from './AccountPage.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Layout } from '../Layout';
+import { Markdown } from '../Markdown';
 import { Section } from '../Section';
-import { Title } from '../Typography';
 import { UserOrders } from '../UserOrders';
 
 export const AccountPage = () => {
   const { logout } = useAuth();
 
-  const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
-
-  const { name = '' } = authenticatedUser || {};
+  const {
+    data: { allSettings: [{ accountHeader = '' } = {}] = [] } = {},
+  } = useQuery(GET_ALL_SETTINGS);
 
   return (
     <Layout>
       <Section>
-        {name ? <Title>Hello, {name}</Title> : <Title>Account</Title>}
+        <Markdown>{accountHeader}</Markdown>
       </Section>
       <Section>
         <UserOrders />

@@ -5,18 +5,21 @@ import { GET_ALL_SETTINGS } from './BasketPage.gql';
 import { Basket } from '../Basket';
 import { BasketTotal } from '../BasketTotal';
 import { Layout } from '../Layout';
+import { Markdown } from '../Markdown';
 import { Section } from '../Section';
-import { SubTitle, Title } from '../Typography';
+import { SubTitle } from '../Typography';
 
 export const BasketPage = () => {
   const {
-    data: { allSettings: [{ minOrderValue = 0 } = {}] = [] } = {},
+    data: {
+      allSettings: [{ basketHeader = '', minOrderValue = 0 } = {}] = [],
+    } = {},
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
     <Layout>
       <Section>
-        <Title>Basket</Title>
+        <Markdown>{basketHeader}</Markdown>
         <SubTitle color={BasketTotal() < minOrderValue ? 'red' : undefined}>
           <BasketTotal showCurrencySymbol /> / £
           {Number(minOrderValue).toFixed(2)} min

@@ -3,7 +3,7 @@ import React from 'react';
 import * as Styled from './Markdown.styled';
 import { SubTitle, Title } from '../Typography';
 
-export const Markdown = ({ children = '' }) => (
+export const Markdown = ({ children = '', overrides = {} }) => (
   <Styled.Markdown
     options={{
       overrides: {
@@ -11,6 +11,7 @@ export const Markdown = ({ children = '' }) => (
         h2: SubTitle,
         img: Styled.Image,
         p: Styled.Paragraph,
+        ...overrides,
       },
     }}
   >

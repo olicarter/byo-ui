@@ -10,7 +10,7 @@ export const User = gql`
     email
     phone
     ...Orders
-    address {
+    addresses {
       ...Address
     }
   }

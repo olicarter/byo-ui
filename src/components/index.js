@@ -1,3 +1,4 @@
+export * from './AboutPage';
 export * from './App';
 export * from './Basket';
 export * from './BasketIcon';

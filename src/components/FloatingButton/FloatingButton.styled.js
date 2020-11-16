@@ -1,23 +1,16 @@
 import styled from 'styled-components';
 import { darken, readableColor, transparentize } from 'polished';
 
-export const FloatingButtonWrapper = styled.div(
-  ({
-    theme: {
-      palette: { white },
-    },
-  }) => ({
-    // background: transparentize(0.8, white),
-    backdropFilter: 'blur(0.5rem)',
-    bottom: 0,
-    left: 0,
-    padding: '1rem',
-    position: 'fixed',
-    right: 0,
-    width: '100%',
-    zIndex: 1,
-  }),
-);
+export const FloatingButtonWrapper = styled.div(() => ({
+  backdropFilter: 'blur(0.5rem)',
+  bottom: 0,
+  left: 0,
+  padding: '1rem 0',
+  position: 'sticky',
+  right: 0,
+  width: '100%',
+  zIndex: 1,
+}));
 
 export const FloatingButton = styled.button(
   ({
