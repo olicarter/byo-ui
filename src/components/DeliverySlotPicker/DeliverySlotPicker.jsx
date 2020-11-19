@@ -37,11 +37,14 @@ export const DeliverySlotPicker = () => {
 
   (allDeliverySlots || []).forEach(deliverySlot => {
     const { startTime } = deliverySlot;
+    const dt = DateTime.fromObject({ zone: 'Europe/London' });
     const st = DateTime.fromISO(startTime, { zone: 'Europe/London' });
-    deliverySlotsByDay[st.toFormat('cccc d LLL')] = [
-      ...(deliverySlotsByDay[st.toFormat('cccc d LLL')] || []),
-      deliverySlot,
-    ];
+    if (dt.startOf('day') < st.startOf('day')) {
+      deliverySlotsByDay[st.toFormat('cccc d LLL')] = [
+        ...(deliverySlotsByDay[st.toFormat('cccc d LLL')] || []),
+        deliverySlot,
+      ];
+    }
   });
 
   const handleChange = ({ target: { value } }) => {

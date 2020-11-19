@@ -18,7 +18,7 @@ export const FloatingButton = ({
     <Styled.FloatingButton
       backgroundColor={backgroundColor}
       borderRadius={borderRadius}
-      disabled={disabled}
+      disabled={disabled || loading}
       flex={flex}
       onClick={onClick}
       type={type}

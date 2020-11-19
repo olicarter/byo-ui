@@ -12,16 +12,8 @@ export const GET_AUTHENTICATED_USER = gql`
 `;
 
 export const UPDATE_USER_BY_NETLIFY_ID = gql`
-  mutation UpdateUserInformation(
-    $id: ID!
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-  ) {
-    updateUser(
-      id: $id
-      data: { firstName: $firstName, lastName: $lastName, email: $email }
-    ) {
+  mutation UpdateUserInformation($id: ID!, $name: String!, $email: String!) {
+    updateUser(id: $id, data: { name: $name, email: $email }) {
       ...User
     }
   }

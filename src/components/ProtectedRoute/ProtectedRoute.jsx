@@ -1,17 +1,18 @@
 import React from 'react';
-import { Route, useHistory, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
+
+import { useAuth } from '../../contexts';
 
 export const ProtectedRoute = ({ children, path, ...args }) => {
-  const { push } = useHistory();
-
-  if (useRouteMatch(path) && !localStorage.getItem('byo.token')) {
-    push({ pathname: '/login', search: `from=${path}` });
-    return null;
-  }
+  const { isAuthenticated } = useAuth();
 
   return (
     <Route path={path} {...args}>
-      {children}
+      {isAuthenticated ? (
+        children
+      ) : (
+        <Redirect to={{ pathname: '/login', search: `from=${path}` }} />
+      )}
     </Route>
   );
 };

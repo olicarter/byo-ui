@@ -14,39 +14,23 @@ export const UserDetailsForm = () => {
     GET_AUTHENTICATED_USER,
   );
 
-  let {
-    id,
-    firstName: currentFirstName = '',
-    lastName: currentLastName = '',
-    email: currentEmail = '',
-  } = authenticatedUser || {};
+  let { id, name: currentName = '', email: currentEmail = '' } =
+    authenticatedUser || {};
 
   const [updateUser] = useMutation(UPDATE_USER_BY_NETLIFY_ID);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    setFirstName(currentFirstName);
-  }, [currentFirstName]);
-
-  useEffect(() => {
-    setLastName(currentLastName);
-  }, [currentLastName]);
+    setName(currentName);
+  }, [currentName]);
 
   useEffect(() => {
     setEmail(currentEmail);
   }, [currentEmail]);
 
   const handleSubmit = () => {
-    updateUser({
-      variables: {
-        id: id,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-      },
-    });
+    updateUser({ variables: { id, name, email } });
   };
 
   return (
@@ -54,20 +38,12 @@ export const UserDetailsForm = () => {
       <Styled.Form>
         <Styled.Heading>Personal Datails</Styled.Heading>
         <Styled.FormGroup>
-          <Label>Firstname</Label>
+          <Label>Name</Label>
           <Styled.TextInput
             type="text"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          ></Styled.TextInput>
-        </Styled.FormGroup>
-        <Styled.FormGroup>
-          <Label>Lastname</Label>
-          <Styled.TextInput
-            type="text"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-          ></Styled.TextInput>
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
         </Styled.FormGroup>
         <Styled.FormGroup>
           <Label>Email</Label>
@@ -75,7 +51,7 @@ export const UserDetailsForm = () => {
             type="text"
             value={email}
             onChange={e => setEmail(e.target.value)}
-          ></Styled.TextInput>
+          />
         </Styled.FormGroup>
       </Styled.Form>
       <Button onClick={handleSubmit}>Update</Button>
