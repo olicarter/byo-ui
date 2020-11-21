@@ -20,13 +20,17 @@ export const Products = () => {
     ignoreQueryPrefix: true,
   });
 
+  console.log('queryTags', queryTags);
+
   const filteredProducts = allProducts
     .filter(
       ({ category: { slug: categorySlug } = {}, tags = [] }) =>
         (!queryCategorySlug || queryCategorySlug === categorySlug) &&
-        tags.some(({ slug: tagSlug }) =>
-          queryTags.length ? queryTags.includes(tagSlug) : true,
-        ),
+        (queryTags.length
+          ? queryTags.every(tag =>
+              tags.find(({ slug: tagSlug }) => tagSlug === tag),
+            )
+          : true),
     )
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 

@@ -40,8 +40,6 @@ const Logo = () => (
 export const TopBar = () => {
   const { pathname, search } = useLocation();
 
-  const tagBarVisible = !!useRouteMatch({ exact: true, path: '/products' });
-
   const { 'menu-visible': menuVisible } = parse(search, {
     ignoreQueryPrefix: true,
   });
