@@ -7,6 +7,7 @@ export const Setting = gql`
     aboutHeader
     accountHeader
     basketHeader
+    blogHeader
     checkoutHeader
     loginHeader
     registerHeader

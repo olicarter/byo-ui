@@ -8,14 +8,13 @@ import * as Styled from './App.styled';
 import { AboutPage } from '../AboutPage';
 import { AccountPage } from '../AccountPage';
 import { BasketPage } from '../BasketPage';
-import { CategoryBar } from '../CategoryBar';
+import { BlogPage } from '../BlogPage';
 import { CheckoutPage } from '../CheckoutPage';
 import { Footer } from '../Footer';
 import { Home } from '../Home';
 import { Layout } from '../Layout';
 import { LoadingPage } from '../LoadingPage';
 import { LoginPage } from '../LoginPage';
-import { Markdown } from '../Markdown';
 import { Product } from '../Product';
 import { ProductsPage } from '../ProductsPage';
 import { ProtectedRoute } from '../ProtectedRoute';
@@ -76,6 +75,10 @@ export const App = () => {
 
         <Route exact path="/about">
           <AboutPage />
+        </Route>
+
+        <Route exact path="/blog">
+          <BlogPage />
         </Route>
 
         <Route exact path="/products">

@@ -1,4 +1,5 @@
 export * from './Address';
+export * from './BlogPost';
 export * from './Category';
 export * from './Container';
 export * from './DeliverySlot';

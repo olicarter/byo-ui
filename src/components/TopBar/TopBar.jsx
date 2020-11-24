@@ -63,6 +63,12 @@ export const TopBar = () => {
       title: 'About',
       to: '/about',
     },
+    {
+      key: 'blog',
+      icon: mdiInformationOutline,
+      title: 'Blog',
+      to: '/blog',
+    },
   ];
 
   const menuItemsRight = [
@@ -160,25 +166,13 @@ export const TopBar = () => {
             {isDesktop ? (
               <Styled.Nav>
                 <Styled.NavItems>
-                  <Styled.NavItem>
-                    <Styled.Link
-                      selected={pathname.includes('products')}
-                      to="/products"
-                    >
-                      shop
-                    </Styled.Link>
-                  </Styled.NavItem>
-                </Styled.NavItems>
-
-                <Styled.NavItems>
-                  <Styled.NavItem>
-                    <Styled.Link
-                      selected={pathname.includes('about')}
-                      to="/about"
-                    >
-                      about
-                    </Styled.Link>
-                  </Styled.NavItem>
+                  {menuItemsLeft.map(({ key, title, to }) => (
+                    <Styled.NavItem key={key}>
+                      <Styled.Link selected={pathname.includes(to)} to={to}>
+                        {title.toLowerCase()}
+                      </Styled.Link>
+                    </Styled.NavItem>
+                  ))}
                 </Styled.NavItems>
               </Styled.Nav>
             ) : null}
