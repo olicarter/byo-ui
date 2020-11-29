@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
+import * as Sentry from '@sentry/react';
 
 import { useAuth } from '../../contexts';
 import { GET_PRODUCTS } from './Products.gql';
@@ -20,8 +21,6 @@ export const Products = () => {
     ignoreQueryPrefix: true,
   });
 
-  console.log('queryTags', queryTags);
-
   const filteredProducts = allProducts
     .filter(
       ({ category: { slug: categorySlug } = {}, tags = [] }) =>
@@ -38,7 +37,9 @@ export const Products = () => {
     <>
       <Grid>
         {filteredProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <Sentry.ErrorBoundary>
+            <ProductCard key={product.id} product={product} />
+          </Sentry.ErrorBoundary>
         ))}
       </Grid>
       {isAuthenticated ? (

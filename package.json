@@ -6,6 +6,8 @@
     "@apollo/client": "^3.1.4",
     "@mdi/js": "^5.5.55",
     "@mdi/react": "^1.4.0",
+    "@sentry/react": "^5.27.6",
+    "@sentry/tracing": "^5.27.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
