@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useFormContext } from 'react-hook-form';
 
+import { getUnsubmittedOrderFromUser } from '../../helpers';
 import {
   GET_AUTHENTICATED_USER,
   GET_DELIVERY_SLOTS,
@@ -25,9 +26,9 @@ export const DeliverySlotPicker = () => {
     loading: getAuthenticatedUserLoading,
   } = useQuery(GET_AUTHENTICATED_USER);
 
-  const { orders = [] } = authenticatedUser || {};
-  const { id: unsubmittedOrderId, deliverySlot } =
-    orders.find(({ submitted }) => !submitted) || {};
+  const { id: unsubmittedOrderId, deliverySlot } = getUnsubmittedOrderFromUser(
+    authenticatedUser,
+  );
   const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
 
   /** @todo update delivery slot count after mutation */

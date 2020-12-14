@@ -1,17 +1,12 @@
 import { gql } from '@apollo/client';
 
-import { Postcode } from './Postcode';
-
 export const Address = gql`
   fragment Address on Address {
     id
-    address
+    street
     deliveryInstructions
     name
     phone
-    postcode {
-      ...Postcode
-    }
+    postcode
   }
-  ${Postcode}
 `;

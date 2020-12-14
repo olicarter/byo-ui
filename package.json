@@ -19,6 +19,7 @@
     "markdown-to-jsx": "^7.0.0",
     "netlify-identity-widget": "^1.9.1",
     "polished": "^3.6.6",
+    "postcode": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.9.6",

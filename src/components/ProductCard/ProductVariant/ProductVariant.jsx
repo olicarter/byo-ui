@@ -5,6 +5,7 @@ import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
 import { useAuth } from '../../../contexts';
 import { OrderItems, Orders } from '../../../fragments';
+import { getUnsubmittedOrderFromUser } from '../../../helpers';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
@@ -28,8 +29,8 @@ export const ProductVariant = ({
     loading: getAuthenticatedUserLoading,
   } = useQuery(GET_AUTHENTICATED_USER);
 
-  const { id: userId, orders = [] } = authenticatedUser || {};
-  const unsubmittedOrder = orders.find(({ submitted }) => !submitted) || {};
+  const { id: userId } = authenticatedUser || {};
+  const unsubmittedOrder = getUnsubmittedOrderFromUser(authenticatedUser) || {};
   const { id: unsubmittedOrderId, orderItems = [] } = unsubmittedOrder;
   const { id: orderItemId, quantity } =
     orderItems.find(

@@ -1,30 +1,40 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { print } from 'graphql';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { sumOrderItems } from '../../helpers';
+import { getUnsubmittedOrderFromUser, sumOrderItems } from '../../helpers';
 import {
   GET_AUTHENTICATED_USER,
-  GET_POSTCODE,
   GET_SETTINGS,
   SUBMIT_ORDER,
   UPDATE_AUTHENTICATED_USER,
 } from './Checkout.gql';
+import { AddressSelect } from '../AddressSelect';
 import { BasketTotal } from '../BasketTotal';
 import { DeliverySlotPicker } from '../DeliverySlotPicker';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
-import { PostcodeInput } from '../PostcodeInput';
-import { TextInput } from '../TextInput';
+import { OrderDeliveryAddressDeliveryInstructionsInput } from './OrderDeliveryAddressDeliveryInstructionsInput';
+import { OrderDeliveryAddressNameInput } from './OrderDeliveryAddressNameInput';
+import { OrderDeliveryAddressPhoneInput } from './OrderDeliveryAddressPhoneInput';
+import { OrderDeliveryAddressStreetInput } from './OrderDeliveryAddressStreetInput';
+import { OrderDeliveryAddressPostcodeInput } from './OrderDeliveryAddressPostcodeInput';
 
-const { REACT_APP_KEYSTONE_GRAPHQL_URI } = process.env;
+const inputNames = {
+  address: 'address',
+  deliveryInstructions: 'deliveryInstructions',
+  deliverySlot: 'deliverySlot',
+  name: 'name',
+  phone: 'phone',
+  postcode: 'postcode',
+  street: 'street',
+};
 
 export const Checkout = () => {
   const { push } = useHistory();
   const formMethods = useForm({ reValidateMode: 'onSubmit' });
-  const { errors, handleSubmit, register, setValue } = formMethods;
+  const { errors, handleSubmit, register, setValue, watch } = formMethods;
 
   const {
     data: {
@@ -36,37 +46,16 @@ export const Checkout = () => {
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
+  const { phone: userPhone } = authenticatedUser || {};
+
   const {
-    address: userAddress,
-    name: userName,
-    orders = [],
-    phone: userPhone,
-  } = authenticatedUser || {};
-
-  const { address, deliveryInstructions, name, phone, postcode } =
-    userAddress || {};
-  const { id: unsubmittedOrderId, orderItems = [] } =
-    orders.find(({ submitted }) => !submitted) || {};
+    id: unsubmittedOrderId,
+    orderItems = [],
+  } = getUnsubmittedOrderFromUser(authenticatedUser);
 
   useEffect(() => {
-    setValue('address', address);
-  }, [address]);
-
-  useEffect(() => {
-    setValue('deliveryInstructions', deliveryInstructions);
-  }, [deliveryInstructions]);
-
-  useEffect(() => {
-    setValue('name', name || userName);
-  }, [name, userName]);
-
-  useEffect(() => {
-    setValue('phone', phone || userPhone);
-  }, [phone]);
-
-  useEffect(() => {
-    setValue('postcode', postcode);
-  }, [postcode]);
+    setValue(inputNames.phone, userPhone);
+  }, [userPhone]);
 
   const [updateAuthenticatedUser] = useMutation(UPDATE_AUTHENTICATED_USER);
 
@@ -80,31 +69,27 @@ export const Checkout = () => {
     },
   });
 
-  const onValid = async ({ address, name, phone, postcode }) => {
-    /** @todo move to helper */
-    const token = localStorage.getItem('byo.token');
-    const res = await fetch(REACT_APP_KEYSTONE_GRAPHQL_URI, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: print(GET_POSTCODE),
-        variables: {
-          postcode: String(postcode).replace(/\s/g, '').toUpperCase(),
-        },
-      }),
-    });
-    const { data: { allPostcodes } = {} } = await res.json();
-    const [{ id: postcodeId } = {}] = allPostcodes || [];
+  const onValid = async ({
+    [inputNames.deliveryInstructions]: deliveryInstructions,
+    [inputNames.name]: name,
+    [inputNames.phone]: phone,
+    [inputNames.postcode]: postcode,
+    [inputNames.street]: street,
+  }) => {
     submitOrder({
       variables: {
         id: unsubmittedOrderId,
-        address,
-        name,
-        phone,
-        postcodeId,
+        address: address
+          ? { connect: { id: address } }
+          : {
+              create: {
+                deliveryInstructions,
+                name,
+                phone,
+                postcode,
+                street,
+              },
+            },
       },
     });
   };
@@ -112,7 +97,7 @@ export const Checkout = () => {
   let { total } = sumOrderItems(orderItems);
   total = total.toFixed(2);
 
-  console.log('errors', errors);
+  const address = watch(inputNames.address);
 
   return (
     <FormProvider {...formMethods}>
@@ -121,10 +106,13 @@ export const Checkout = () => {
           label="Choose a delivery slot"
           largeLabel
           info={chooseDeliverySlotInfo}
-          errorInfo={errors.deliverySlot && errors.deliverySlot.message}
+          errorInfo={
+            errors[inputNames.deliverySlot] &&
+            errors[inputNames.deliverySlot].message
+          }
           margin="0"
         >
-          <DeliverySlotPicker register={register} />
+          <DeliverySlotPicker name={inputNames.deliverySlot} />
         </FormGroup>
 
         <FormGroup
@@ -132,80 +120,74 @@ export const Checkout = () => {
           largeLabel
           info="Enter the address you would like your order delivered to."
         >
-          <FormGroup horizontal margin="0">
-            <FormGroup
-              label="Name"
-              errorInfo={errors.name && errors.name.message}
-              margin="0"
-            >
-              <TextInput
-                name="name"
-                ref={register({
-                  required: 'Name',
-                  minLength: {
-                    value: 2,
-                    message:
-                      'Please enter the name of the person receiving the order',
-                  },
-                })}
-              />
+          <FormGroup
+            errorInfo={
+              errors[inputNames.address] && errors[inputNames.address].message
+            }
+            margin="0"
+          >
+            <AddressSelect name={inputNames.address} />
+          </FormGroup>
+
+          <FormGroup>
+            <FormGroup horizontal margin="0">
+              <FormGroup
+                label="Name"
+                errorInfo={
+                  errors[inputNames.name] && errors[inputNames.name].message
+                }
+                margin="0"
+              >
+                <OrderDeliveryAddressNameInput name={inputNames.name} />
+              </FormGroup>
+
+              <FormGroup
+                label="Phone number"
+                errorInfo={
+                  errors[inputNames.phone] && errors[inputNames.phone].message
+                }
+                flex={1}
+                margin="0"
+              >
+                <OrderDeliveryAddressPhoneInput name={inputNames.phone} />
+              </FormGroup>
             </FormGroup>
-            <FormGroup
-              label="Phone number"
-              errorInfo={errors.phone && errors.phone.message}
-              flex={1}
-              margin="0"
-            >
-              <TextInput
-                name="phone"
-                ref={register({
-                  required: 'Phone number',
-                  minLength: {
-                    value: 11,
-                    message:
-                      'Please enter your full phone number, including area code if applicable',
-                  },
-                })}
-              />
+
+            <FormGroup horizontal>
+              <FormGroup
+                label="Address"
+                errorInfo={
+                  errors[inputNames.street] && errors[inputNames.street].message
+                }
+                flex={1}
+                margin="0"
+              >
+                <OrderDeliveryAddressStreetInput name="street" />
+              </FormGroup>
+
+              <FormGroup
+                label="Postcode"
+                errorInfo={(() => {
+                  if (!errors[inputNames.postcode]) return null;
+                  if (errors[inputNames.postcode].type === 'validate')
+                    return "Sorry, we don't deliver here yet";
+                  return errors[inputNames.postcode].message;
+                })()}
+                flex={1}
+                margin="0"
+              >
+                <OrderDeliveryAddressPostcodeInput name={inputNames.postcode} />
+              </FormGroup>
             </FormGroup>
           </FormGroup>
-          <FormGroup horizontal>
-            <FormGroup
-              label="Address"
-              errorInfo={errors.address && errors.address.message}
-              flex={1}
-              margin="0"
-            >
-              <TextInput
-                name="address"
-                ref={register({
-                  required: 'Please enter a delivery address',
-                  minLength: {
-                    value: 3,
-                    message: 'Hm that address should probably be longer',
-                  },
-                })}
-              />
-            </FormGroup>
-            <FormGroup
-              label="Postcode"
-              errorInfo={(() => {
-                if (!errors.postcode) return null;
-                if (errors.postcode.type === 'validate')
-                  return "Sorry, we don't deliver here yet";
-                return errors.postcode.message;
-              })()}
-              flex={1}
-              margin="0"
-            >
-              <PostcodeInput register={register} />
-            </FormGroup>
-          </FormGroup>
+
           <FormGroup
             label="Delivery instructions"
             info="Put any helpful delivery instructions here"
           >
-            <TextInput name="deliveryInstructions" ref={register()} />
+            <OrderDeliveryAddressDeliveryInstructionsInput
+              name={inputNames.deliveryInstructions}
+            />
           </FormGroup>
         </FormGroup>
 

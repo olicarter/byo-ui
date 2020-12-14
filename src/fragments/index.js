@@ -7,7 +7,6 @@ export * from './OrderItem';
 export * from './OrderItems';
 export * from './Order';
 export * from './Orders';
-export * from './Postcode';
 export * from './Product';
 export * from './ProductVariant';
 export * from './Setting';

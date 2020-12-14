@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
 
+import { getUnsubmittedOrderFromUser } from '../../helpers';
 import { GET_SETTINGS, GET_AUTHENTICATED_USER } from './Basket.gql';
 import { BasketTotal } from '../BasketTotal';
 import { FloatingButton } from '../FloatingButton';
@@ -18,8 +19,7 @@ export const Basket = () => {
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
-  const { orders = [] } = authenticatedUser || {};
-  const { orderItems = [] } = orders.find(({ submitted }) => !submitted) || {};
+  const { orderItems = [] } = getUnsubmittedOrderFromUser(authenticatedUser);
 
   const orderItemProducts = uniqWith(
     orderItems,
