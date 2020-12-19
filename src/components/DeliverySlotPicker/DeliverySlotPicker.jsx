@@ -16,10 +16,18 @@ import { Select } from '../Select';
 export const DeliverySlotPicker = () => {
   const { register } = useFormContext();
 
+  const localDateTime = DateTime.local().setZone('Europe/London');
+
+  const startTime_gt = localDateTime
+    .toUTC()
+    .plus({ days: 1 })
+    .startOf('day')
+    .toISO();
+
   const {
     data: { allDeliverySlots } = {},
     loading: getDeliverySlotsLoading,
-  } = useQuery(GET_DELIVERY_SLOTS);
+  } = useQuery(GET_DELIVERY_SLOTS, { variables: { startTime_gt } });
 
   const {
     data: { authenticatedUser } = {},

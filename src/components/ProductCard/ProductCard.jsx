@@ -49,7 +49,9 @@ export const ProductCard = ({
         </Styled.Header>
         <Styled.Info>
           {!!orderItems.length ? (
-            <Styled.Origin>{deliveryInfo || defaultDeliveryInfo}</Styled.Origin>
+            <Styled.DeliveryInfo>
+              {deliveryInfo || defaultDeliveryInfo}
+            </Styled.DeliveryInfo>
           ) : (
             <div>
               {origin ? (

@@ -63,6 +63,10 @@ export const Origin = styled.span(({ theme: { palette: { black } } }) => ({
   },
 }));
 
+export const DeliveryInfo = styled(Origin)({
+  lineHeight: 1.2,
+});
+
 export const Info = styled.p(({ theme: { palette: { black } } }) => ({
   color: transparentize(0.33, black),
   fontSize: '0.8rem',
