@@ -15,10 +15,10 @@ export const Button = styled.button(
     const background = palette[backgroundColor] || primary;
     return {
       alignItems: 'center',
-      backgroundColor: darken(0.1, background),
+      backgroundColor: background,
       border: 'none',
       borderRadius: borderRadius ? '0.5rem' : 0,
-      color: readableColor(background, black, white),
+      color: readableColor(background, white, black),
       cursor: 'pointer',
       display: 'flex',
       flex,

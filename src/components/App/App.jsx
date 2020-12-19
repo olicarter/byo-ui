@@ -9,6 +9,7 @@ import { AboutPage } from '../AboutPage';
 import { AccountPage } from '../AccountPage';
 import { BasketPage } from '../BasketPage';
 import { BlogPage } from '../BlogPage';
+import { Callout } from '../Callout';
 import { CheckoutPage } from '../CheckoutPage';
 import { Footer } from '../Footer';
 import { Home } from '../Home';
@@ -26,7 +27,6 @@ export const App = () => {
   const { isAuthenticated } = useAuth();
 
   const {
-    data,
     loading: getAuthenticatedUserLoading,
     networkStatus: getAuthenticatedUserNetworkStatus,
     refetch: getAuthenticatedUserRefetch,
@@ -39,6 +39,7 @@ export const App = () => {
   } = useQuery(GET_PRODUCTS);
 
   const {
+    data: { allSettings: [{ calloutText } = {}] = [] } = {},
     loading: getSettingsLoading,
     networkStatus: getSettingsNetworkStatus,
     refetch: getSettingsRefetch,
@@ -63,6 +64,12 @@ export const App = () => {
   return (
     <Styled.App>
       <TopBar />
+
+      {!!calloutText ? (
+        <Section>
+          <Callout />
+        </Section>
+      ) : null}
 
       <Styled.Main>
         <Route exact path="/">

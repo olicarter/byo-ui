@@ -4,6 +4,8 @@ export const Setting = gql`
   fragment Setting on Setting {
     id
 
+    calloutText
+
     aboutHeader
     accountHeader
     basketHeader

@@ -33,7 +33,7 @@ const themes = {
       lightGrey: 'hsl(0, 0%, 95%)',
       red: 'hsl(350, 85%, 66%)',
       pink: '#f0bac7',
-      primary: 'hsl(43, 98%, 60%)',
+      primary: 'hsl(43, 98%, 55%)',
       yellow: '#f9e543',
       white: 'white',
     },
