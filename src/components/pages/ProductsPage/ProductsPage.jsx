@@ -6,6 +6,7 @@ import { Layout } from '@components/Layout';
 import { Markdown } from '@components/Markdown';
 import { Products } from '@components/Products';
 import { Section } from '@components/Section';
+import { SearchBar } from '@components/SearchBar';
 import { TagBar } from '@components/TagBar';
 
 import { GET_ALL_SETTINGS } from './ProductsPage.gql';
@@ -23,6 +24,7 @@ export const ProductsPage = () => {
       <Section margin="0" padding="0">
         <CategoryBar />
         <TagBar />
+        <SearchBar />
       </Section>
       <Section>
         <Products />

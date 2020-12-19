@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { parse } from 'qs';
+import { stringify, parse } from 'qs';
 import { useQuery } from '@apollo/client';
 
 import { useAuth } from '@contexts';
@@ -18,17 +18,26 @@ export const LoginPage = () => {
   const { search } = useLocation();
   const { isAuthenticated } = useAuth();
 
-  const { from = '/', new: newUser, name } = parse(search, {
+  const { from = '/', new: newUser, name, ...restQuery } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
   useEffect(() => {
-    if (isAuthenticated) push(from);
+    if (isAuthenticated)
+      push({
+        pathname: from,
+        search: stringify(restQuery, {
+          arrayFormat: 'brackets',
+          encode: false,
+        }),
+      });
   }, [isAuthenticated]);
 
   const {
     data: { allSettings: [{ loginHeader = '' } = {}] = [] } = {},
   } = useQuery(GET_ALL_SETTINGS);
+
+  console.log('restQuery', restQuery);
 
   return (
     <Layout>
@@ -42,7 +51,15 @@ export const LoginPage = () => {
           <Markdown>{loginHeader}</Markdown>
           <SubTitle>
             New customer?{' '}
-            <Styled.Link to={{ pathname: 'register', search }}>
+            <Styled.Link
+              to={{
+                pathname: 'register',
+                search: stringify(restQuery, {
+                  arrayFormat: 'brackets',
+                  encode: false,
+                }),
+              }}
+            >
               Register
             </Styled.Link>
           </SubTitle>

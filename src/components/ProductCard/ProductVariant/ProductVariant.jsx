@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { stringify, parse } from 'qs';
 import { useMutation, useQuery } from '@apollo/client';
 import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
@@ -18,8 +19,12 @@ export const ProductVariant = ({
   variant: { id, container, increment, incrementPrice, tags = [], unit },
 }) => {
   const { push } = useHistory();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const { isAuthenticated } = useAuth();
+
+  const queryParams = parse(search, {
+    ignoreQueryPrefix: true,
+  });
 
   const [incrementLoading, setIncrementLoading] = useState(false);
   const [decrementLoading, setDecrementLoading] = useState(false);
@@ -120,14 +125,36 @@ export const ProductVariant = ({
   };
 
   const incrementOrderItem = () => {
-    if (!isAuthenticated) return push(`/login?from=${pathname}`);
+    if (!isAuthenticated) {
+      return push({
+        pathname: '/login',
+        search: stringify(
+          {
+            ...queryParams,
+            from: pathname,
+          },
+          { arrayFormat: 'brackets', encode: false },
+        ),
+      });
+    }
     setIncrementLoading(true);
     if (!!quantity) handleUpdateOrderItem(quantity + 1);
     else handleCreateOrderItem();
   };
 
   const decrementOrderItem = () => {
-    if (!isAuthenticated) return push(`/login?from=${pathname}`);
+    if (!isAuthenticated) {
+      return push({
+        pathname: '/login',
+        search: stringify(
+          {
+            ...queryParams,
+            from: pathname,
+          },
+          { arrayFormat: 'brackets', encode: false },
+        ),
+      });
+    }
     if (!quantity) return;
     setDecrementLoading(true);
     if (quantity > 1) handleUpdateOrderItem(quantity - 1);

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { parse } from 'qs';
+import { stringify, parse } from 'qs';
 
 import {
   AUTHENTICATE_USER,
@@ -44,8 +44,16 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem('byo.token', token);
           setUser(item);
           setIsAuthenticated(true);
-          const { from } = parse(search, { ignoreQueryPrefix: true });
-          push(from);
+          const { from, ...restQuery } = parse(search, {
+            ignoreQueryPrefix: true,
+          });
+          push({
+            pathname: from,
+            search: stringify(restQuery, {
+              arrayFormat: 'brackets',
+              encode: false,
+            }),
+          });
         }
       },
     });

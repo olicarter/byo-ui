@@ -12,7 +12,7 @@ export const TagBar = () => {
 
   const { data: { allTags = [] } = {}, loading } = useQuery(GET_TAGS_QUERY);
 
-  const { category, tags: queryTags = [] } = parse(search, {
+  const { tags: queryTags = [], ...restQuery } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
@@ -37,7 +37,7 @@ export const TagBar = () => {
               pathname,
               search: stringify(
                 {
-                  category,
+                  ...restQuery,
                   tags: getTags(slug),
                 },
                 { arrayFormat: 'brackets', encode: false },

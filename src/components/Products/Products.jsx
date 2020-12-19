@@ -3,8 +3,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
+import Fuse from 'fuse.js';
 
-import { useAuth } from '@contexts';
+import { useAuth } from '../../contexts';
 import { GET_PRODUCTS } from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
@@ -17,26 +18,42 @@ export const Products = () => {
 
   const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
 
-  const { category: queryCategorySlug, tags: queryTags = [] } = parse(search, {
+  const {
+    category: queryCategorySlug,
+    search: querySearch,
+    tags: queryTags = [],
+  } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
   const filteredProducts = allProducts
-    .filter(
-      ({ category: { slug: categorySlug } = {}, tags = [] }) =>
-        (!queryCategorySlug || queryCategorySlug === categorySlug) &&
-        (queryTags.length
-          ? queryTags.every(tag =>
-              tags.find(({ slug: tagSlug }) => tagSlug === tag),
-            )
-          : true),
-    )
+    .filter(({ category: { slug: categorySlug } = {}, slug, tags = [] }) => {
+      const categoryMatches =
+        !queryCategorySlug || queryCategorySlug === categorySlug;
+
+      const tagMatches = queryTags.length
+        ? queryTags.every(tag => {
+            return tags.find(({ slug: tagSlug }) => tagSlug === tag);
+          })
+        : true;
+
+      return categoryMatches && tagMatches;
+    })
     .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  const fuse = new Fuse(filteredProducts, {
+    keys: ['name'],
+    threshold: 0.4,
+  });
+
+  const searchedAndFilteredProducts = querySearch
+    ? fuse.search(querySearch).map(({ item }) => item)
+    : filteredProducts;
 
   return (
     <>
       <Grid>
-        {filteredProducts.map(product => (
+        {searchedAndFilteredProducts.map(product => (
           <Sentry.ErrorBoundary>
             <ProductCard key={product.id} product={product} />
           </Sentry.ErrorBoundary>

@@ -10,7 +10,7 @@ import { Bar } from '../Bar';
 export const CategoryBar = () => {
   const { pathname, search } = useLocation();
 
-  const { category, tags = [] } = parse(search, { ignoreQueryPrefix: true });
+  const { category, ...restQuery } = parse(search, { ignoreQueryPrefix: true });
 
   const { data: { allCategories = [] } = {}, loading } = useQuery(
     GET_CATEGORIES_QUERY,
@@ -32,12 +32,10 @@ export const CategoryBar = () => {
               selected={!category}
               to={{
                 pathname,
-                search: stringify(
-                  {
-                    tags,
-                  },
-                  { arrayFormat: 'brackets', encode: false },
-                ),
+                search: stringify(restQuery, {
+                  arrayFormat: 'brackets',
+                  encode: false,
+                }),
               }}
             >
               all
@@ -51,8 +49,8 @@ export const CategoryBar = () => {
                   pathname,
                   search: stringify(
                     {
+                      ...restQuery,
                       category: slug,
-                      tags,
                     },
                     { arrayFormat: 'brackets', encode: false },
                   ),
