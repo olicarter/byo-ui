@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { parse } from 'qs';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
 import { Label } from '../Label';

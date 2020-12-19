@@ -1,11 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Checkout } from '@components/Checkout';
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+
 import { GET_ALL_SETTINGS } from './CheckoutPage.gql';
-import { Checkout } from '../Checkout';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
 
 export const CheckoutPage = () => {
   const {

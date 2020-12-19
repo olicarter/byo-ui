@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { DeliverySlot, Order, User } from '../../fragments';
+import { DeliverySlot, Order, User } from '@fragments';
 
 export const GET_DELIVERY_SLOTS = gql`
   query DeliverySlotPickerGetDeliverySlots($startTime_gt: String) {

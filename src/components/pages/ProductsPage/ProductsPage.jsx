@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { CategoryBar } from '@components/CategoryBar';
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Products } from '@components/Products';
+import { Section } from '@components/Section';
+import { TagBar } from '@components/TagBar';
+
 import { GET_ALL_SETTINGS } from './ProductsPage.gql';
-import { CategoryBar } from '../CategoryBar';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Products } from '../Products';
-import { Section } from '../Section';
-import { TagBar } from '../TagBar';
 
 export const ProductsPage = () => {
   const {

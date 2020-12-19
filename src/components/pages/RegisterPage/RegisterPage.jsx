@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'qs';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
+import { Layout } from '@components/Layout';
+import { Section } from '@components/Section';
+import { RegisterForm } from '@components/RegisterForm';
+import { SubTitle, Title } from '@components/Typography';
+
 import * as Styled from './RegisterPage.styled';
-import { Layout } from '../Layout';
-import { Section } from '../Section';
-import { RegisterForm } from '../RegisterForm';
-import { SubTitle, Title } from '../Typography';
 
 export const RegisterPage = () => {
   const { push } = useHistory();

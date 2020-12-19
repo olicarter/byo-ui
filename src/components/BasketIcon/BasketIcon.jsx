@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
 import { mdiBasketOutline } from '@mdi/js';
 
-import { getUnsubmittedOrderFromUser } from '../../helpers';
+import { getUnsubmittedOrderFromUser } from '@helpers';
 import { GET_AUTHENTICATED_USER } from './BasketIcon.gql';
 import * as Styled from './BasketIcon.styled';
 

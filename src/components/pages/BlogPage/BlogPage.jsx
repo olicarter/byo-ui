@@ -1,11 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { BlogPosts } from '@components/BlogPosts';
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+
 import { GET_ALL_SETTINGS } from './BlogPage.gql';
-import { BlogPosts } from '../BlogPosts';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
 
 export const BlogPage = () => {
   const {

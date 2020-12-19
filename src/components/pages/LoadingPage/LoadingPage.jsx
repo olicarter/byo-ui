@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '@mdi/react';
 import { mdiLoading } from '@mdi/js';
 
-import { useTheme } from '../../contexts';
+import { useTheme } from '@contexts';
 import * as Styled from './LoadingPage.styled';
 
 export const LoadingPage = () => {

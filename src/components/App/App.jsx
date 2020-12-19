@@ -2,26 +2,29 @@ import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { NetworkStatus, useQuery } from '@apollo/client';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
+import {
+  AboutPage,
+  AccountPage,
+  BasketPage,
+  BlogPage,
+  CheckoutPage,
+  LoadingPage,
+  LoginPage,
+  ProductsPage,
+  RegisterPage,
+} from '@pages';
+import { Callout } from '@components/Callout';
+import { Footer } from '@components/Footer';
+import { Home } from '@components/Home';
+import { Layout } from '@components/Layout';
+import { Product } from '@components/Product';
+import { ProtectedRoute } from '@components/ProtectedRoute';
+import { Section } from '@components/Section';
+import { TopBar } from '@components/TopBar';
+
 import { GET_AUTHENTICATED_USER, GET_PRODUCTS, GET_SETTINGS } from './App.gql';
 import * as Styled from './App.styled';
-import { AboutPage } from '../AboutPage';
-import { AccountPage } from '../AccountPage';
-import { BasketPage } from '../BasketPage';
-import { BlogPage } from '../BlogPage';
-import { Callout } from '../Callout';
-import { CheckoutPage } from '../CheckoutPage';
-import { Footer } from '../Footer';
-import { Home } from '../Home';
-import { Layout } from '../Layout';
-import { LoadingPage } from '../LoadingPage';
-import { LoginPage } from '../LoginPage';
-import { Product } from '../Product';
-import { ProductsPage } from '../ProductsPage';
-import { ProtectedRoute } from '../ProtectedRoute';
-import { RegisterPage } from '../RegisterPage';
-import { Section } from '../Section';
-import { TopBar } from '../TopBar';
 
 export const App = () => {
   const { isAuthenticated } = useAuth();

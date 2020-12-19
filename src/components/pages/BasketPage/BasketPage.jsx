@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Basket } from '@components/Basket';
+import { BasketTotal } from '@components/BasketTotal';
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+import { SubTitle } from '@components/Typography';
+
 import { GET_ALL_SETTINGS } from './BasketPage.gql';
-import { Basket } from '../Basket';
-import { BasketTotal } from '../BasketTotal';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
-import { SubTitle } from '../Typography';
 
 export const BasketPage = () => {
   const {

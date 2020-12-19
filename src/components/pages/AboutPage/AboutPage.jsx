@@ -1,10 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+
 import { GET_ALL_SETTINGS } from './AboutPage.gql';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
 
 export const AboutPage = () => {
   const {

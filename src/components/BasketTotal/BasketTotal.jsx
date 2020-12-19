@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { getUnsubmittedOrderFromUser, sumOrderItems } from '../../helpers';
+import { getUnsubmittedOrderFromUser, sumOrderItems } from '@helpers';
 import { GET_AUTHENTICATED_USER } from './BasketTotal.gql';
 
 export const BasketTotal = ({ showCurrencySymbol } = {}) => {

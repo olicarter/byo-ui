@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Order, OrderItem, User } from '../../../fragments';
+import { Order, OrderItem, User } from '@fragments';
 
 export const GET_AUTHENTICATED_USER = gql`
   query ProductVariantGetAuthenticatedUser {

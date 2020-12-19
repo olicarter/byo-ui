@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { sumOrderItems } from '../../../helpers';
+import { sumOrderItems } from '@helpers';
+
 import * as Styled from './ProductCardOrderSummary.styled';
 
 export const ProductCardOrderSummary = ({ orderItems }) => {

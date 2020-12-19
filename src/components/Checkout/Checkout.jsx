@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { getUnsubmittedOrderFromUser, sumOrderItems } from '../../helpers';
+import { getUnsubmittedOrderFromUser, sumOrderItems } from '@helpers';
 import {
   GET_AUTHENTICATED_USER,
   GET_SETTINGS,

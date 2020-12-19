@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 
-import { getUnsubmittedOrderFromUser } from '../../helpers';
+import { getUnsubmittedOrderFromUser } from '@helpers';
 import { GET_AUTHENTICATED_USER } from './AddressSelect.gql';
 import * as Styled from './AddressSelect.styled';
 import { AddressSelectOption } from './AddressSelectOption';

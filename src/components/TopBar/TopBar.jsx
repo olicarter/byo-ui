@@ -15,7 +15,7 @@ import {
   mdiThemeLightDark,
 } from '@mdi/js';
 
-import { useTheme } from '../../contexts';
+import { useTheme } from '@contexts';
 import { GET_SETTINGS } from './TopBar.gql';
 import * as Styled from './TopBar.styled';
 import { BasketIcon } from '../BasketIcon';

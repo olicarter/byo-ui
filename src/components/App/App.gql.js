@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Product, Setting, User } from '../../fragments';
+import { Product, Setting, User } from '@fragments';
 
 export const GET_AUTHENTICATED_USER = gql`
   query AppGetAuthenticatedUser {

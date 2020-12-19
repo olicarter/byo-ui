@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { DeliverySlot } from '../../fragments';
+import { DeliverySlot } from '@fragments';
 
 export const GET_DELIVERY_SLOT = gql`
   query DeliverySlotPickerGetDeliverySlot($id: ID!) {

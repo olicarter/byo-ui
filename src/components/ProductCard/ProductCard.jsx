@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
 import { mdiInformationOutline, mdiMapMarker } from '@mdi/js';
 
-import { getUnsubmittedOrderFromUser } from '../../helpers';
+import { getUnsubmittedOrderFromUser } from '@helpers';
 import * as Styled from './ProductCard.styled';
 import { GET_AUTHENTICATED_USER } from './ProductCard.gql';
 import { ProductVariant } from './ProductVariant';

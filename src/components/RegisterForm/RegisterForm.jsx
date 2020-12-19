@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
 import { FloatingButton } from '../FloatingButton';
 import { FormGroup } from '../FormGroup';
 import { Label } from '../Label';

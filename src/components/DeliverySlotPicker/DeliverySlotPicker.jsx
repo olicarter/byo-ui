@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useFormContext } from 'react-hook-form';
 
-import { getUnsubmittedOrderFromUser } from '../../helpers';
+import { getUnsubmittedOrderFromUser } from '@helpers';
 import {
   GET_AUTHENTICATED_USER,
   GET_DELIVERY_SLOTS,

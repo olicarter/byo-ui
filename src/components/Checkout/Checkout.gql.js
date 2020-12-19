@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Order, Setting, User } from '../../fragments';
+import { Order, Setting, User } from '@fragments';
 
 export const GET_SETTINGS = gql`
   query CheckoutGetSettings {

@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
+import { FloatingButton } from '@components/FloatingButton';
+import { Layout } from '@components/Layout';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+import { UserOrders } from '@components/UserOrders';
+
 import { GET_ALL_SETTINGS } from './AccountPage.gql';
-import { FloatingButton } from '../FloatingButton';
-import { Layout } from '../Layout';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
-import { UserOrders } from '../UserOrders';
 
 export const AccountPage = () => {
   const { logout } = useAuth();

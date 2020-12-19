@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
 import { GET_PRODUCTS } from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';

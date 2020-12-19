@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Address, User, Order } from '../../fragments';
+import { Address, User, Order } from '@fragments';
 
 export const GET_AUTHENTICATED_USER = gql`
   query UserAddressFormGetAuthenticatedUser {

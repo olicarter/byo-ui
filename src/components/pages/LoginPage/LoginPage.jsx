@@ -3,14 +3,15 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'qs';
 import { useQuery } from '@apollo/client';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@contexts';
+import { Layout } from '@components/Layout';
+import { LoginForm } from '@components/LoginForm';
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+import { SubTitle, Title } from '@components/Typography';
+
 import { GET_ALL_SETTINGS } from './LoginPage.gql';
 import * as Styled from './LoginPage.styled';
-import { Layout } from '../Layout';
-import { LoginForm } from '../LoginForm';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
-import { SubTitle, Title } from '../Typography';
 
 export const LoginPage = () => {
   const { push } = useHistory();

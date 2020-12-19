@@ -3,9 +3,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
-import { useAuth } from '../../../contexts';
-import { OrderItems, Orders } from '../../../fragments';
-import { getUnsubmittedOrderFromUser } from '../../../helpers';
+import { useAuth } from '@contexts';
+import { OrderItems, Orders } from '@fragments';
+import { getUnsubmittedOrderFromUser } from '@helpers';
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
