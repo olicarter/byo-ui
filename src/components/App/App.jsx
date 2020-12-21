@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { NetworkStatus, useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
 import {
@@ -30,6 +31,13 @@ export const App = () => {
   const { isAuthenticated } = useAuth();
 
   const {
+    data: { allSettings: [{ calloutText } = {}] = [] } = {},
+    loading: getSettingsLoading,
+    networkStatus: getSettingsNetworkStatus,
+    refetch: getSettingsRefetch,
+  } = useQuery(GET_SETTINGS);
+
+  const {
     loading: getAuthenticatedUserLoading,
     networkStatus: getAuthenticatedUserNetworkStatus,
     refetch: getAuthenticatedUserRefetch,
@@ -41,23 +49,16 @@ export const App = () => {
     refetch: getProductsRefetch,
   } = useQuery(GET_PRODUCTS);
 
-  const {
-    data: { allSettings: [{ calloutText } = {}] = [] } = {},
-    loading: getSettingsLoading,
-    networkStatus: getSettingsNetworkStatus,
-    refetch: getSettingsRefetch,
-  } = useQuery(GET_SETTINGS);
-
   useEffect(() => {
+    getSettingsRefetch();
     getAuthenticatedUserRefetch();
     getProductsRefetch();
-    getSettingsRefetch();
   }, [isAuthenticated]);
 
   if (
+    getSettingsLoading ||
     getAuthenticatedUserLoading ||
     getProductsLoading ||
-    getSettingsLoading ||
     getAuthenticatedUserNetworkStatus === NetworkStatus.refetch ||
     getProductsNetworkStatus === NetworkStatus.refetch ||
     getSettingsNetworkStatus === NetworkStatus.refetch
@@ -65,64 +66,70 @@ export const App = () => {
     return <LoadingPage />;
 
   return (
-    <Styled.App>
-      <TopBar />
+    <>
+      <Helmet>
+        <title>BYO</title>
+      </Helmet>
 
-      {!!calloutText ? (
-        <Section>
-          <Callout />
-        </Section>
-      ) : null}
+      <Styled.App>
+        <TopBar />
 
-      <Styled.Main>
-        <Route exact path="/">
-          <Layout>
-            <Section>
-              <Home />
-            </Section>
-          </Layout>
-        </Route>
+        {calloutText ? (
+          <Section>
+            <Callout />
+          </Section>
+        ) : null}
 
-        <Route exact path="/about">
-          <AboutPage />
-        </Route>
+        <Styled.Main>
+          <Route exact path="/">
+            <Layout>
+              <Section>
+                <Home />
+              </Section>
+            </Layout>
+          </Route>
 
-        <Route exact path="/blog">
-          <BlogPage />
-        </Route>
+          <Route exact path="/about">
+            <AboutPage />
+          </Route>
 
-        <Route exact path="/products">
-          <ProductsPage />
-        </Route>
+          <Route exact path="/blog">
+            <BlogPage />
+          </Route>
 
-        <Route exact path="/products/:productSlug">
-          <Layout>
-            <Product />
-          </Layout>
-        </Route>
+          <Route exact path="/products">
+            <ProductsPage />
+          </Route>
 
-        <Route exact path="/login">
-          <LoginPage />
-        </Route>
+          <Route exact path="/products/:productSlug">
+            <Layout>
+              <Product />
+            </Layout>
+          </Route>
 
-        <Route exact path="/register">
-          <RegisterPage />
-        </Route>
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
 
-        <ProtectedRoute path="/account">
-          <AccountPage />
-        </ProtectedRoute>
+          <Route exact path="/register">
+            <RegisterPage />
+          </Route>
 
-        <ProtectedRoute path="/basket">
-          <BasketPage />
-        </ProtectedRoute>
+          <ProtectedRoute path="/account">
+            <AccountPage />
+          </ProtectedRoute>
 
-        <ProtectedRoute path="/checkout">
-          <CheckoutPage />
-        </ProtectedRoute>
-      </Styled.Main>
+          <ProtectedRoute path="/basket">
+            <BasketPage />
+          </ProtectedRoute>
 
-      <Footer />
-    </Styled.App>
+          <ProtectedRoute path="/checkout">
+            <CheckoutPage />
+          </ProtectedRoute>
+        </Styled.Main>
+
+        <Footer />
+      </Styled.App>
+    </>
   );
 };

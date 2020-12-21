@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { Basket } from '@components/Basket';
 import { BasketTotal } from '@components/BasketTotal';
@@ -18,17 +19,22 @@ export const BasketPage = () => {
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
-    <Layout>
-      <Section>
-        <Markdown>{basketHeader}</Markdown>
-        <SubTitle color={BasketTotal() < minOrderValue ? 'red' : undefined}>
-          <BasketTotal showCurrencySymbol /> / £
-          {Number(minOrderValue).toFixed(2)} min
-        </SubTitle>
-      </Section>
-      <Section>
-        <Basket />
-      </Section>
-    </Layout>
+    <>
+      <Helmet>
+        <title>BYO | Basket</title>
+      </Helmet>
+      <Layout>
+        <Section>
+          <Markdown>{basketHeader}</Markdown>
+          <SubTitle color={BasketTotal() < minOrderValue ? 'red' : undefined}>
+            <BasketTotal showCurrencySymbol /> / £
+            {Number(minOrderValue).toFixed(2)} min
+          </SubTitle>
+        </Section>
+        <Section>
+          <Basket />
+        </Section>
+      </Layout>
+    </>
   );
 };

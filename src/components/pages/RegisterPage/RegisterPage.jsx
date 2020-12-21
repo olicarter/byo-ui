@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parse } from 'qs';
+import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
 import { Layout } from '@components/Layout';
@@ -23,17 +24,22 @@ export const RegisterPage = () => {
   }, [isAuthenticated]);
 
   return (
-    <Layout>
-      <Section>
-        <Title>Register</Title>
-        <SubTitle>
-          Existing customer?{' '}
-          <Styled.Link to={{ pathname: 'login', search }}>Login</Styled.Link>
-        </SubTitle>
-      </Section>
-      <Section>
-        <RegisterForm />
-      </Section>
-    </Layout>
+    <>
+      <Helmet>
+        <title>BYO | Register</title>
+      </Helmet>
+      <Layout>
+        <Section>
+          <Title>Register</Title>
+          <SubTitle>
+            Existing customer?{' '}
+            <Styled.Link to={{ pathname: 'login', search }}>Login</Styled.Link>
+          </SubTitle>
+        </Section>
+        <Section>
+          <RegisterForm />
+        </Section>
+      </Layout>
+    </>
   );
 };

@@ -16,6 +16,7 @@ import {
 import * as Styled from './ProductVariant.styled';
 
 export const ProductVariant = ({
+  productTags = [],
   variant: { id, container, increment, incrementPrice, tags = [], unit },
 }) => {
   const { push } = useHistory();
@@ -195,7 +196,13 @@ export const ProductVariant = ({
         </Styled.Price>
         {tags.length ? (
           <Styled.Tags>
-            {tags.map(({ name }) => name.toLowerCase()).join(', ')}
+            {tags
+              .filter(
+                tag =>
+                  !productTags.find(productTag => productTag.id === tag.id),
+              )
+              .map(({ name }) => name.toLowerCase())
+              .join(', ')}
           </Styled.Tags>
         ) : null}
       </Styled.Info>

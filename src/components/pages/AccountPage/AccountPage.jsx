@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
 import { FloatingButton } from '@components/FloatingButton';
@@ -18,16 +19,21 @@ export const AccountPage = () => {
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
-    <Layout>
-      <Section>
-        <Markdown>{accountHeader}</Markdown>
-      </Section>
-      <Section>
-        <UserOrders />
-      </Section>
-      <Section>
-        <FloatingButton onClick={() => logout('/')}>Log out</FloatingButton>
-      </Section>
-    </Layout>
+    <>
+      <Helmet>
+        <title>BYO | Account</title>
+      </Helmet>
+      <Layout>
+        <Section>
+          <Markdown>{accountHeader}</Markdown>
+        </Section>
+        <Section>
+          <UserOrders />
+        </Section>
+        <Section>
+          <FloatingButton onClick={() => logout('/')}>Log out</FloatingButton>
+        </Section>
+      </Layout>
+    </>
   );
 };

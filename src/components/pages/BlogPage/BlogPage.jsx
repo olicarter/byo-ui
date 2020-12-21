@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { BlogPosts } from '@components/BlogPosts';
 import { Layout } from '@components/Layout';
@@ -14,13 +15,18 @@ export const BlogPage = () => {
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
-    <Layout>
-      <Section>
-        <Markdown>{blogHeader}</Markdown>
-      </Section>
-      <Section>
-        <BlogPosts />
-      </Section>
-    </Layout>
+    <>
+      <Helmet>
+        <title>BYO | Blog</title>
+      </Helmet>
+      <Layout>
+        <Section>
+          <Markdown>{blogHeader}</Markdown>
+        </Section>
+        <Section>
+          <BlogPosts />
+        </Section>
+      </Layout>
+    </>
   );
 };

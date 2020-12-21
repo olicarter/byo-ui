@@ -12,7 +12,16 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Card } from '../Card';
 
 export const ProductCard = ({
-  product: { id: productId, name, deliveryInfo, origin, slug, variants },
+  product: {
+    id: productId,
+    image,
+    name,
+    deliveryInfo,
+    origin,
+    slug,
+    tags,
+    variants,
+  },
 }) => {
   const { push } = useHistory();
 
@@ -38,9 +47,17 @@ export const ProductCard = ({
     return 'Delivered in cotton bags';
   })();
 
+  const { publicUrl = '' } = image || {};
+
   return (
     <Card>
       <Styled.Content>
+        {publicUrl ? (
+          <Styled.ImageWrapper>
+            <Styled.Image src={publicUrl} />
+          </Styled.ImageWrapper>
+        ) : null}
+
         <Styled.Header>
           <Styled.Name>{name}</Styled.Name>
           <Styled.InfoIcon onClick={() => push(`/products/${slug}`)}>
@@ -67,7 +84,11 @@ export const ProductCard = ({
 
       <div>
         {variants.map(variant => (
-          <ProductVariant key={variant.id} variant={variant} />
+          <ProductVariant
+            key={variant.id}
+            productTags={tags}
+            variant={variant}
+          />
         ))}
       </div>
 

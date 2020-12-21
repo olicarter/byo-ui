@@ -14,6 +14,10 @@ export const Product = gql`
       ...Category
     }
     deliveryInfo
+    image {
+      id
+      publicUrl
+    }
     ingredients
     origin
     tags {

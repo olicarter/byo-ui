@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { stringify, parse } from 'qs';
 import { useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
 import { Layout } from '@components/Layout';
@@ -40,35 +41,40 @@ export const LoginPage = () => {
   console.log('restQuery', restQuery);
 
   return (
-    <Layout>
-      {newUser ? (
-        <Section>
-          <Title>Welcome, {name}</Title>
-          <SubTitle>You can now log in and start shopping</SubTitle>
-        </Section>
-      ) : (
-        <Section>
-          <Markdown>{loginHeader}</Markdown>
-          <SubTitle>
-            New customer?{' '}
-            <Styled.Link
-              to={{
-                pathname: 'register',
-                search: stringify(restQuery, {
-                  arrayFormat: 'brackets',
-                  encode: false,
-                }),
-              }}
-            >
-              Register
-            </Styled.Link>
-          </SubTitle>
-        </Section>
-      )}
+    <>
+      <Helmet>
+        <title>BYO | Log in</title>
+      </Helmet>
+      <Layout>
+        {newUser ? (
+          <Section>
+            <Title>Welcome, {name}</Title>
+            <SubTitle>You can now log in and start shopping</SubTitle>
+          </Section>
+        ) : (
+          <Section>
+            <Markdown>{loginHeader}</Markdown>
+            <SubTitle>
+              New customer?{' '}
+              <Styled.Link
+                to={{
+                  pathname: 'register',
+                  search: stringify(restQuery, {
+                    arrayFormat: 'brackets',
+                    encode: false,
+                  }),
+                }}
+              >
+                Register
+              </Styled.Link>
+            </SubTitle>
+          </Section>
+        )}
 
-      <Section>
-        <LoginForm />
-      </Section>
-    </Layout>
+        <Section>
+          <LoginForm />
+        </Section>
+      </Layout>
+    </>
   );
 };

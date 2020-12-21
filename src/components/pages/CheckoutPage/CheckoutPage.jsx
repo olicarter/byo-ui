@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 
 import { Checkout } from '@components/Checkout';
 import { Layout } from '@components/Layout';
@@ -14,13 +15,18 @@ export const CheckoutPage = () => {
   } = useQuery(GET_ALL_SETTINGS);
 
   return (
-    <Layout>
-      <Section>
-        <Markdown>{checkoutHeader}</Markdown>
-      </Section>
-      <Section>
-        <Checkout />
-      </Section>
-    </Layout>
+    <>
+      <Helmet>
+        <title>BYO | Checkout</title>
+      </Helmet>
+      <Layout>
+        <Section>
+          <Markdown>{checkoutHeader}</Markdown>
+        </Section>
+        <Section>
+          <Checkout />
+        </Section>
+      </Layout>
+    </>
   );
 };

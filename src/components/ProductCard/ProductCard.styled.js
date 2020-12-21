@@ -6,7 +6,6 @@ export const Content = styled.div(() => ({
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
-  // padding: '0.5rem',
 }));
 
 export const Header = styled.header(() => ({
@@ -15,6 +14,23 @@ export const Header = styled.header(() => ({
   minHeight: '48px',
   justifyContent: 'space-between',
 }));
+
+export const ImageWrapper = styled.div({
+  height: 0,
+  overflow: 'hidden',
+  paddingTop: '50%',
+  position: 'relative',
+  width: '100%',
+});
+
+export const Image = styled.img({
+  height: '100%',
+  left: 0,
+  objectFit: 'cover',
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+});
 
 export const Name = styled.h3(({ theme: { palette: { black } } }) => ({
   color: black,
