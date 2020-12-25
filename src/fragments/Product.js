@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+import { Brand } from './Brand';
 import { Category } from './Category';
 import { ProductVariant } from './ProductVariant';
 import { Tag } from './Tag';
@@ -10,6 +11,9 @@ export const Product = gql`
     name
     slug
     allergenInfo
+    brand {
+      ...Brand
+    }
     category {
       ...Category
     }
@@ -27,6 +31,7 @@ export const Product = gql`
       ...ProductVariant
     }
   }
+  ${Brand}
   ${Category}
   ${ProductVariant}
   ${Tag}
