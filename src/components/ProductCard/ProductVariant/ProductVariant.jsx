@@ -17,7 +17,7 @@ import * as Styled from './ProductVariant.styled';
 
 export const ProductVariant = ({
   productTags = [],
-  variant: { id, container, increment, incrementPrice, tags = [], unit },
+  variant: { id, container, increment, incrementPrice, name, tags = [], unit },
 }) => {
   const { push } = useHistory();
   const { pathname, search } = useLocation();
@@ -177,6 +177,7 @@ export const ProductVariant = ({
       </Styled.DecrementButton>
 
       <Styled.Info>
+        <Styled.Quantity>{name}</Styled.Quantity>
         <Styled.Quantity quantity={quantity}>
           {quantity ? `${quantity} x ` : null}
           {`${increment}${unit.singularAbbreviated} ${(() => {
@@ -191,7 +192,10 @@ export const ProductVariant = ({
         <Styled.Price>
           £{incrementPrice}
           {container && !!Number(container.price) ? (
-            <Styled.Container> + £{container.price}</Styled.Container>
+            <Styled.Container>
+              {' '}
+              + £{Number(container.price).toFixed(2)}
+            </Styled.Container>
           ) : null}
         </Styled.Price>
         {tags.length ? (
@@ -201,7 +205,7 @@ export const ProductVariant = ({
                 tag =>
                   !productTags.find(productTag => productTag.id === tag.id),
               )
-              .map(({ name }) => name.toLowerCase())
+              .map(({ name: tagName }) => tagName.toLowerCase())
               .join(', ')}
           </Styled.Tags>
         ) : null}

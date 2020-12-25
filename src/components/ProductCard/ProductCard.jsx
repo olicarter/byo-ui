@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
@@ -47,7 +47,10 @@ export const ProductCard = ({
     return 'Delivered in cotton bags';
   })();
 
-  const { publicUrl = '' } = image || {};
+  const [mouseOverVariantIndex, setMouseOverVariantIndex] = useState(0);
+
+  const { image: variantImage } = variants[mouseOverVariantIndex] || {};
+  const { publicUrl = '' } = image || variantImage || {};
 
   return (
     <Card>
@@ -56,7 +59,9 @@ export const ProductCard = ({
           <Styled.ImageWrapper>
             <Styled.Image src={publicUrl} />
           </Styled.ImageWrapper>
-        ) : null}
+        ) : (
+          <Styled.Border />
+        )}
 
         <Styled.Header>
           <Styled.Name>{name}</Styled.Name>
@@ -83,12 +88,17 @@ export const ProductCard = ({
       </Styled.Content>
 
       <div>
-        {variants.map(variant => (
-          <ProductVariant
-            key={variant.id}
-            productTags={tags}
-            variant={variant}
-          />
+        {variants.map((variant, index) => (
+          <div
+            onMouseOut={() => setMouseOverVariantIndex(0)}
+            onMouseOver={() => setMouseOverVariantIndex(index)}
+          >
+            <ProductVariant
+              key={variant.id}
+              productTags={tags}
+              variant={variant}
+            />
+          </div>
         ))}
       </div>
 

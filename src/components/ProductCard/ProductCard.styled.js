@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
-export const Content = styled.div(() => ({
+export const Content = styled.div({
   cursor: 'default',
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
-}));
+});
 
-export const Header = styled.header(() => ({
+export const Header = styled.header({
   alignItems: 'center',
   display: 'flex',
   minHeight: '48px',
   justifyContent: 'space-between',
+});
+
+export const Border = styled.div(({ theme: { palette: { black } } }) => ({
+  backgroundColor: transparentize(0.5, black),
+  height: '3px',
+  width: '100%',
 }));
 
 export const ImageWrapper = styled.div({
@@ -24,6 +30,7 @@ export const ImageWrapper = styled.div({
 });
 
 export const Image = styled.img({
+  borderRadius: '0.5rem',
   height: '100%',
   left: 0,
   objectFit: 'cover',
@@ -89,27 +96,27 @@ export const Info = styled.p(({ theme: { palette: { black } } }) => ({
   margin: 0,
 }));
 
-export const Price = styled.span(() => ({
+export const Price = styled.span({
   fontSize: '0.8rem',
   fontWeight: 500,
   paddingBottom: '0.5rem',
-}));
+});
 
-export const Buttons = styled.div(() => ({
+export const Buttons = styled.div({
   alignItems: 'center',
   display: 'flex',
   fontSize: '0.8rem',
   '> *': {
     flex: 1,
   },
-}));
+});
 
-export const OrderSummary = styled.div(() => ({
+export const OrderSummary = styled.div({
   display: 'flex',
   fontWeight: 700,
   justifyContent: 'space-between',
   padding: '0.5rem',
-}));
+});
 
 export const ContainersTotalPrice = styled.span(
   ({

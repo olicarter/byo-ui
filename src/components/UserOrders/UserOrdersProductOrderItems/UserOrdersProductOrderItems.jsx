@@ -6,14 +6,14 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
   const [
     {
       productVariant: {
-        product: { name },
+        product: { name: productName },
       },
     },
   ] = orderItems;
   return (
     <Styled.Section>
       <Styled.OrderItemHeader>
-        <Styled.Name>{name}</Styled.Name>
+        <Styled.Name>{productName}</Styled.Name>
         <span>
           {/* £
           {
@@ -34,13 +34,16 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
       {orderItems.map(
         ({
           quantity,
-          productVariant: { container, increment, incrementPrice, unit },
+          productVariant: { container, increment, incrementPrice, name, unit },
         }) => (
           <Styled.Row>
             <Styled.OrderItemProduct>
-              {quantity} x {increment}
-              {unit.pluralAbbreviated}
-              {container ? ` + ${container.type}` : ''}
+              {quantity} x{' '}
+              {name && unit.singular.trim() === 'item'
+                ? name
+                : `${increment}${unit.pluralAbbreviated}${
+                    container ? ` + ${container.type}` : ''
+                  }`}
             </Styled.OrderItemProduct>
             £{Number(+parseFloat(incrementPrice * quantity)).toFixed(2)}
           </Styled.Row>

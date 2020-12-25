@@ -10,8 +10,13 @@ export const ProductVariant = gql`
     container {
       ...Container
     }
+    image {
+      id
+      publicUrl
+    }
     increment
     incrementPrice
+    name
     tags {
       ...Tag
     }

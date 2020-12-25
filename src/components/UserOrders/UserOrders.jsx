@@ -11,7 +11,12 @@ export const UserOrders = () => {
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const { orders = [] } = authenticatedUser || {};
-  const submittedOrders = orders.filter(({ paid, submitted }) => submitted);
+  const submittedOrders = orders
+    .filter(({ paid, submitted }) => submitted)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 
   return (
     <>

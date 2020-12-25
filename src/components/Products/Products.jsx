@@ -27,7 +27,11 @@ export const Products = () => {
   });
 
   const filteredProducts = allProducts
-    .filter(({ category: { slug: categorySlug } = {}, slug, tags = [] }) => {
+    .filter(({ category, tags = [], variants = [] }) => {
+      if (!variants.length) return false;
+
+      const { slug: categorySlug } = category || {};
+
       const categoryMatches =
         !queryCategorySlug || queryCategorySlug === categorySlug;
 
