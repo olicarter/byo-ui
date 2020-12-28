@@ -24,7 +24,7 @@ import { ProtectedRoute } from '@components/ProtectedRoute';
 import { Section } from '@components/Section';
 import { TopBar } from '@components/TopBar';
 
-import { GET_AUTHENTICATED_USER, GET_PRODUCTS, GET_SETTINGS } from './App.gql';
+import { GET_AUTHENTICATED_USER, GET_SETTINGS } from './App.gql';
 import * as Styled from './App.styled';
 
 export const App = () => {
@@ -43,24 +43,15 @@ export const App = () => {
     refetch: getAuthenticatedUserRefetch,
   } = useQuery(GET_AUTHENTICATED_USER, { notifyOnNetworkStatusChange: true });
 
-  const {
-    loading: getProductsLoading,
-    networkStatus: getProductsNetworkStatus,
-    refetch: getProductsRefetch,
-  } = useQuery(GET_PRODUCTS);
-
   useEffect(() => {
     getSettingsRefetch();
     getAuthenticatedUserRefetch();
-    getProductsRefetch();
-  }, [isAuthenticated]);
+  }, [getAuthenticatedUserRefetch, getSettingsRefetch, isAuthenticated]);
 
   if (
     getSettingsLoading ||
     getAuthenticatedUserLoading ||
-    getProductsLoading ||
     getAuthenticatedUserNetworkStatus === NetworkStatus.refetch ||
-    getProductsNetworkStatus === NetworkStatus.refetch ||
     getSettingsNetworkStatus === NetworkStatus.refetch
   )
     return <LoadingPage />;

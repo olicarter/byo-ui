@@ -21,11 +21,11 @@ export const OrderDeliveryAddressDeliveryInstructionsInput = ({
 
   useEffect(() => {
     getAddress();
-  }, [addressId]);
+  }, [addressId, getAddress]);
 
   useEffect(() => {
     setValue(name, deliveryInstructions);
-  }, [deliveryInstructions]);
+  }, [deliveryInstructions, name, setValue]);
 
   return <TextInput name={name} ref={register()} />;
 };

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Product } from './Product';
+import { ProductDetails } from './ProductDetails';
 import { ProductVariant } from './ProductVariant';
 
 export const OrderItem = gql`
@@ -9,11 +9,11 @@ export const OrderItem = gql`
     productVariant {
       ...ProductVariant
       product {
-        ...Product
+        ...ProductDetails
       }
     }
     quantity
   }
-  ${Product}
+  ${ProductDetails}
   ${ProductVariant}
 `;

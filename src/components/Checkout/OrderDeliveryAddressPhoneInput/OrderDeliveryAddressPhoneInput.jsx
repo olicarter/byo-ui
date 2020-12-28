@@ -24,11 +24,11 @@ export const OrderDeliveryAddressPhoneInput = ({ name = 'phone' }) => {
 
   useEffect(() => {
     getAddress();
-  }, [addressId]);
+  }, [addressId, getAddress]);
 
   useEffect(() => {
     setValue(name, phone);
-  }, [phone]);
+  }, [name, phone, setValue]);
 
   return (
     <TextInput

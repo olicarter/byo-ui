@@ -12,6 +12,7 @@ export const Button = ({
   flex = 1,
   loading = false,
   onClick,
+  onMouseOver,
   type = 'button',
 }) => (
   <Styled.Button
@@ -20,6 +21,7 @@ export const Button = ({
     disabled={disabled}
     flex={flex}
     onClick={onClick}
+    onMouseOver={onMouseOver}
     type={type}
   >
     {loading ? (

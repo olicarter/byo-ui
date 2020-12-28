@@ -19,11 +19,11 @@ export const OrderDeliveryAddressPostcodeInput = ({ name = 'postcode' }) => {
 
   useEffect(() => {
     getAddress();
-  }, [addressId]);
+  }, [addressId, getAddress]);
 
   useEffect(() => {
     setValue(name, postcode);
-  }, [postcode]);
+  }, [name, postcode, setValue]);
 
   return <PostcodeInput name={name} />;
 };

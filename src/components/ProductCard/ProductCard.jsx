@@ -1,29 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import Icon from '@mdi/react';
 import { mdiInformationOutline, mdiMapMarker } from '@mdi/js';
+import { useInView } from 'react-intersection-observer';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
 import * as Styled from './ProductCard.styled';
-import { GET_AUTHENTICATED_USER } from './ProductCard.gql';
+import {
+  GET_AUTHENTICATED_USER,
+  GET_PRODUCT_VARIANTS,
+} from './ProductCard.gql';
+import { LoadingProductVariants } from './LoadingProductVariants';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Card } from '../Card';
 
 export const ProductCard = ({
-  product: {
-    id: productId,
-    image,
-    name,
-    deliveryInfo,
-    origin,
-    slug,
-    tags,
-    variants,
-  },
+  id: productId,
+  image,
+  name,
+  deliveryInfo,
+  origin,
+  slug,
 }) => {
   const { push } = useHistory();
+
+  const { ref, inView } = useInView();
+
+  const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
+    fetchPolicy: 'cache-only',
+    variables: { id: productId },
+  });
+
+  const [
+    getProductVariants,
+    { called: getProductVariantsCalled, loading: getProductVariantsLoading },
+  ] = useLazyQuery(GET_PRODUCT_VARIANTS, {
+    variables: { id: productId },
+  });
+
+  useEffect(() => {
+    if (inView) getProductVariants();
+  }, [getProductVariants, inView]);
+
+  const { variants = [] } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -53,7 +74,7 @@ export const ProductCard = ({
   const { publicUrl = '' } = image || variantImage || {};
 
   return (
-    <Card>
+    <Card ref={ref}>
       <Styled.Content>
         {publicUrl ? (
           <Styled.ImageWrapper>
@@ -88,18 +109,18 @@ export const ProductCard = ({
       </Styled.Content>
 
       <div>
-        {variants.map((variant, index) => (
-          <div
-            onMouseOut={() => setMouseOverVariantIndex(0)}
-            onMouseOver={() => setMouseOverVariantIndex(index)}
-          >
-            <ProductVariant
-              key={variant.id}
-              productTags={tags}
-              variant={variant}
-            />
-          </div>
-        ))}
+        {!getProductVariantsCalled || getProductVariantsLoading ? (
+          <LoadingProductVariants />
+        ) : (
+          variants.map((variant, index) => (
+            <div
+              onMouseOut={() => setMouseOverVariantIndex(0)}
+              onMouseOver={() => setMouseOverVariantIndex(index)}
+            >
+              <ProductVariant key={variant.id} variant={variant} />
+            </div>
+          ))
+        )}
       </div>
 
       <Styled.Buttons>

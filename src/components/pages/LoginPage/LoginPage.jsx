@@ -32,7 +32,7 @@ export const LoginPage = () => {
           encode: false,
         }),
       });
-  }, [isAuthenticated]);
+  }, [from, isAuthenticated, push, restQuery]);
 
   const {
     data: { allSettings: [{ loginHeader = '' } = {}] = [] } = {},

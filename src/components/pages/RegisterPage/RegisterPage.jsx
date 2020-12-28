@@ -21,7 +21,7 @@ export const RegisterPage = () => {
       const { from = '/' } = parse(search, { ignoreQueryPrefix: true });
       push(from);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, push, search]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { parse } from 'qs';
 import { useQuery } from '@apollo/client';
 import { useChain, useTransition } from 'react-spring';

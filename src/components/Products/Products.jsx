@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
-import Fuse from 'fuse.js';
 
 import { useAuth } from '../../contexts';
 import { GET_PRODUCTS } from './Products.gql';
@@ -16,50 +15,75 @@ export const Products = () => {
   const { search } = useLocation();
   const { isAuthenticated } = useAuth();
 
-  const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS);
-
   const {
     category: queryCategorySlug,
     search: querySearch,
-    tags: queryTags = [],
+    tags: queryTags,
   } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
-  const filteredProducts = allProducts
-    .filter(({ category, tags = [], variants = [] }) => {
-      if (!variants.length) return false;
+  const stringifiedQueryTags = JSON.stringify(queryTags);
 
-      const { slug: categorySlug } = category || {};
+  const hasCategoryOrTagsFilter =
+    queryCategorySlug || (Array.isArray(queryTags) && queryTags.length);
 
-      const categoryMatches =
-        !queryCategorySlug || queryCategorySlug === categorySlug;
+  const categoryFilter = useMemo(
+    () =>
+      queryCategorySlug ? [{ category: { slug: queryCategorySlug } }] : [],
+    [queryCategorySlug],
+  );
 
-      const tagMatches = queryTags.length
-        ? queryTags.every(tag => {
-            return tags.find(({ slug: tagSlug }) => tagSlug === tag);
-          })
-        : true;
+  const tagsFilter = useMemo(
+    () =>
+      Array.isArray(queryTags) && queryTags.length
+        ? queryTags.map(slug => ({ tags_some: { slug } }))
+        : [],
+    [queryTags],
+  );
 
-      return categoryMatches && tagMatches;
-    })
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-
-  const fuse = new Fuse(filteredProducts, {
-    keys: ['name'],
-    threshold: 0.4,
+  const { data: { allProducts = [] } = {}, refetch } = useQuery(GET_PRODUCTS, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      search: querySearch,
+      ...(hasCategoryOrTagsFilter
+        ? {
+            where: {
+              AND: [...categoryFilter, ...tagsFilter],
+            },
+          }
+        : {}),
+    },
   });
 
-  const searchedAndFilteredProducts = querySearch
-    ? fuse.search(querySearch).map(({ item }) => item)
-    : filteredProducts;
+  useEffect(() => {
+    if (refetch)
+      refetch({
+        search: querySearch,
+        ...(hasCategoryOrTagsFilter
+          ? {
+              where: {
+                AND: [...categoryFilter, ...tagsFilter],
+              },
+            }
+          : {}),
+      });
+  }, [
+    categoryFilter,
+    hasCategoryOrTagsFilter,
+    stringifiedQueryTags,
+    queryCategorySlug,
+    querySearch,
+    refetch,
+    tagsFilter,
+  ]);
 
   return (
     <>
       <Grid>
-        {searchedAndFilteredProducts.map(product => (
+        {allProducts.map(product => (
           <Sentry.ErrorBoundary>
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} {...product} />
           </Sentry.ErrorBoundary>
         ))}
       </Grid>

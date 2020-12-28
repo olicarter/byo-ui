@@ -7,6 +7,7 @@ const aliases = {
   '@contexts': `${prefix}/contexts`,
   '@fragments': `${prefix}/fragments`,
   '@helpers': `${prefix}/helpers`,
+  '@hooks': `${prefix}/hooks`,
   '@pages': `${prefix}/components/pages`,
 };
 

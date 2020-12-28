@@ -8,4 +8,3 @@ export * from './ProductCard';
 export * from './Products';
 export * from './TagBar';
 export * from './TopBar';
-export * from './ProductSearch';

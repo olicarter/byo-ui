@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   createGlobalStyle,
   ThemeProvider as SCThemeProvider,
@@ -64,18 +70,18 @@ export const ThemeProvider = ({ children }) => {
 
   const prefersDarkTheme = useMedia({ prefersColorScheme: 'dark' });
 
-  const getTheme = () => {
+  const getTheme = useCallback(() => {
     if (localStorage.getItem('byo.theme'))
       return themes[localStorage.getItem('byo.theme')];
     if (prefersDarkTheme) return themes.dark;
     return themes.light;
-  };
+  }, [prefersDarkTheme]);
 
   const [theme, setTheme] = useState(getTheme());
 
   useEffect(() => {
     setTheme(getTheme());
-  }, [prefersDarkTheme]);
+  }, [getTheme, prefersDarkTheme]);
 
   const toggleTheme = () => {
     const newThemeName = theme.name === 'dark' ? 'light' : 'dark';

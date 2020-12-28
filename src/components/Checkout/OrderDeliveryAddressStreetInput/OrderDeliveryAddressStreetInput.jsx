@@ -18,11 +18,11 @@ export const OrderDeliveryAddressStreetInput = ({ name = 'street' }) => {
 
   useEffect(() => {
     getAddress();
-  }, [addressId]);
+  }, [addressId, getAddress]);
 
   useEffect(() => {
     setValue(name, street);
-  }, [street]);
+  }, [name, setValue, street]);
 
   return (
     <TextInput

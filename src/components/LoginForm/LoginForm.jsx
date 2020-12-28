@@ -20,7 +20,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (queryEmail) setValue('email', queryEmail);
-  }, [queryEmail]);
+  }, [setValue, queryEmail]);
 
   const [
     authenticateUser,

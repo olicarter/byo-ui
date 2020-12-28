@@ -22,7 +22,7 @@ export const AddressSelect = ({ name = 'address' }) => {
 
   useEffect(() => {
     setValue(name, addressId);
-  }, [addressId]);
+  }, [addressId, name, setValue]);
 
   return (
     <Styled.AddressSelectWrapper>

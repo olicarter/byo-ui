@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
 
 export const Bar = styled.div(() => ({
   alignItems: 'center',
@@ -9,12 +8,6 @@ export const Bar = styled.div(() => ({
   transitionDuration: '100ms',
   '::-webkit-scrollbar': {
     display: 'none',
-  },
-  '@media (hover: hover) and (pointer: fine)': {
-    opacity: 0.9,
-    ':hover': {
-      opacity: 1,
-    },
   },
 }));
 

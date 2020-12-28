@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import * as Styled from './Card.styled';
 
-export const Card = ({ children, margin = '0' }) => (
-  <Styled.Card margin={margin}>{children}</Styled.Card>
-);
+export const Card = forwardRef(({ children, margin = '0' }, ref) => (
+  <Styled.Card margin={margin} ref={ref}>
+    {children}
+  </Styled.Card>
+));

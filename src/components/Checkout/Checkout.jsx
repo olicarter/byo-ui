@@ -34,7 +34,7 @@ const inputNames = {
 export const Checkout = () => {
   const { push } = useHistory();
   const formMethods = useForm({ reValidateMode: 'onSubmit' });
-  const { errors, handleSubmit, register, setValue, watch } = formMethods;
+  const { errors, handleSubmit, setValue, watch } = formMethods;
 
   const {
     data: {
@@ -55,7 +55,7 @@ export const Checkout = () => {
 
   useEffect(() => {
     setValue(inputNames.phone, userPhone);
-  }, [userPhone]);
+  }, [setValue, userPhone]);
 
   const [updateAuthenticatedUser] = useMutation(UPDATE_AUTHENTICATED_USER);
 

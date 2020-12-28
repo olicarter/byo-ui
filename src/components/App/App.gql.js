@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Product, Setting, User } from '@fragments';
+import { ProductDetails, Setting, User } from '@fragments';
 
 export const GET_AUTHENTICATED_USER = gql`
   query AppGetAuthenticatedUser {
@@ -14,10 +14,10 @@ export const GET_AUTHENTICATED_USER = gql`
 export const GET_PRODUCTS = gql`
   query AppGetProducts {
     allProducts {
-      ...Product
+      ...ProductDetails
     }
   }
-  ${Product}
+  ${ProductDetails}
 `;
 
 export const GET_SETTINGS = gql`

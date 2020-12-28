@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { darken, transparentize } from 'polished';
 
 export const DeliverySlotPicker = styled.div(() => ({
   borderRadius: '0.5rem',

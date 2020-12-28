@@ -16,8 +16,7 @@ import {
 import * as Styled from './ProductVariant.styled';
 
 export const ProductVariant = ({
-  productTags = [],
-  variant: { id, container, increment, incrementPrice, name, tags = [], unit },
+  variant: { id, container, increment, incrementPrice, name, unit },
 }) => {
   const { push } = useHistory();
   const { pathname, search } = useLocation();
@@ -198,7 +197,7 @@ export const ProductVariant = ({
             </Styled.Container>
           ) : null}
         </Styled.Price>
-        {tags.length ? (
+        {/* {tags.length ? (
           <Styled.Tags>
             {tags
               .filter(
@@ -208,7 +207,7 @@ export const ProductVariant = ({
               .map(({ name: tagName }) => tagName.toLowerCase())
               .join(', ')}
           </Styled.Tags>
-        ) : null}
+        ) : null} */}
       </Styled.Info>
 
       <Styled.IncrementButton

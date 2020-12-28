@@ -1,12 +1,23 @@
 import { gql } from '@apollo/client';
 
-import { Product, User } from '@fragments';
+import { ProductDetails } from '@fragments';
 
 export const GET_PRODUCTS = gql`
-  query ProductsGetProducts {
-    allProducts {
-      ...Product
+  query ProductsGetProducts(
+    $limit: Int
+    $offset: Int
+    $search: String
+    $where: ProductWhereInput
+  ) {
+    allProducts(
+      first: $limit
+      search: $search
+      skip: $offset
+      sortBy: name_ASC
+      where: $where
+    ) {
+      ...ProductDetails
     }
   }
-  ${Product}
+  ${ProductDetails}
 `;
