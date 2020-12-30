@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { ProductBrand, ProductDetails, ProductTags } from '@fragments';
+import { ProductDetails } from '@fragments';
 
 export const GET_PRODUCTS = gql`
   query ProductsGetProducts(
@@ -17,11 +17,7 @@ export const GET_PRODUCTS = gql`
       where: $where
     ) {
       ...ProductDetails
-      ...ProductBrand
-      ...ProductTags
     }
   }
   ${ProductDetails}
-  ${ProductBrand}
-  ${ProductTags}
 `;

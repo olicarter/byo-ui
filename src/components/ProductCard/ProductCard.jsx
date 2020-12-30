@@ -14,14 +14,12 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Card } from '../Card';
 
 export const ProductCard = ({
-  brand,
   deliveryInfo,
   id: productId,
   image,
   name,
   origin,
   slug,
-  tags = [],
 }) => {
   const { ref, inView } = useInView();
 
@@ -41,7 +39,8 @@ export const ProductCard = ({
     if (inView && !getProductVariantsCalled) getProductVariants();
   }, [getProductVariants, getProductVariantsCalled, inView]);
 
-  const { variants = [] } = Product || {};
+  const { tags = [], variants = [] } = Product || {};
+  let { brand } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -70,7 +69,9 @@ export const ProductCard = ({
   const { image: variantImage } = variants[mouseOverVariantIndex] || {};
   const { publicUrl = '' } = image || variantImage || {};
 
-  const { name: brandName = 'Unbranded' } = brand || {};
+  if (brand === null) brand = { name: 'Unbranded' };
+
+  const { name: brandName = '' } = brand || {};
 
   return (
     <Card ref={ref}>
