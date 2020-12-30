@@ -4,7 +4,7 @@ import { Tag } from './Tag';
 
 export const ProductTags = gql`
   fragment ProductTags on Product {
-    tags {
+    tags(sortBy: name_ASC) {
       ...Tag
     }
   }

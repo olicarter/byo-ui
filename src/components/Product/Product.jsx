@@ -11,8 +11,8 @@ import {
 
 import { GET_PRODUCTS_BY_SLUG } from './Product.gql';
 import * as Styled from './Product.styled';
-import { FloatingButton } from '../FloatingButton';
-import { Title } from '../Typography';
+import { FloatingButton } from '@components/FloatingButton';
+import { Title } from '@components/Typography';
 
 export const Product = () => {
   const { goBack } = useHistory();
@@ -102,8 +102,8 @@ export const Product = () => {
             ) : null}
           </>
         )}
+        <FloatingButton onClick={goBack}>Go back</FloatingButton>
       </Styled.Product>
-      <FloatingButton onClick={goBack}>Go back</FloatingButton>
     </>
   );
 };

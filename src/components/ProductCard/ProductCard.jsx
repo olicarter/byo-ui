@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useLazyQuery, useQuery } from '@apollo/client';
-import Icon from '@mdi/react';
-import { mdiInformationOutline, mdiMapMarker } from '@mdi/js';
 import { useInView } from 'react-intersection-observer';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
@@ -17,15 +14,15 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { Card } from '../Card';
 
 export const ProductCard = ({
+  brand,
+  deliveryInfo,
   id: productId,
   image,
   name,
-  deliveryInfo,
   origin,
   slug,
+  tags = [],
 }) => {
-  const { push } = useHistory();
-
   const { ref, inView } = useInView();
 
   const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
@@ -35,14 +32,14 @@ export const ProductCard = ({
 
   const [
     getProductVariants,
-    { called: getProductVariantsCalled, loading: getProductVariantsLoading },
+    { called: getProductVariantsCalled },
   ] = useLazyQuery(GET_PRODUCT_VARIANTS, {
     variables: { id: productId },
   });
 
   useEffect(() => {
-    if (inView) getProductVariants();
-  }, [getProductVariants, inView]);
+    if (inView && !getProductVariantsCalled) getProductVariants();
+  }, [getProductVariants, getProductVariantsCalled, inView]);
 
   const { variants = [] } = Product || {};
 
@@ -73,6 +70,8 @@ export const ProductCard = ({
   const { image: variantImage } = variants[mouseOverVariantIndex] || {};
   const { publicUrl = '' } = image || variantImage || {};
 
+  const { name: brandName = 'Unbranded' } = brand || {};
+
   return (
     <Card ref={ref}>
       <Styled.Content>
@@ -85,31 +84,37 @@ export const ProductCard = ({
         )}
 
         <Styled.Header>
-          <Styled.Name>{name}</Styled.Name>
-          <Styled.InfoIcon onClick={() => push(`/products/${slug}`)}>
-            <Icon path={mdiInformationOutline} size={0.8} />
-          </Styled.InfoIcon>
+          <Styled.HeaderUpper>
+            <Styled.Brand>{brandName}</Styled.Brand>
+            <Styled.Tags>
+              {tags.map(({ abbreviation }) =>
+                abbreviation ? <Styled.Tag>{abbreviation}</Styled.Tag> : null,
+              )}
+            </Styled.Tags>
+          </Styled.HeaderUpper>
+
+          <Styled.HeaderLower>
+            <Styled.Name color="red" to={`/products/${slug}`}>
+              {name}
+            </Styled.Name>
+          </Styled.HeaderLower>
         </Styled.Header>
+
         <Styled.Info>
           {!!orderItems.length ? (
             <Styled.DeliveryInfo>
               {deliveryInfo || defaultDeliveryInfo}
             </Styled.DeliveryInfo>
-          ) : (
-            <div>
-              {origin ? (
-                <Styled.Origin>
-                  <Icon path={mdiMapMarker} size={0.5} />
-                  <span>{origin}</span>
-                </Styled.Origin>
-              ) : null}
-            </div>
-          )}
+          ) : null}
+
+          <div>
+            <Styled.Origin>{origin}</Styled.Origin>
+          </div>
         </Styled.Info>
       </Styled.Content>
 
-      <div>
-        {!getProductVariantsCalled || getProductVariantsLoading ? (
+      <Styled.ProductVariants>
+        {!getProductVariantsCalled || !Product ? (
           <LoadingProductVariants />
         ) : (
           variants.map((variant, index) => (
@@ -121,7 +126,7 @@ export const ProductCard = ({
             </div>
           ))
         )}
-      </div>
+      </Styled.ProductVariants>
 
       <Styled.Buttons>
         {!!orderItems.length ? (

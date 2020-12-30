@@ -1,44 +1,18 @@
 import styled from 'styled-components';
-import { transparentize } from 'polished';
 
-const height = 'auto';
+export const ProductVariant = styled.div({
+  display: 'flex',
+  minHeight: '46px',
+});
 
-export const ProductVariant = styled.div(
-  ({
-    theme: {
-      palette: { black },
-    },
-  }) => ({
-    alignItems: 'stretch',
-    display: 'flex',
-    height,
-    position: 'relative',
-    ':before': {
-      backgroundColor: transparentize(0.9, black),
-      top: 0,
-      content: '""',
-      height: '2px',
-      position: 'absolute',
-      width: '100%',
-    },
-  }),
-);
-
-export const Info = styled.div(
-  ({
-    theme: {
-      palette: { black },
-    },
-    quantity,
-  }) => ({
-    color: black,
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: `0.5rem ${quantity ? 0 : 0.5}rem`,
-  }),
-);
+export const Info = styled.div(({ theme: { palette: { black } } }) => ({
+  color: black,
+  display: 'flex',
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: `0.5rem 0`,
+}));
 
 export const Quantity = styled.div(
   ({

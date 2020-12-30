@@ -1,19 +1,64 @@
 import styled from 'styled-components';
 import { transparentize } from 'polished';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const Content = styled.div({
   cursor: 'default',
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
+  paddingBottom: '0.5rem',
 });
 
 export const Header = styled.header({
+  paddingTop: '0.5rem',
+});
+
+export const HeaderUpper = styled.div({
   alignItems: 'center',
   display: 'flex',
-  minHeight: '48px',
+  lineHeight: '18px',
   justifyContent: 'space-between',
+  width: '100%',
 });
+
+export const HeaderLower = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '100%',
+});
+
+export const Title = styled.div({
+  flex: 1,
+});
+
+export const Brand = styled.p(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.33, black),
+  fontSize: '0.75rem',
+  margin: 0,
+  padding: 0,
+}));
+
+export const Tags = styled.ul({
+  display: 'flex',
+  margin: 0,
+  padding: 0,
+});
+
+export const Tag = styled.p(({ theme: { palette: { blue } } }) => ({
+  alignItems: 'center',
+  borderRadius: '8px',
+  color: blue,
+  display: 'flex',
+  fontSize: '0.75rem',
+  fontWeight: 600,
+  height: '16px',
+  justifyContent: 'center',
+  lineHeight: 1,
+  margin: 0,
+  padding: '0 0 0 0.25rem',
+  textTransform: 'uppercase',
+}));
 
 export const Border = styled.div(({ theme: { palette: { black } } }) => ({
   backgroundColor: transparentize(0.5, black),
@@ -39,56 +84,62 @@ export const Image = styled.img({
   width: '100%',
 });
 
-export const Name = styled.h3(({ theme: { palette: { black } } }) => ({
-  color: black,
-  fontSize: '1.15rem',
-  fontWeight: 700,
-  margin: 0,
-  padding: '0.5rem',
-  textDecoration: 'none',
-  textTransform: 'capitalize',
-}));
-
-export const InfoIcon = styled.div(
+export const Name = styled(RouterLink)(
   ({
     theme: {
       palette: { black, primary },
     },
   }) => ({
-    alignItems: 'center',
-    cursor: 'pointer',
-    display: 'flex',
-    flexBasis: '48px',
-    flexShrink: 0,
-    height: '48px',
-    justifyContent: 'center',
-    '> *': {
-      color: black,
-    },
+    color: black,
+    flex: 1,
+    fontSize: '1.15rem',
+    fontWeight: 700,
+    lineHeight: '24px',
+    margin: 0,
+    padding: 0,
+    textDecoration: 'none',
+    textTransform: 'capitalize',
     '@media (hover: hover) and (pointer: fine)': {
-      ':hover > *': {
+      ':hover': {
         color: primary,
       },
     },
   }),
 );
 
+export const ProductVariants = styled.div(
+  ({
+    theme: {
+      palette: { black },
+    },
+  }) => ({
+    minHeight: '2px',
+    position: 'relative',
+    width: '100%',
+    ':before': {
+      backgroundColor: transparentize(0.9, black),
+      content: '""',
+      height: '2px',
+      position: 'absolute',
+      width: '100%',
+    },
+  }),
+);
+
 export const Origin = styled.span(({ theme: { palette: { black } } }) => ({
+  alignItems: 'center',
   color: transparentize(0.33, black),
   display: 'flex',
-  fontSize: '0.8rem',
+  fontSize: '0.75rem',
   fontWeight: 400,
-  lineHeight: 1,
+  lineHeight: '18px',
   margin: 0,
-  padding: '0 0.5rem 0.5rem',
   '> span': {
     marginLeft: '0.25rem',
   },
 }));
 
-export const DeliveryInfo = styled(Origin)({
-  lineHeight: 1.2,
-});
+export const DeliveryInfo = styled(Origin)({});
 
 export const Info = styled.p(({ theme: { palette: { black } } }) => ({
   color: transparentize(0.33, black),
@@ -110,21 +161,3 @@ export const Buttons = styled.div({
     flex: 1,
   },
 });
-
-export const OrderSummary = styled.div({
-  display: 'flex',
-  fontWeight: 700,
-  justifyContent: 'space-between',
-  padding: '0.5rem',
-});
-
-export const ContainersTotalPrice = styled.span(
-  ({
-    theme: {
-      palette: { black },
-    },
-  }) => ({
-    color: transparentize(0.33, black),
-    whiteSpace: 'pre',
-  }),
-);

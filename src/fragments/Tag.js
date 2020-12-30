@@ -5,5 +5,6 @@ export const Tag = gql`
     id
     name
     slug
+    abbreviation
   }
 `;

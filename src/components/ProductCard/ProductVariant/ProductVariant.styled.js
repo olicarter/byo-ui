@@ -14,17 +14,16 @@ export const ProductVariant = styled.div(
     display: 'flex',
     height,
     position: 'relative',
-    // ':not(:last-of-type)': {
-    ':before': {
-      backgroundColor: transparentize(0.9, black),
-      top: 0,
-      content: '""',
-      height: '2px',
-      // margin: '0 24px',
-      position: 'absolute',
-      width: '100%',
+    ':not(:last-of-type)': {
+      ':after': {
+        backgroundColor: transparentize(0.9, black),
+        top: 0,
+        content: '""',
+        height: '2px',
+        position: 'absolute',
+        width: '100%',
+      },
     },
-    // },
   }),
 );
 
@@ -96,7 +95,7 @@ export const Info = styled.div(
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: `0.5rem ${quantity ? 0 : 0.5}rem`,
+    padding: `0.5rem ${quantity ? 0 : 0}rem`,
   }),
 );
 

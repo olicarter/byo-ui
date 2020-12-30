@@ -7,7 +7,7 @@ export const OrderSummary = styled.div(({ theme: { palette: { black } } }) => ({
   display: 'flex',
   fontWeight: 700,
   justifyContent: 'space-between',
-  padding: '0.5rem',
+  padding: '0.5rem 0',
 }));
 
 export const ContainersTotalPrice = styled.span(() => ({

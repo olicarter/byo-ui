@@ -16,6 +16,7 @@ const themes = {
     name: 'dark',
     palette: {
       black: 'hsl(40, 100%, 97%)',
+      blue: 'dodgerblue',
       cream: '#ddd5c4',
       teal: '#1d7771',
       green: 'hsl(140, 66%, 44%)',
@@ -32,6 +33,7 @@ const themes = {
     name: 'light',
     palette: {
       black: 'black',
+      blue: 'dodgerblue',
       cream: '#ddd5c4',
       teal: '#1d7771',
       green: 'hsl(140, 66%, 47%)',
