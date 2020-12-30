@@ -11,6 +11,7 @@ export const Setting = gql`
     basketHeader
     blogHeader
     checkoutHeader
+    contactHeader
     loginHeader
     registerHeader
     shopHeader

@@ -68,7 +68,7 @@ export const ThemeContext = createContext({});
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const isDesktop = useMediaLayout({ minWidth: '600px' });
+  const isDesktop = useMediaLayout({ minWidth: '680px' });
 
   const prefersDarkTheme = useMedia({ prefersColorScheme: 'dark' });
 

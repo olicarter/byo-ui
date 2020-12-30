@@ -3,6 +3,7 @@ export * from './AccountPage';
 export * from './BasketPage';
 export * from './BlogPage';
 export * from './CheckoutPage';
+export * from './ContactPage';
 export * from './LoadingPage';
 export * from './LoginPage';
 export * from './ProductsPage';

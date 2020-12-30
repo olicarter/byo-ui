@@ -5,11 +5,11 @@ const prefix = './src';
 const aliases = {
   '@components': `${prefix}/components`,
   '@contexts': `${prefix}/contexts`,
-  '@forms': `${prefix}/components/forms`,
+  '@forms': `${prefix}/forms`,
   '@fragments': `${prefix}/fragments`,
   '@helpers': `${prefix}/helpers`,
   '@hooks': `${prefix}/hooks`,
-  '@pages': `${prefix}/components/pages`,
+  '@pages': `${prefix}/pages`,
 };
 
 const resolvedAliases = Object.fromEntries(

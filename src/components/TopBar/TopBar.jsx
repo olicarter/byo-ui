@@ -7,10 +7,12 @@ import Icon from '@mdi/react';
 import {
   mdiAccountCircleOutline,
   mdiClose,
+  mdiEmailOutline,
   mdiFacebook,
   mdiInformationOutline,
   mdiInstagram,
   mdiMenu,
+  mdiPostOutline,
   mdiStoreOutline,
   mdiThemeLightDark,
 } from '@mdi/js';
@@ -65,9 +67,15 @@ export const TopBar = () => {
     },
     {
       key: 'blog',
-      icon: mdiInformationOutline,
+      icon: mdiPostOutline,
       title: 'Blog',
       to: '/blog',
+    },
+    {
+      key: 'contact',
+      icon: mdiEmailOutline,
+      title: 'Contact',
+      to: '/contact',
     },
   ];
 

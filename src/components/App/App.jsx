@@ -10,6 +10,7 @@ import {
   BasketPage,
   BlogPage,
   CheckoutPage,
+  ContactPage,
   LoadingPage,
   LoginPage,
   ProductsPage,
@@ -87,6 +88,10 @@ export const App = () => {
 
           <Route exact path="/blog">
             <BlogPage />
+          </Route>
+
+          <Route exact path="/contact">
+            <ContactPage />
           </Route>
 
           <Route exact path="/products">
