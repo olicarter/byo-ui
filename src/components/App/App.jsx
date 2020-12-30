@@ -14,6 +14,7 @@ import {
   LoginPage,
   ProductsPage,
   RegisterPage,
+  ResetPasswordPage,
 } from '@pages';
 import { Callout } from '@components/Callout';
 import { Footer } from '@components/Footer';
@@ -100,6 +101,10 @@ export const App = () => {
 
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+
+          <Route exact path="/reset-password">
+            <ResetPasswordPage />
           </Route>
 
           <Route exact path="/register">

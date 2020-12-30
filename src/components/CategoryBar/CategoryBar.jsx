@@ -3,9 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 
+import { Bar } from '@components/Bar';
+
 import { GET_CATEGORIES_QUERY } from './CategoryBar.gql';
 import * as Styled from './CategoryBar.styled';
-import { Bar } from '../Bar';
 
 export const CategoryBar = () => {
   const { pathname, search } = useLocation();

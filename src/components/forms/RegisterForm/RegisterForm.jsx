@@ -1,18 +1,20 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { useAuth } from '@contexts';
-import { FloatingButton } from '../FloatingButton';
-import { FormGroup } from '../FormGroup';
-import { Label } from '../Label';
-import { PostcodeInput } from '../PostcodeInput';
-import { TextInput } from '../TextInput';
+import { FloatingButton } from '@components/FloatingButton';
+import { FormGroup } from '@components/FormGroup';
+import { Label } from '@components/Label';
+import { PostcodeInput } from '@components/PostcodeInput';
+import { TextInput } from '@components/TextInput';
 
 export const RegisterForm = () => {
   const { useRegister } = useAuth();
-  const { handleSubmit, register: registerInput, errors } = useForm({
+  const useFormMethods = useForm({
     reValidateMode: 'onSubmit',
   });
+
+  const { handleSubmit, register: registerInput, errors } = useFormMethods;
 
   const [register, { error: registerError }] = useRegister();
 
@@ -28,7 +30,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <>
+    <FormProvider {...useFormMethods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup
           label="Postcode"
@@ -115,6 +117,7 @@ export const RegisterForm = () => {
 
         <FloatingButton type="submit">Register</FloatingButton>
       </form>
+
       {registerError ? (
         <FormGroup>
           <Label color="red">
@@ -123,6 +126,6 @@ export const RegisterForm = () => {
           </Label>
         </FormGroup>
       ) : null}
-    </>
+    </FormProvider>
   );
 };

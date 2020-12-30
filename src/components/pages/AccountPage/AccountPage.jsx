@@ -31,7 +31,9 @@ export const AccountPage = () => {
           <UserOrders />
         </Section>
         <Section>
-          <FloatingButton onClick={() => logout('/')}>Log out</FloatingButton>
+          <FloatingButton backgroundColor="red" onClick={() => logout('/')}>
+            Log out
+          </FloatingButton>
         </Section>
       </Layout>
     </>

@@ -5,6 +5,7 @@ const prefix = './src';
 const aliases = {
   '@components': `${prefix}/components`,
   '@contexts': `${prefix}/contexts`,
+  '@forms': `${prefix}/components/forms`,
   '@fragments': `${prefix}/fragments`,
   '@helpers': `${prefix}/helpers`,
   '@hooks': `${prefix}/hooks`,

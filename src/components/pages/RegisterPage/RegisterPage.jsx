@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet';
 import { useAuth } from '@contexts';
 import { Layout } from '@components/Layout';
 import { Section } from '@components/Section';
-import { RegisterForm } from '@components/RegisterForm';
 import { SubTitle, Title } from '@components/Typography';
+import { RegisterForm } from '@forms';
 
 import * as Styled from './RegisterPage.styled';
 

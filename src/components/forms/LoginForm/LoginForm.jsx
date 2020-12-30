@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { parse } from 'qs';
 
 import { useAuth } from '@contexts';
-import { FloatingButton } from '../FloatingButton';
-import { FormGroup } from '../FormGroup';
-import { Label } from '../Label';
-import { TextInput } from '../TextInput';
+import { FloatingButton } from '@components/FloatingButton';
+import { FormGroup } from '@components/FormGroup';
+import { Label } from '@components/Label';
+import { TextInput } from '@components/TextInput';
 
 export const LoginForm = () => {
   const { search } = useLocation();
@@ -70,10 +70,14 @@ export const LoginForm = () => {
             type="password"
           />
         </FormGroup>
-        <FloatingButton loading={authenticateUserLoading} type="submit">
-          Log in
-        </FloatingButton>
+
+        <FormGroup>
+          <FloatingButton loading={authenticateUserLoading} type="submit">
+            Log in
+          </FloatingButton>
+        </FormGroup>
       </form>
+
       {authenticateUserError ? (
         <FormGroup>
           <Label color="red">

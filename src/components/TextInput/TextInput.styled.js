@@ -19,6 +19,11 @@ export const TextInput = styled.input(
     outline: 'none',
     padding: '0.25rem 0',
     transitionDuration: '100ms',
+    ':-webkit-autofill:first-line': {
+      fontSize: '1.1rem',
+      fontWeight: 500,
+      lineHeight: 1,
+    },
     ':focus': {
       borderColor: black,
     },
@@ -26,6 +31,10 @@ export const TextInput = styled.input(
       ':hover': {
         borderColor: black,
       },
+    },
+    ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus, :-webkit-autofill:active': {
+      WebkitTextFillColor: black,
+      WebkitBoxShadow: `0 0 0 30px inset ${white}`,
     },
   }),
 );

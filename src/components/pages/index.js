@@ -7,3 +7,4 @@ export * from './LoadingPage';
 export * from './LoginPage';
 export * from './ProductsPage';
 export * from './RegisterPage';
+export * from './ResetPasswordPage';

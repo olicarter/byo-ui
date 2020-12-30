@@ -6,10 +6,10 @@ import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
 import { Layout } from '@components/Layout';
-import { LoginForm } from '@components/LoginForm';
 import { Markdown } from '@components/Markdown';
 import { Section } from '@components/Section';
 import { SubTitle, Title } from '@components/Typography';
+import { LoginForm } from '@forms';
 
 import { GET_ALL_SETTINGS } from './LoginPage.gql';
 import * as Styled from './LoginPage.styled';
@@ -38,8 +38,6 @@ export const LoginPage = () => {
     data: { allSettings: [{ loginHeader = '' } = {}] = [] } = {},
   } = useQuery(GET_ALL_SETTINGS);
 
-  console.log('restQuery', restQuery);
-
   return (
     <>
       <Helmet>
@@ -66,6 +64,13 @@ export const LoginPage = () => {
                 }}
               >
                 Register
+              </Styled.Link>
+            </SubTitle>
+
+            <SubTitle>
+              Forgotten your password?{' '}
+              <Styled.Link color="red" to="reset-password">
+                Reset your password
               </Styled.Link>
             </SubTitle>
           </Section>
