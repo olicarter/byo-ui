@@ -13,6 +13,7 @@ export * from './ProductDetails';
 export * from './ProductTags';
 export * from './ProductVariant';
 export * from './ProductVariants';
+export * from './ProductVariantTags';
 export * from './Setting';
 export * from './Tag';
 export * from './Unit';

@@ -52,7 +52,16 @@ export const Products = () => {
   const tagsFilter = useMemo(
     () =>
       Array.isArray(queryTags) && queryTags.length
-        ? queryTags.map(slug => ({ tags_some: { slug } }))
+        ? [
+            {
+              OR: [
+                ...queryTags.map(slug => ({ tags_some: { slug } })),
+                ...queryTags.map(slug => ({
+                  variants_some: { tags_some: { slug } },
+                })),
+              ],
+            },
+          ]
         : [],
     [queryTags],
   );

@@ -42,7 +42,7 @@ export const ProductCard = ({
     if (inView && !getProductVariantsCalled) getProductVariants();
   }, [getProductVariants, getProductVariantsCalled, inView]);
 
-  const { variants = [] } = Product || {};
+  const { tags = [], variants = [] } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -117,7 +117,11 @@ export const ProductCard = ({
               onMouseOut={() => setMouseOverVariantIndex(0)}
               onMouseOver={() => setMouseOverVariantIndex(index)}
             >
-              <ProductVariant key={variant.id} variant={variant} />
+              <ProductVariant
+                key={variant.id}
+                productTags={tags}
+                variant={variant}
+              />
             </div>
           ))
         )}

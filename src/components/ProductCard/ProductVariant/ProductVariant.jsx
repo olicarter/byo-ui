@@ -14,9 +14,11 @@ import {
   UPDATE_ORDER_ITEM,
 } from './ProductVariant.gql';
 import * as Styled from './ProductVariant.styled';
+import { ProductVariantTagList } from './ProductVariantTagList';
 
 export const ProductVariant = ({
-  variant: { id, container, increment, incrementPrice, name, unit },
+  productTags,
+  variant: { id, container, increment, incrementPrice, name, tags, unit },
 }) => {
   const { push } = useHistory();
   const { pathname, search } = useLocation();
@@ -167,16 +169,9 @@ export const ProductVariant = ({
 
   return (
     <Styled.ProductVariant>
-      <Styled.DecrementButton onClick={decrementOrderItem} quantity={quantity}>
-        {decrementLoading ? (
-          loadingIcon
-        ) : (
-          <Styled.Icon path={mdiMinusCircle} size={0.8} title="Decrement" />
-        )}
-      </Styled.DecrementButton>
-
       <Styled.Info>
         <Styled.Quantity>{name}</Styled.Quantity>
+
         <Styled.Quantity quantity={quantity}>
           {quantity ? `${quantity} x ` : null}
           {`${increment}${unit.singularAbbreviated} ${(() => {
@@ -188,6 +183,7 @@ export const ProductVariant = ({
             return ' loose';
           })()}`}
         </Styled.Quantity>
+
         <Styled.Price>
           £{incrementPrice * 1}
           {container && Number(container.price) ? (
@@ -197,18 +193,20 @@ export const ProductVariant = ({
             </Styled.Container>
           ) : null}
         </Styled.Price>
-        {/* {tags.length ? (
-          <Styled.Tags>
-            {tags
-              .filter(
-                tag =>
-                  !productTags.find(productTag => productTag.id === tag.id),
-              )
-              .map(({ name: tagName }) => tagName.toLowerCase())
-              .join(', ')}
-          </Styled.Tags>
-        ) : null} */}
+
+        <ProductVariantTagList
+          productTags={productTags}
+          productVariantTags={tags}
+        />
       </Styled.Info>
+
+      <Styled.DecrementButton onClick={decrementOrderItem} quantity={quantity}>
+        {decrementLoading ? (
+          loadingIcon
+        ) : (
+          <Styled.Icon path={mdiMinusCircle} size={0.8} title="Decrement" />
+        )}
+      </Styled.DecrementButton>
 
       <Styled.IncrementButton
         disabled={getAuthenticatedUserLoading}

@@ -12,7 +12,7 @@ import {
 import { useMedia, useMediaLayout } from 'use-media';
 
 const commonProperties = {
-  maxWidth: 'none',
+  maxWidth: '133.333vmin',
 };
 
 const themes = {

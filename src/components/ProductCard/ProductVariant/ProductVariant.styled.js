@@ -40,7 +40,7 @@ const SquareButton = styled.button(() => ({
   outline: 'none',
   padding: 0,
   textAlign: 'left',
-  width: '48px',
+  width: '36px',
 }));
 
 export const DecrementButton = styled(SquareButton)(
