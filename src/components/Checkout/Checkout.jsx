@@ -32,7 +32,7 @@ const inputNames = {
 };
 
 export const Checkout = () => {
-  const { push } = useHistory();
+  const { push, replace } = useHistory();
   const formMethods = useForm({ reValidateMode: 'onSubmit' });
   const { errors, handleSubmit, setValue, watch } = formMethods;
 
@@ -96,6 +96,11 @@ export const Checkout = () => {
 
   let { total } = sumOrderItems(orderItems);
   total = total.toFixed(2);
+
+  if (total < minOrderValue) {
+    replace('/basket');
+    return null;
+  }
 
   const address = watch(inputNames.address);
 

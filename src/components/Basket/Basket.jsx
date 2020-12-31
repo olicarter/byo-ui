@@ -34,7 +34,7 @@ export const Basket = () => {
     <>
       <Grid>
         {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
-          <ProductCard key={id} product={product} />
+          <ProductCard key={id} {...product} />
         ))}
       </Grid>
       <FloatingButton

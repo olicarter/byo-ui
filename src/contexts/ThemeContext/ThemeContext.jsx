@@ -11,8 +11,13 @@ import {
 } from 'styled-components';
 import { useMedia, useMediaLayout } from 'use-media';
 
+const commonProperties = {
+  maxWidth: 'none',
+};
+
 const themes = {
   dark: {
+    ...commonProperties,
     name: 'dark',
     palette: {
       black: 'hsl(40, 100%, 97%)',
@@ -30,6 +35,7 @@ const themes = {
     },
   },
   light: {
+    ...commonProperties,
     name: 'light',
     palette: {
       black: 'black',

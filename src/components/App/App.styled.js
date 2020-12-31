@@ -1,14 +1,8 @@
 import styled from 'styled-components';
 
 export const Center = styled.div(() => ({
-  alignItems: 'center',
-  bottom: 0,
   display: 'flex',
   justifyContent: 'center',
-  left: 0,
-  position: 'absolute',
-  right: 0,
-  top: 0,
 }));
 
 export const Content = styled.div(() => ({
@@ -41,9 +35,10 @@ export const Path = styled.path(() => ({
   },
 }));
 
-export const App = styled.div(() => ({
+export const App = styled.div(({ theme: { maxWidth } }) => ({
   display: 'flex',
   flexDirection: 'column',
+  maxWidth,
 }));
 
 export const MaxWidthLayout = styled.div(() => ({

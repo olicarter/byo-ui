@@ -64,73 +64,75 @@ export const App = () => {
         <title>BYO</title>
       </Helmet>
 
-      <Styled.App>
-        <TopBar />
+      <Styled.Center>
+        <Styled.App>
+          <TopBar />
 
-        {calloutText ? (
-          <Section>
-            <Callout />
-          </Section>
-        ) : null}
+          {calloutText ? (
+            <Section>
+              <Callout />
+            </Section>
+          ) : null}
 
-        <Styled.Main>
-          <Route exact path="/">
-            <Layout>
-              <Section>
-                <Home />
-              </Section>
-            </Layout>
-          </Route>
+          <Styled.Main>
+            <Route exact path="/">
+              <Layout>
+                <Section>
+                  <Home />
+                </Section>
+              </Layout>
+            </Route>
 
-          <Route exact path="/about">
-            <AboutPage />
-          </Route>
+            <Route exact path="/about">
+              <AboutPage />
+            </Route>
 
-          <Route exact path="/blog">
-            <BlogPage />
-          </Route>
+            <Route exact path="/blog">
+              <BlogPage />
+            </Route>
 
-          <Route exact path="/contact">
-            <ContactPage />
-          </Route>
+            <Route exact path="/contact">
+              <ContactPage />
+            </Route>
 
-          <Route exact path="/products">
-            <ProductsPage />
-          </Route>
+            <Route exact path="/products">
+              <ProductsPage />
+            </Route>
 
-          <Route exact path="/products/:productSlug">
-            <Layout>
-              <Product />
-            </Layout>
-          </Route>
+            <Route exact path="/products/:productSlug">
+              <Layout>
+                <Product />
+              </Layout>
+            </Route>
 
-          <Route exact path="/login">
-            <LoginPage />
-          </Route>
+            <Route exact path="/login">
+              <LoginPage />
+            </Route>
 
-          <Route exact path="/reset-password">
-            <ResetPasswordPage />
-          </Route>
+            <Route exact path="/reset-password">
+              <ResetPasswordPage />
+            </Route>
 
-          <Route exact path="/register">
-            <RegisterPage />
-          </Route>
+            <Route exact path="/register">
+              <RegisterPage />
+            </Route>
 
-          <ProtectedRoute path="/account">
-            <AccountPage />
-          </ProtectedRoute>
+            <ProtectedRoute path="/account">
+              <AccountPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute path="/basket">
-            <BasketPage />
-          </ProtectedRoute>
+            <ProtectedRoute path="/basket">
+              <BasketPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute path="/checkout">
-            <CheckoutPage />
-          </ProtectedRoute>
-        </Styled.Main>
+            <ProtectedRoute path="/checkout">
+              <CheckoutPage />
+            </ProtectedRoute>
+          </Styled.Main>
 
-        <Footer />
-      </Styled.App>
+          <Footer />
+        </Styled.App>
+      </Styled.Center>
     </>
   );
 };

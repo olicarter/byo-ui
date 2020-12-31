@@ -189,11 +189,11 @@ export const ProductVariant = ({
           })()}`}
         </Styled.Quantity>
         <Styled.Price>
-          £{incrementPrice}
-          {container && !!Number(container.price) ? (
+          £{incrementPrice * 1}
+          {container && Number(container.price) ? (
             <Styled.Container>
               {' '}
-              + £{Number(container.price).toFixed(2)}
+              + £{Number(container.price) * 1}
             </Styled.Container>
           ) : null}
         </Styled.Price>

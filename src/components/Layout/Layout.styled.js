@@ -5,9 +5,8 @@ export const Layout = styled.div(({ center }) => ({
   justifyContent: center ? 'center' : 'auto',
 }));
 
-export const MaxWidth = styled.div(() => ({
+export const MaxWidth = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  // maxWidth: '1280px',
   width: '100%',
-}));
+});
