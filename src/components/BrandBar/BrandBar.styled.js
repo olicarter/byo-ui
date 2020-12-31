@@ -20,6 +20,7 @@ export const Tag = styled(RouterLink)(
     },
     to,
   }) => ({
+    alignItems: 'center',
     get color() {
       if (color) return palette[color];
       if (selected) return primary;
@@ -37,7 +38,7 @@ export const Tag = styled(RouterLink)(
         get color() {
           if (color) return transparentize(0.33, palette[color]);
           if (to) return primary;
-          return transparentize(0.33, black);
+          return grey;
         },
       },
     },

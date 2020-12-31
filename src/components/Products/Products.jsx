@@ -16,6 +16,7 @@ export const Products = () => {
   const { isAuthenticated } = useAuth();
 
   const {
+    brand: queryBrandSlug,
     category: queryCategorySlug,
     search: querySearch,
     tags: queryTags,
@@ -25,8 +26,15 @@ export const Products = () => {
 
   const stringifiedQueryTags = JSON.stringify(queryTags);
 
-  const hasCategoryOrTagsFilter =
-    queryCategorySlug || (Array.isArray(queryTags) && queryTags.length);
+  const hasFilter =
+    queryBrandSlug ||
+    queryCategorySlug ||
+    (Array.isArray(queryTags) && queryTags.length);
+
+  const brandFilter = useMemo(
+    () => (queryBrandSlug ? [{ brand: { slug: queryBrandSlug } }] : []),
+    [queryBrandSlug],
+  );
 
   const categoryFilter = useMemo(
     () =>
@@ -42,17 +50,19 @@ export const Products = () => {
     [queryTags],
   );
 
+  const filter = useMemo(
+    () =>
+      hasFilter
+        ? { where: { AND: [...brandFilter, ...categoryFilter, ...tagsFilter] } }
+        : {},
+    [hasFilter, brandFilter, categoryFilter, tagsFilter],
+  );
+
   const { data: { allProducts = [] } = {}, refetch } = useQuery(GET_PRODUCTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
       search: querySearch,
-      ...(hasCategoryOrTagsFilter
-        ? {
-            where: {
-              AND: [...categoryFilter, ...tagsFilter],
-            },
-          }
-        : {}),
+      ...filter,
     },
   });
 
@@ -60,17 +70,10 @@ export const Products = () => {
     if (refetch)
       refetch({
         search: querySearch,
-        ...(hasCategoryOrTagsFilter
-          ? {
-              where: {
-                AND: [...categoryFilter, ...tagsFilter],
-              },
-            }
-          : {}),
+        ...filter,
       });
   }, [
-    categoryFilter,
-    hasCategoryOrTagsFilter,
+    filter,
     stringifiedQueryTags,
     queryCategorySlug,
     querySearch,

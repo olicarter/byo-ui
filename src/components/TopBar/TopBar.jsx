@@ -18,9 +18,10 @@ import {
 } from '@mdi/js';
 
 import { useTheme } from '@contexts';
+import { BasketIcon } from '@components/BasketIcon';
+
 import { GET_SETTINGS } from './TopBar.gql';
 import * as Styled from './TopBar.styled';
-import { BasketIcon } from '../BasketIcon';
 
 const Logo = () => (
   <Styled.SVG
@@ -244,11 +245,6 @@ export const TopBar = () => {
             </Styled.NavItems>
           </Styled.Nav>
         </Styled.TopBar>
-
-        {/* <Route exact path="/products">
-          <CategoryBar />
-          <TagBar />
-        </Route> */}
       </Styled.Wrapper>
 
       {menuTransitions.map(

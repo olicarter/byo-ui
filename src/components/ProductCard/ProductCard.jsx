@@ -3,6 +3,8 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { useInView } from 'react-intersection-observer';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
+import { Card } from '@components/Card';
+
 import * as Styled from './ProductCard.styled';
 import {
   GET_AUTHENTICATED_USER,
@@ -11,7 +13,7 @@ import {
 import { LoadingProductVariants } from './LoadingProductVariants';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
-import { Card } from '../Card';
+import { TagList } from './TagList';
 
 export const ProductCard = ({
   deliveryInfo,
@@ -39,7 +41,7 @@ export const ProductCard = ({
     if (inView && !getProductVariantsCalled) getProductVariants();
   }, [getProductVariants, getProductVariantsCalled, inView]);
 
-  const { tags = [], variants = [] } = Product || {};
+  const { variants = [] } = Product || {};
   let { brand } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
@@ -87,11 +89,7 @@ export const ProductCard = ({
         <Styled.Header>
           <Styled.HeaderUpper>
             <Styled.Brand>{brandName}</Styled.Brand>
-            <Styled.Tags>
-              {tags.map(({ abbreviation }) =>
-                abbreviation ? <Styled.Tag>{abbreviation}</Styled.Tag> : null,
-              )}
-            </Styled.Tags>
+            <TagList productId={productId} />
           </Styled.HeaderUpper>
 
           <Styled.HeaderLower>

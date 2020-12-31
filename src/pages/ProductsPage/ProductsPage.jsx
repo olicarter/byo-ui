@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 
+import { BrandBar } from '@components/BrandBar';
 import { CategoryBar } from '@components/CategoryBar';
 import { Layout } from '@components/Layout';
 import { Markdown } from '@components/Markdown';
@@ -28,6 +29,7 @@ export const ProductsPage = () => {
         </Section>
         <Section margin="0" padding="0">
           <CategoryBar />
+          <BrandBar />
           <TagBar />
           <SearchBar />
         </Section>

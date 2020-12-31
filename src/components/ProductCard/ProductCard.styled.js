@@ -39,27 +39,6 @@ export const Brand = styled.p(({ theme: { palette: { black } } }) => ({
   padding: 0,
 }));
 
-export const Tags = styled.ul({
-  display: 'flex',
-  margin: 0,
-  padding: 0,
-});
-
-export const Tag = styled.p(({ theme: { palette: { blue } } }) => ({
-  alignItems: 'center',
-  borderRadius: '8px',
-  color: blue,
-  display: 'flex',
-  fontSize: '0.75rem',
-  fontWeight: 600,
-  height: '16px',
-  justifyContent: 'center',
-  lineHeight: 1,
-  margin: 0,
-  padding: '0 0 0 0.25rem',
-  textTransform: 'uppercase',
-}));
-
 export const Border = styled.div(({ theme: { palette: { black } } }) => ({
   backgroundColor: transparentize(0.5, black),
   height: '3px',

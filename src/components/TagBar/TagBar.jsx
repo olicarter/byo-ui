@@ -29,6 +29,24 @@ export const TagBar = () => {
       <Styled.NavItem>
         <Styled.Tag as="span">{loading ? 'loading tags' : 'tags'}</Styled.Tag>
       </Styled.NavItem>
+
+      {queryTags.length ? (
+        <Styled.NavItem>
+          <Styled.Tag
+            color="red"
+            to={{
+              pathname,
+              search: stringify(restQuery, {
+                arrayFormat: 'brackets',
+                encode: false,
+              }),
+            }}
+          >
+            clear
+          </Styled.Tag>
+        </Styled.NavItem>
+      ) : null}
+
       {allTags.map(({ id, name, slug }) => (
         <Styled.NavItem key={id}>
           <Styled.Tag

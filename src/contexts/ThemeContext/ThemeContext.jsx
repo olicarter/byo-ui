@@ -39,7 +39,7 @@ const themes = {
       green: 'hsl(140, 66%, 47%)',
       grey: '#999',
       lightGrey: 'hsl(0, 0%, 95%)',
-      red: 'hsl(350, 85%, 66%)',
+      red: 'hsl(350, 75%, 50%)',
       pink: '#f0bac7',
       primary: 'hsl(43, 98%, 55%)',
       yellow: '#f9e543',

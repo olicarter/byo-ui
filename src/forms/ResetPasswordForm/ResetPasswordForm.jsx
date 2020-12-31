@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
-import { parse, stringify } from 'qs';
+import { parse } from 'qs';
 
 import { FloatingButton } from '@components/FloatingButton';
 import { FormGroup } from '@components/FormGroup';

@@ -4,7 +4,6 @@ import { useLazyQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 import { parse } from 'qs';
 
-import { FloatingButton } from '@components/FloatingButton';
 import { Layout } from '@components/Layout';
 import { Section } from '@components/Section';
 import { SubTitle, Title } from '@components/Typography';
