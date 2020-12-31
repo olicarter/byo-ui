@@ -18,6 +18,7 @@ export const Products = () => {
   const {
     brand: queryBrandSlug,
     category: queryCategorySlug,
+    origin: queryOriginSlug,
     search: querySearch,
     tags: queryTags,
   } = parse(search, {
@@ -29,6 +30,7 @@ export const Products = () => {
   const hasFilter =
     queryBrandSlug ||
     queryCategorySlug ||
+    queryOriginSlug ||
     (Array.isArray(queryTags) && queryTags.length);
 
   const brandFilter = useMemo(
@@ -47,6 +49,11 @@ export const Products = () => {
     () =>
       queryCategorySlug ? [{ category: { slug: queryCategorySlug } }] : [],
     [queryCategorySlug],
+  );
+
+  const originFilter = useMemo(
+    () => (queryOriginSlug ? [{ origin_i: queryOriginSlug }] : []),
+    [queryOriginSlug],
   );
 
   const tagsFilter = useMemo(
@@ -69,9 +76,18 @@ export const Products = () => {
   const filter = useMemo(
     () =>
       hasFilter
-        ? { where: { AND: [...brandFilter, ...categoryFilter, ...tagsFilter] } }
+        ? {
+            where: {
+              AND: [
+                ...brandFilter,
+                ...categoryFilter,
+                ...originFilter,
+                ...tagsFilter,
+              ],
+            },
+          }
         : {},
-    [hasFilter, brandFilter, categoryFilter, tagsFilter],
+    [hasFilter, brandFilter, categoryFilter, originFilter, tagsFilter],
   );
 
   const { data: { allProducts = [] } = {}, refetch } = useQuery(GET_PRODUCTS, {

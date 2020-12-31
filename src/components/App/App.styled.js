@@ -39,6 +39,7 @@ export const App = styled.div(({ theme: { maxWidth } }) => ({
   display: 'flex',
   flexDirection: 'column',
   maxWidth,
+  width: '100%',
 }));
 
 export const MaxWidthLayout = styled.div(() => ({
