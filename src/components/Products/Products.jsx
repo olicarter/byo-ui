@@ -32,7 +32,14 @@ export const Products = () => {
     (Array.isArray(queryTags) && queryTags.length);
 
   const brandFilter = useMemo(
-    () => (queryBrandSlug ? [{ brand: { slug: queryBrandSlug } }] : []),
+    () =>
+      queryBrandSlug
+        ? [
+            queryBrandSlug === 'unbranded'
+              ? { brand_is_null: true }
+              : { brand: { slug: queryBrandSlug } },
+          ]
+        : [],
     [queryBrandSlug],
   );
 

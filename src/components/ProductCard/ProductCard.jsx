@@ -10,6 +10,7 @@ import {
   GET_AUTHENTICATED_USER,
   GET_PRODUCT_VARIANTS,
 } from './ProductCard.gql';
+import { BrandName } from './BrandName';
 import { LoadingProductVariants } from './LoadingProductVariants';
 import { ProductVariant } from './ProductVariant';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
@@ -23,7 +24,7 @@ export const ProductCard = ({
   origin,
   slug,
 }) => {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
     fetchPolicy: 'cache-only',
@@ -42,7 +43,6 @@ export const ProductCard = ({
   }, [getProductVariants, getProductVariantsCalled, inView]);
 
   const { variants = [] } = Product || {};
-  let { brand } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -71,10 +71,6 @@ export const ProductCard = ({
   const { image: variantImage } = variants[mouseOverVariantIndex] || {};
   const { publicUrl = '' } = image || variantImage || {};
 
-  if (brand === null) brand = { name: 'Unbranded' };
-
-  const { name: brandName = '' } = brand || {};
-
   return (
     <Card ref={ref}>
       <Styled.Content>
@@ -88,7 +84,7 @@ export const ProductCard = ({
 
         <Styled.Header>
           <Styled.HeaderUpper>
-            <Styled.Brand>{brandName}</Styled.Brand>
+            <BrandName productId={productId} />
             <TagList productId={productId} />
           </Styled.HeaderUpper>
 

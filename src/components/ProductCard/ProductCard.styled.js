@@ -32,12 +32,24 @@ export const Title = styled.div({
   flex: 1,
 });
 
-export const Brand = styled.p(({ theme: { palette: { black } } }) => ({
-  color: transparentize(0.33, black),
-  fontSize: '0.75rem',
-  margin: 0,
-  padding: 0,
-}));
+export const Brand = styled(RouterLink)(
+  ({
+    theme: {
+      palette: { black, primary },
+    },
+  }) => ({
+    color: transparentize(0.33, black),
+    fontSize: '0.75rem',
+    margin: 0,
+    padding: 0,
+    textDecoration: 'none',
+    '@media (hover: hover) and (pointer: fine)': {
+      ':hover': {
+        color: primary,
+      },
+    },
+  }),
+);
 
 export const Border = styled.div(({ theme: { palette: { black } } }) => ({
   backgroundColor: transparentize(0.5, black),
