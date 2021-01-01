@@ -4,10 +4,9 @@ import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 import { v4 as uuid } from 'uuid';
 
-import { Bar } from '@components/Bar';
+import { Bar, BarLink, BarSpan } from '@components/Bar';
 
 import { GET_ALL_BRANDS } from './BrandBar.gql';
-import * as Styled from './BrandBar.styled';
 
 export const BrandBar = () => {
   const { pathname, search } = useLocation();
@@ -24,50 +23,43 @@ export const BrandBar = () => {
   return (
     <Bar>
       {loading ? (
-        <Styled.NavItem>
-          <Styled.Tag as="span">loading brands...</Styled.Tag>
-        </Styled.NavItem>
+        <BarSpan>loading brands...</BarSpan>
       ) : (
         <>
-          <Styled.NavItem>
-            <Styled.Tag as="span">brands</Styled.Tag>
-          </Styled.NavItem>
+          <BarSpan as="span">brands</BarSpan>
 
           {brand ? (
-            <Styled.NavItem>
-              <Styled.Tag
-                color="red"
-                to={{
-                  pathname,
-                  search: stringify(restQuery, {
-                    arrayFormat: 'brackets',
-                    encode: false,
-                  }),
-                }}
-              >
-                clear
-              </Styled.Tag>
-            </Styled.NavItem>
+            <BarLink
+              color="red"
+              to={{
+                pathname,
+                search: stringify(restQuery, {
+                  arrayFormat: 'brackets',
+                  encode: false,
+                }),
+              }}
+            >
+              clear
+            </BarLink>
           ) : null}
 
           {brands.map(({ id, name, slug }) => (
-            <Styled.NavItem key={id}>
-              <Styled.Tag
-                selected={brand === slug}
-                to={{
-                  pathname,
-                  search: stringify(
-                    {
-                      ...restQuery,
-                      ...(brand === slug ? {} : { brand: slug }),
-                    },
-                    { arrayFormat: 'brackets', encode: false },
-                  ),
-                }}
-              >
-                {name.toLowerCase()}
-              </Styled.Tag>
-            </Styled.NavItem>
+            <BarLink
+              key={id}
+              selected={brand === slug}
+              to={{
+                pathname,
+                search: stringify(
+                  {
+                    ...restQuery,
+                    ...(brand === slug ? {} : { brand: slug }),
+                  },
+                  { arrayFormat: 'brackets', encode: false },
+                ),
+              }}
+            >
+              {name.toLowerCase()}
+            </BarLink>
           ))}
         </>
       )}

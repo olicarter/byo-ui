@@ -3,9 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 
+import { Bar, BarLink, BarSpan } from '@components/Bar';
+
 import { GET_TAGS_QUERY } from './TagBar.gql';
-import * as Styled from './TagBar.styled';
-import { Bar } from '../Bar';
 
 export const TagBar = () => {
   const { pathname, search } = useLocation();
@@ -26,45 +26,40 @@ export const TagBar = () => {
 
   return (
     <Bar>
-      <Styled.NavItem>
-        <Styled.Tag as="span">{loading ? 'loading tags' : 'tags'}</Styled.Tag>
-      </Styled.NavItem>
+      <BarSpan>{loading ? 'loading tags' : 'tags'}</BarSpan>
 
       {queryTags.length ? (
-        <Styled.NavItem>
-          <Styled.Tag
-            color="red"
-            to={{
-              pathname,
-              search: stringify(restQuery, {
-                arrayFormat: 'brackets',
-                encode: false,
-              }),
-            }}
-          >
-            clear
-          </Styled.Tag>
-        </Styled.NavItem>
+        <BarLink
+          color="red"
+          to={{
+            pathname,
+            search: stringify(restQuery, {
+              arrayFormat: 'brackets',
+              encode: false,
+            }),
+          }}
+        >
+          clear
+        </BarLink>
       ) : null}
 
       {allTags.map(({ id, name, slug }) => (
-        <Styled.NavItem key={id}>
-          <Styled.Tag
-            selected={queryTags.includes(slug)}
-            to={{
-              pathname,
-              search: stringify(
-                {
-                  ...restQuery,
-                  tags: getTags(slug),
-                },
-                { arrayFormat: 'brackets', encode: false },
-              ),
-            }}
-          >
-            {name.toLowerCase()}
-          </Styled.Tag>
-        </Styled.NavItem>
+        <BarLink
+          key={id}
+          selected={queryTags.includes(slug)}
+          to={{
+            pathname,
+            search: stringify(
+              {
+                ...restQuery,
+                tags: getTags(slug),
+              },
+              { arrayFormat: 'brackets', encode: false },
+            ),
+          }}
+        >
+          {name.toLowerCase()}
+        </BarLink>
       ))}
     </Bar>
   );

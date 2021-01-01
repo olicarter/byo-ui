@@ -4,10 +4,9 @@ import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 import slugify from 'slugify';
 
-import { Bar } from '@components/Bar';
+import { Bar, BarLink, BarSpan } from '@components/Bar';
 
 import { GET_ALL_PRODUCTS } from './OriginsBar.gql';
-import * as Styled from './OriginsBar.styled';
 
 export const OriginsBar = () => {
   const { pathname, search } = useLocation();
@@ -33,52 +32,45 @@ export const OriginsBar = () => {
   return (
     <Bar>
       {loading ? (
-        <Styled.NavItem>
-          <Styled.Tag as="span">loading origins...</Styled.Tag>
-        </Styled.NavItem>
+        <BarSpan>loading origins...</BarSpan>
       ) : (
         <>
-          <Styled.NavItem>
-            <Styled.Tag as="span">origins</Styled.Tag>
-          </Styled.NavItem>
+          <BarSpan>origins</BarSpan>
 
           {originQuery ? (
-            <Styled.NavItem>
-              <Styled.Tag
-                color="red"
-                to={{
-                  pathname,
-                  search: stringify(restQuery, {
-                    arrayFormat: 'brackets',
-                    encode: false,
-                  }),
-                }}
-              >
-                clear
-              </Styled.Tag>
-            </Styled.NavItem>
+            <BarLink
+              color="red"
+              to={{
+                pathname,
+                search: stringify(restQuery, {
+                  arrayFormat: 'brackets',
+                  encode: false,
+                }),
+              }}
+            >
+              clear
+            </BarLink>
           ) : null}
 
           {origins.map(origin => (
-            <Styled.NavItem key={origin}>
-              <Styled.Tag
-                selected={originQuery === slugify(origin, { lower: true })}
-                to={{
-                  pathname,
-                  search: stringify(
-                    {
-                      ...restQuery,
-                      ...(originQuery === slugify(origin, { lower: true })
-                        ? {}
-                        : { origin: slugify(origin, { lower: true }) }),
-                    },
-                    { arrayFormat: 'brackets', encode: false },
-                  ),
-                }}
-              >
-                {origin.toLowerCase()}
-              </Styled.Tag>
-            </Styled.NavItem>
+            <BarLink
+              kwy={origin}
+              selected={originQuery === slugify(origin, { lower: true })}
+              to={{
+                pathname,
+                search: stringify(
+                  {
+                    ...restQuery,
+                    ...(originQuery === slugify(origin, { lower: true })
+                      ? {}
+                      : { origin: slugify(origin, { lower: true }) }),
+                  },
+                  { arrayFormat: 'brackets', encode: false },
+                ),
+              }}
+            >
+              {origin.toLowerCase()}
+            </BarLink>
           ))}
         </>
       )}

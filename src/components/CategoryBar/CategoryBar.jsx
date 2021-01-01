@@ -3,10 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { parse, stringify } from 'qs';
 
-import { Bar } from '@components/Bar';
+import { Bar, BarLink, BarSpan } from '@components/Bar';
 
 import { GET_CATEGORIES_QUERY } from './CategoryBar.gql';
-import * as Styled from './CategoryBar.styled';
 
 export const CategoryBar = () => {
   const { pathname, search } = useLocation();
@@ -20,46 +19,39 @@ export const CategoryBar = () => {
   return (
     <Bar>
       {loading ? (
-        <Styled.NavItem>
-          <Styled.Tag as="span">loading categories</Styled.Tag>
-        </Styled.NavItem>
+        <BarSpan>loading categories</BarSpan>
       ) : (
         <>
-          <Styled.NavItem>
-            <Styled.Tag as="span">categories</Styled.Tag>
-          </Styled.NavItem>
-          <Styled.NavItem>
-            <Styled.Tag
-              selected={!category}
+          <BarSpan>categories</BarSpan>
+          <BarLink
+            selected={!category}
+            to={{
+              pathname,
+              search: stringify(restQuery, {
+                arrayFormat: 'brackets',
+                encode: false,
+              }),
+            }}
+          >
+            all
+          </BarLink>
+          {allCategories.map(({ id, name, slug }) => (
+            <BarLink
+              key={id}
+              selected={category === slug}
               to={{
                 pathname,
-                search: stringify(restQuery, {
-                  arrayFormat: 'brackets',
-                  encode: false,
-                }),
+                search: stringify(
+                  {
+                    ...restQuery,
+                    category: slug,
+                  },
+                  { arrayFormat: 'brackets', encode: false },
+                ),
               }}
             >
-              all
-            </Styled.Tag>
-          </Styled.NavItem>
-          {allCategories.map(({ id, name, slug }) => (
-            <Styled.NavItem key={id}>
-              <Styled.Tag
-                selected={category === slug}
-                to={{
-                  pathname,
-                  search: stringify(
-                    {
-                      ...restQuery,
-                      category: slug,
-                    },
-                    { arrayFormat: 'brackets', encode: false },
-                  ),
-                }}
-              >
-                {name.toLowerCase()}
-              </Styled.Tag>
-            </Styled.NavItem>
+              {name.toLowerCase()}
+            </BarLink>
           ))}
         </>
       )}
