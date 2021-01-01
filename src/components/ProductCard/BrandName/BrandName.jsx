@@ -1,32 +1,24 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { parse, stringify } from 'qs';
-import { useQuery } from '@apollo/client';
 
 import * as Styled from './BrandName.styled';
-import { GET_PRODUCT_BRAND } from './BrandName.gql';
 
-export const BrandName = ({ productId }) => {
+export const BrandName = ({ brand }) => {
   const { pathname, search } = useLocation();
 
   const { brand: brandQuerySlug, ...restQuery } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
-  const { data: { Product } = {} } = useQuery(GET_PRODUCT_BRAND, {
-    fetchPolicy: 'cache-only',
-    variables: { id: productId },
-  });
+  const safeBrand =
+    brand === null ? { name: 'Unbranded', slug: 'unbranded' } : brand;
 
-  let { brand } = Product || {};
-
-  if (brand === null) brand = { name: 'Unbranded', slug: 'unbranded' };
-
-  const { name = '-', slug } = brand || {};
+  const { name, slug } = safeBrand || {};
 
   return (
     <Styled.Brand
-      selected={brandQuerySlug === slug}
+      selected={name && brandQuerySlug === slug}
       to={{
         pathname,
         search: stringify(
@@ -38,7 +30,7 @@ export const BrandName = ({ productId }) => {
         ),
       }}
     >
-      {name}
+      {name || '-'}
     </Styled.Brand>
   );
 };

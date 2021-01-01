@@ -1,11 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
 
 import { useAuth } from '../../contexts';
-import { GET_PRODUCTS } from './Products.gql';
+import {
+  GET_PRODUCTS,
+  GET_PRODUCTS_BRAND,
+  GET_PRODUCTS_DETAILS,
+  GET_PRODUCTS_TAGS,
+  GET_PRODUCTS_VARIANTS,
+} from './Products.gql';
 import { FloatingButton } from '../FloatingButton';
 import { Grid } from '../Grid';
 import { ProductCard } from '../ProductCard';
@@ -90,28 +96,46 @@ export const Products = () => {
     [hasFilter, brandFilter, categoryFilter, originFilter, tagsFilter],
   );
 
+  const [getProductsVariants] = useLazyQuery(GET_PRODUCTS_VARIANTS, {
+    fetchPolicy: 'cache-first',
+    variables: { search: querySearch, ...filter },
+  });
+  const [getProductsTags] = useLazyQuery(GET_PRODUCTS_TAGS, {
+    fetchPolicy: 'cache-first',
+    onCompleted: getProductsVariants,
+    variables: { search: querySearch, ...filter },
+  });
+  const [getProductsBrand] = useLazyQuery(GET_PRODUCTS_BRAND, {
+    fetchPolicy: 'cache-first',
+    onCompleted: getProductsTags,
+    variables: { search: querySearch, ...filter },
+  });
+  const [getProductsDetails] = useLazyQuery(GET_PRODUCTS_DETAILS, {
+    fetchPolicy: 'cache-first',
+    onCompleted: getProductsBrand,
+    variables: { search: querySearch, ...filter },
+  });
   const { data: { allProducts = [] } = {}, refetch } = useQuery(GET_PRODUCTS, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      search: querySearch,
-      ...filter,
-    },
+    fetchPolicy: 'cache-only',
+    onCompleted: getProductsDetails,
+    returnPartialData: true,
+    variables: { search: querySearch, ...filter },
   });
 
-  useEffect(() => {
-    if (refetch)
-      refetch({
-        search: querySearch,
-        ...filter,
-      });
-  }, [
-    filter,
-    stringifiedQueryTags,
-    queryCategorySlug,
-    querySearch,
-    refetch,
-    tagsFilter,
-  ]);
+  // useEffect(() => {
+  //   if (refetch)
+  //     refetch({
+  //       search: querySearch,
+  //       ...filter,
+  //     });
+  // }, [
+  //   filter,
+  //   stringifiedQueryTags,
+  //   queryCategorySlug,
+  //   querySearch,
+  //   refetch,
+  //   tagsFilter,
+  // ]);
 
   return (
     <>

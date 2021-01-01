@@ -17,32 +17,35 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { TagList } from './TagList';
 
 export const ProductCard = ({
+  brand,
   deliveryInfo,
   id: productId,
   image,
   name,
   origin,
   slug,
+  tags,
+  variants = [],
 }) => {
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
-    fetchPolicy: 'cache-only',
-    variables: { id: productId },
-  });
+  // const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
+  //   fetchPolicy: 'cache-only',
+  //   variables: { id: productId },
+  // });
 
-  const [
-    getProductVariants,
-    { called: getProductVariantsCalled },
-  ] = useLazyQuery(GET_PRODUCT_VARIANTS, {
-    variables: { id: productId },
-  });
+  // const [
+  //   getProductVariants,
+  //   { called: getProductVariantsCalled },
+  // ] = useLazyQuery(GET_PRODUCT_VARIANTS, {
+  //   variables: { id: productId },
+  // });
 
-  useEffect(() => {
-    if (inView && !getProductVariantsCalled) getProductVariants();
-  }, [getProductVariants, getProductVariantsCalled, inView]);
+  // useEffect(() => {
+  //   if (inView && !getProductVariantsCalled) getProductVariants();
+  // }, [getProductVariants, getProductVariantsCalled, inView]);
 
-  const { tags = [], variants = [] } = Product || {};
+  // const { tags = [], variants = [] } = Product || {};
 
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -84,8 +87,8 @@ export const ProductCard = ({
 
         <Styled.Header>
           <Styled.HeaderUpper>
-            <BrandName productId={productId} />
-            <TagList productId={productId} />
+            <BrandName brand={brand} />
+            <TagList tags={tags} />
           </Styled.HeaderUpper>
 
           <Styled.HeaderLower>
@@ -109,22 +112,18 @@ export const ProductCard = ({
       </Styled.Content>
 
       <Styled.ProductVariants>
-        {!getProductVariantsCalled || !Product ? (
-          <LoadingProductVariants />
-        ) : (
-          variants.map((variant, index) => (
-            <div
-              onMouseOut={() => setMouseOverVariantIndex(0)}
-              onMouseOver={() => setMouseOverVariantIndex(index)}
-            >
-              <ProductVariant
-                key={variant.id}
-                productTags={tags}
-                variant={variant}
-              />
-            </div>
-          ))
-        )}
+        {variants.map((variant, index) => (
+          <div
+            onMouseOut={() => setMouseOverVariantIndex(0)}
+            onMouseOver={() => setMouseOverVariantIndex(index)}
+          >
+            <ProductVariant
+              key={variant.id}
+              productTags={tags}
+              variant={variant}
+            />
+          </div>
+        ))}
       </Styled.ProductVariants>
 
       <Styled.Buttons>

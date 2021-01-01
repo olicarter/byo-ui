@@ -21,7 +21,7 @@ export const TagBar = () => {
     const tags = selected
       ? queryTags.filter(queryTagSlug => queryTagSlug !== slug)
       : [...queryTags, slug];
-    return tags;
+    return tags.sort((a, b) => a.localeCompare(b));
   };
 
   return (
