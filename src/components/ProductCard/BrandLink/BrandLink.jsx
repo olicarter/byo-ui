@@ -2,9 +2,9 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { parse, stringify } from 'qs';
 
-import * as Styled from './BrandName.styled';
+import * as Styled from './BrandLink.styled';
 
-export const BrandName = ({ brand }) => {
+export const BrandLink = ({ brand }) => {
   const { pathname, search } = useLocation();
 
   const { brand: brandQuerySlug, ...restQuery } = parse(search, {
@@ -17,7 +17,8 @@ export const BrandName = ({ brand }) => {
   const { name, slug } = safeBrand || {};
 
   return (
-    <Styled.Brand
+    <Styled.BrandLink
+      loading={!name}
       selected={name && brandQuerySlug === slug}
       to={{
         pathname,
@@ -31,6 +32,6 @@ export const BrandName = ({ brand }) => {
       }}
     >
       {name || '-'}
-    </Styled.Brand>
+    </Styled.BrandLink>
   );
 };

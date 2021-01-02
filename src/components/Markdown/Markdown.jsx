@@ -7,6 +7,7 @@ export const Markdown = ({ children = '', overrides = {} }) => (
   <Styled.Markdown
     options={{
       overrides: {
+        a: Styled.Anchor,
         h1: Title,
         h2: SubTitle,
         img: Styled.Image,

@@ -24,12 +24,16 @@ export const Heart = styled.span(({ theme: { palette: { red } } }) => ({
   color: red,
 }));
 
-export const Anchor = styled.a(({ theme: { palette: { grey, primary } } }) => ({
+export const Anchor = styled.a(({ theme: { palette: { grey, focus } } }) => ({
   color: grey,
+  outline: 'none',
   textDecoration: 'none',
+  ':focus': {
+    color: focus,
+  },
   '@media (hover: hover) and (pointer: fine)': {
     ':hover': {
-      color: primary,
+      color: focus,
     },
   },
 }));

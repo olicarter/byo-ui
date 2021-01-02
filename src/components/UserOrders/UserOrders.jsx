@@ -12,7 +12,7 @@ export const UserOrders = () => {
 
   const { orders = [] } = authenticatedUser || {};
   const submittedOrders = orders
-    .filter(({ paid, submitted }) => submitted)
+    .filter(({ submitted }) => submitted)
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -63,15 +63,13 @@ export const UserOrders = () => {
 
           const totalOrderValue =
             Math.round(
-              (orderItems.reduce(
+              orderItems.reduce(
                 (prev, curr) =>
                   prev +
                   Number(curr.quantity) *
                     Number(curr.productVariant.incrementPrice),
                 0,
-              ) +
-                totalContainerPrice) *
-                100,
+              ) * 100,
             ) / 100;
 
           const st = DateTime.fromISO(startTime, {
@@ -93,12 +91,12 @@ export const UserOrders = () => {
                       #{id.substring(id.length - 6, id.length)}
                     </Styled.OrderId>
                     <div>
-                      <span>£{totalOrderValue.toFixed(2)}</span>
-                      {/* <span>
-                    {totalContainerPrice ? (
-                      <span> + £{+parseFloat(totalContainerPrice)}</span>
-                    ) : null}
-                  </span> */}
+                      <span>£{totalOrderValue}</span>
+                      <Styled.TotalContainerPrice>
+                        {totalContainerPrice ? (
+                          <span> + £{+parseFloat(totalContainerPrice)}</span>
+                        ) : null}
+                      </Styled.TotalContainerPrice>
                     </div>
                   </Styled.Header>
                 </Styled.Section>

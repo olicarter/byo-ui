@@ -19,7 +19,7 @@ export const Tag = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, primary },
+      palette: { black, blue, focus, primary },
     },
   }) => ({
     alignItems: 'center',
@@ -33,10 +33,14 @@ export const Tag = styled(RouterLink)(
     justifyContent: 'center',
     lineHeight: 1,
     margin: 0,
+    outline: 'none',
     padding: '0 0.25rem 0 0',
     textDecoration: 'none',
     ':after': {
       content: 'attr(data-slug)',
+    },
+    ':focus': {
+      color: focus,
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {

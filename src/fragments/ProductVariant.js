@@ -2,7 +2,6 @@ import { gql } from '@apollo/client';
 
 import { Container } from './Container';
 import { ProductVariantTags } from './ProductVariantTags';
-import { Tag } from './Tag';
 import { Unit } from './Unit';
 
 export const ProductVariant = gql`
@@ -25,6 +24,5 @@ export const ProductVariant = gql`
   }
   ${Container}
   ${ProductVariantTags}
-  ${Tag}
   ${Unit}
 `;

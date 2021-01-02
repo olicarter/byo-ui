@@ -82,22 +82,23 @@ export const TopBar = () => {
 
   const menuItemsRight = [
     {
+      as: 'button',
       key: 'themeToggle',
       icon: mdiThemeLightDark,
       onClick: toggleTheme,
       title: 'Switch theme',
     },
     {
-      key: 'facebook',
       as: 'a',
+      key: 'facebook',
       href: facebookUrl,
       target: '_blank',
       icon: mdiFacebook,
       title: 'Facebook',
     },
     {
-      key: 'instagram',
       as: 'a',
+      key: 'instagram',
       href: instagramUrl,
       target: '_blank',
       icon: mdiInstagram,
@@ -197,12 +198,13 @@ export const TopBar = () => {
                       component,
                       href,
                       icon,
+                      key,
                       onClick,
                       target,
                       title,
                       to,
                     }) => (
-                      <Styled.NavItem>
+                      <Styled.NavItem key={key}>
                         <Styled.LinkIcon
                           as={as}
                           href={href}

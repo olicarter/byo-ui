@@ -4,7 +4,7 @@ import { transparentize } from 'polished';
 export const TextInput = styled.input(
   ({
     theme: {
-      palette: { black, white },
+      palette: { black, focus, white },
     },
   }) => ({
     background: white,
@@ -25,7 +25,7 @@ export const TextInput = styled.input(
       lineHeight: 1,
     },
     ':focus': {
-      borderColor: black,
+      borderColor: focus,
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { parse } from 'qs';
@@ -31,8 +31,6 @@ export const Products = () => {
     ignoreQueryPrefix: true,
   });
 
-  const stringifiedQueryTags = JSON.stringify(queryTags);
-
   const hasFilter =
     queryBrandSlug ||
     queryCategorySlug ||
@@ -58,7 +56,8 @@ export const Products = () => {
   );
 
   const originFilter = useMemo(
-    () => (queryOriginSlug ? [{ origin_i: queryOriginSlug }] : []),
+    () =>
+      queryOriginSlug ? [{ origin_i: queryOriginSlug.replace('-', ' ') }] : [],
     [queryOriginSlug],
   );
 
@@ -115,34 +114,19 @@ export const Products = () => {
     onCompleted: getProductsBrand,
     variables: { search: querySearch, ...filter },
   });
-  const { data: { allProducts = [] } = {}, refetch } = useQuery(GET_PRODUCTS, {
+  const { data: { allProducts = [] } = {} } = useQuery(GET_PRODUCTS, {
     fetchPolicy: 'cache-only',
     onCompleted: getProductsDetails,
     returnPartialData: true,
     variables: { search: querySearch, ...filter },
   });
 
-  // useEffect(() => {
-  //   if (refetch)
-  //     refetch({
-  //       search: querySearch,
-  //       ...filter,
-  //     });
-  // }, [
-  //   filter,
-  //   stringifiedQueryTags,
-  //   queryCategorySlug,
-  //   querySearch,
-  //   refetch,
-  //   tagsFilter,
-  // ]);
-
   return (
     <>
       <Grid>
         {allProducts.map(product => (
-          <Sentry.ErrorBoundary>
-            <ProductCard key={product.id} {...product} />
+          <Sentry.ErrorBoundary key={product.id}>
+            <ProductCard {...product} />
           </Sentry.ErrorBoundary>
         ))}
       </Grid>

@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { useInView } from 'react-intersection-observer';
+import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
 import { Card } from '@components/Card';
 
 import * as Styled from './ProductCard.styled';
-import {
-  GET_AUTHENTICATED_USER,
-  GET_PRODUCT_VARIANTS,
-} from './ProductCard.gql';
-import { BrandName } from './BrandName';
-import { LoadingProductVariants } from './LoadingProductVariants';
+import { GET_AUTHENTICATED_USER } from './ProductCard.gql';
+import { BrandLink } from './BrandLink';
+// import { LoadingProductVariants } from './LoadingProductVariants';
 import { ProductVariant } from './ProductVariant';
+import { OriginLink } from './OriginLink';
 import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { TagList } from './TagList';
 
@@ -27,26 +24,6 @@ export const ProductCard = ({
   tags,
   variants = [],
 }) => {
-  const { ref, inView } = useInView({ triggerOnce: true });
-
-  // const { data: { Product } = {} } = useQuery(GET_PRODUCT_VARIANTS, {
-  //   fetchPolicy: 'cache-only',
-  //   variables: { id: productId },
-  // });
-
-  // const [
-  //   getProductVariants,
-  //   { called: getProductVariantsCalled },
-  // ] = useLazyQuery(GET_PRODUCT_VARIANTS, {
-  //   variables: { id: productId },
-  // });
-
-  // useEffect(() => {
-  //   if (inView && !getProductVariantsCalled) getProductVariants();
-  // }, [getProductVariants, getProductVariantsCalled, inView]);
-
-  // const { tags = [], variants = [] } = Product || {};
-
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const { orderItems: allOrderItems = [] } = getUnsubmittedOrderFromUser(
@@ -75,7 +52,7 @@ export const ProductCard = ({
   const { publicUrl = '' } = image || variantImage || {};
 
   return (
-    <Card ref={ref}>
+    <Card>
       <Styled.Content>
         {publicUrl ? (
           <Styled.ImageWrapper>
@@ -87,7 +64,7 @@ export const ProductCard = ({
 
         <Styled.Header>
           <Styled.HeaderUpper>
-            <BrandName brand={brand} />
+            <BrandLink brand={brand} />
             <TagList tags={tags} />
           </Styled.HeaderUpper>
 
@@ -106,7 +83,7 @@ export const ProductCard = ({
           ) : null}
 
           <div>
-            <Styled.Origin>{origin}</Styled.Origin>
+            <OriginLink origin={origin} />
           </div>
         </Styled.Info>
       </Styled.Content>

@@ -2,13 +2,15 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import uniqWith from 'lodash.uniqwith';
+import * as Sentry from '@sentry/react';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
+import { BasketTotal } from '@components/BasketTotal';
+import { FloatingButton } from '@components/FloatingButton';
+import { Grid } from '@components/Grid';
+import { ProductCard } from '@components/ProductCard';
+
 import { GET_SETTINGS, GET_AUTHENTICATED_USER } from './Basket.gql';
-import { BasketTotal } from '../BasketTotal';
-import { FloatingButton } from '../FloatingButton';
-import { Grid } from '../Grid';
-import { ProductCard } from '../ProductCard';
 
 export const Basket = () => {
   const { push } = useHistory();
@@ -34,7 +36,9 @@ export const Basket = () => {
     <>
       <Grid>
         {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
-          <ProductCard key={id} {...product} />
+          <Sentry.ErrorBoundary key={product.id}>
+            <ProductCard key={id} {...product} />
+          </Sentry.ErrorBoundary>
         ))}
       </Grid>
       <FloatingButton

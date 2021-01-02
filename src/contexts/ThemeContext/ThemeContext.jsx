@@ -15,23 +15,26 @@ const commonProperties = {
   maxWidth: '133.333vmin',
 };
 
+const blue = 'hsl(210, 100%, 60%)';
+
 const themes = {
   dark: {
     ...commonProperties,
     name: 'dark',
     palette: {
       black: 'hsl(40, 100%, 97%)',
-      blue: 'dodgerblue',
+      blue,
       cream: '#ddd5c4',
-      teal: '#1d7771',
+      focus: blue,
       green: 'hsl(140, 66%, 44%)',
       grey: '#999',
       lightGrey: 'hsl(0, 0%, 95%)',
-      red: 'hsl(350, 75%, 50%)',
       pink: '#f0bac7',
       primary: 'hsl(43, 98%, 55%)',
-      yellow: '#f9e543',
+      red: 'hsl(350, 75%, 50%)',
+      teal: '#1d7771',
       white: '#111',
+      yellow: '#f9e543',
     },
   },
   light: {
@@ -39,17 +42,18 @@ const themes = {
     name: 'light',
     palette: {
       black: 'black',
-      blue: 'dodgerblue',
+      blue,
       cream: '#ddd5c4',
-      teal: '#1d7771',
+      focus: blue,
       green: 'hsl(140, 66%, 47%)',
       grey: '#999',
       lightGrey: 'hsl(0, 0%, 95%)',
-      red: 'hsl(350, 75%, 50%)',
       pink: '#f0bac7',
       primary: 'hsl(43, 98%, 55%)',
-      yellow: '#f9e543',
+      red: 'hsl(350, 75%, 50%)',
+      teal: '#1d7771',
       white: 'white',
+      yellow: '#f9e543',
     },
   },
 };

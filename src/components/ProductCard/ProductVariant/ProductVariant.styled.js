@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { saturate, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import { default as MdiIcon } from '@mdi/react';
 
 const height = 'auto';
@@ -46,15 +46,18 @@ const SquareButton = styled.button(() => ({
 export const DecrementButton = styled(SquareButton)(
   ({
     theme: {
-      palette: { red },
+      palette: { blue, focus, red },
     },
     quantity,
   }) => ({
     color: red,
     display: quantity ? 'flex' : 'none',
+    ':focus': {
+      color: focus,
+    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: saturate(1.5, red),
+        color: blue,
       },
     },
   }),
@@ -64,19 +67,22 @@ export const IncrementButton = styled(SquareButton)(
   ({
     disabled,
     theme: {
-      palette: { green },
+      palette: { blue, focus, green },
     },
   }) => ({
     color: green,
     opacity: disabled ? 0.5 : 1,
     pointerEvents: disabled ? 'none' : 'all',
     transitionDuration: '150ms',
+    ':focus': {
+      color: focus,
+    },
     ...(disabled
       ? {}
       : {
           '@media (hover: hover) and (pointer: fine)': {
             ':hover': {
-              color: saturate(1.5, green),
+              color: blue,
             },
           },
         }),
@@ -122,8 +128,8 @@ export const Tags = styled(Quantity)(({ theme: { palette: { black } } }) => ({
   fontWeight: 400,
 }));
 
-export const Container = styled.span(({ theme: { palette: { grey } } }) => ({
-  color: grey,
+export const Container = styled.span(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.5, black),
   whiteSpace: 'pre',
 }));
 

@@ -21,3 +21,15 @@ export const Paragraph = styled.p(({ theme: { palette: { black } } }) => ({
   fontSize: '1.1rem',
   lineHeight: 1.66,
 }));
+
+export const Anchor = styled.a(({ theme: { palette: { focus } } }) => ({
+  outline: 'none',
+  ':focus': {
+    color: focus,
+  },
+  '@media (hover: hover) and (pointer: fine)': {
+    ':hover': {
+      color: focus,
+    },
+  },
+}));

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 
 export const CardContent = styled.div(({ theme: { palette: { black } } }) => ({
   color: black,
@@ -50,3 +51,13 @@ export const Quantity = styled.span(() => ({
   height: '13px',
   lineHeight: '13px',
 }));
+
+export const TotalContainerPrice = styled.span(
+  ({
+    theme: {
+      palette: { black },
+    },
+  }) => ({
+    color: transparentize(0.5, black),
+  }),
+);

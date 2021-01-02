@@ -19,13 +19,14 @@ export const Tag = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, primary },
+      palette: { black, focus, primary },
     },
+    to,
   }) => ({
     alignItems: 'center',
     borderRadius: '8px',
     color: selected ? primary : transparentize(0.33, black),
-    cursor: 'pointer',
+    cursor: to ? 'pointer' : 'default',
     display: 'flex',
     fontSize: '0.75rem',
     fontWeight: 600,
@@ -33,15 +34,23 @@ export const Tag = styled(RouterLink)(
     justifyContent: 'center',
     lineHeight: 1,
     margin: 0,
+    outline: 'none',
     padding: '0 0 0 0.25rem',
     textDecoration: 'none',
     ':after': {
       content: 'attr(data-abbreviation)',
     },
+    '&&:focus:after': {
+      color: focus,
+      content: 'attr(data-slug)',
+    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         '&&:after': {
-          color: primary,
+          get color() {
+            if (selected || to) return primary;
+            return transparentize(0.33, black);
+          },
           content: 'attr(data-slug)',
         },
       },

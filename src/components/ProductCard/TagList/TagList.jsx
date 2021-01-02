@@ -25,10 +25,7 @@ export const TagList = ({ tags }) => {
               to={{
                 pathname,
                 search: stringify(
-                  {
-                    ...restQuery,
-                    tags: [slug],
-                  },
+                  { ...restQuery, tags: [slug] },
                   { arrayFormat: 'brackets', encode: false },
                 ),
               }}
@@ -36,7 +33,7 @@ export const TagList = ({ tags }) => {
           ) : null,
         )
       ) : (
-        <Styled.Tag>-</Styled.Tag>
+        <Styled.Tag as="span">-</Styled.Tag>
       )}
     </Styled.TagList>
   );

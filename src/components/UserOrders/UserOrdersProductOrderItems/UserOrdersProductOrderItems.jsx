@@ -39,13 +39,31 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
           <Styled.Row>
             <Styled.OrderItemProduct>
               {quantity} x{' '}
-              {name && unit.singular.trim() === 'item'
-                ? name
-                : `${increment}${unit.pluralAbbreviated}${
-                    container ? ` + ${container.type}` : ''
-                  }`}
+              {name && unit.singular.trim() === 'item' ? (
+                name
+              ) : (
+                <>
+                  <span>
+                    {increment}
+                    {unit.pluralAbbreviated}
+                  </span>
+                  {container ? (
+                    <Styled.ContainerInfo>
+                      {' '}
+                      + {container.type}
+                    </Styled.ContainerInfo>
+                  ) : null}
+                </>
+              )}
             </Styled.OrderItemProduct>
-            £{Number(+parseFloat(incrementPrice * quantity)).toFixed(2)}
+            <Styled.Price>
+              <span>£{Number(+parseFloat(incrementPrice * quantity))}</span>{' '}
+              {container ? (
+                <Styled.ContainerInfo>
+                  + £{Number(+parseFloat(container.price * quantity))}
+                </Styled.ContainerInfo>
+              ) : null}
+            </Styled.Price>
           </Styled.Row>
         ),
       )}

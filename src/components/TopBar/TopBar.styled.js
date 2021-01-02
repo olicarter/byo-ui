@@ -22,7 +22,7 @@ export const Group = styled.div(() => ({
   display: 'flex',
 }));
 
-export const SVG = styled.svg(({ theme: { palette: { black } } }) => ({
+export const SVG = styled.svg(({ theme: { palette: { black, focus } } }) => ({
   clipRule: 'evenodd',
   fill: black,
   fillRule: 'evenodd',
@@ -69,7 +69,7 @@ export const Link = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, primary, red, teal },
+      palette: { black, focus, primary, red, teal },
     },
   }) => ({
     background: 'none',
@@ -82,6 +82,12 @@ export const Link = styled(RouterLink)(
     outline: 'none',
     padding: '1rem',
     textDecoration: 'none',
+    ':focus': {
+      color: focus,
+      path: {
+        fill: focus,
+      },
+    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         color: primary,

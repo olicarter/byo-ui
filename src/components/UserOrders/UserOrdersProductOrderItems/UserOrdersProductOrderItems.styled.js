@@ -40,3 +40,17 @@ export const OrderItemProduct = styled.span(
     },
   }),
 );
+
+export const Price = styled.span({
+  flexShrink: 0,
+});
+
+export const ContainerInfo = styled.span(
+  ({
+    theme: {
+      palette: { black },
+    },
+  }) => ({
+    color: transparentize(0.5, black),
+  }),
+);

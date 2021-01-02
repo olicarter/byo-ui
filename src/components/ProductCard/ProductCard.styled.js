@@ -78,7 +78,7 @@ export const Image = styled.img({
 export const Name = styled(RouterLink)(
   ({
     theme: {
-      palette: { black, primary },
+      palette: { black, focus, primary },
     },
   }) => ({
     color: black,
@@ -87,9 +87,13 @@ export const Name = styled(RouterLink)(
     fontWeight: 700,
     lineHeight: '24px',
     margin: 0,
+    outline: 'none',
     padding: 0,
     textDecoration: 'none',
     textTransform: 'capitalize',
+    ':focus': {
+      color: focus,
+    },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         color: primary,
@@ -132,7 +136,7 @@ export const Origin = styled.span(({ theme: { palette: { black } } }) => ({
 
 export const DeliveryInfo = styled(Origin)({});
 
-export const Info = styled.p(({ theme: { palette: { black } } }) => ({
+export const Info = styled.div(({ theme: { palette: { black } } }) => ({
   color: transparentize(0.33, black),
   fontSize: '0.8rem',
   margin: 0,

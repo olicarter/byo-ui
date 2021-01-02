@@ -52,26 +52,28 @@ export const OriginsBar = () => {
             </BarLink>
           ) : null}
 
-          {origins.map(origin => (
-            <BarLink
-              kwy={origin}
-              selected={originQuery === slugify(origin, { lower: true })}
-              to={{
-                pathname,
-                search: stringify(
-                  {
-                    ...restQuery,
-                    ...(originQuery === slugify(origin, { lower: true })
-                      ? {}
-                      : { origin: slugify(origin, { lower: true }) }),
-                  },
-                  { arrayFormat: 'brackets', encode: false },
-                ),
-              }}
-            >
-              {origin.toLowerCase()}
-            </BarLink>
-          ))}
+          {origins.map(origin => {
+            const slug = slugify(origin, { lower: true });
+
+            return (
+              <BarLink
+                key={origin}
+                selected={originQuery === slug}
+                to={{
+                  pathname,
+                  search: stringify(
+                    {
+                      ...restQuery,
+                      ...(originQuery === slug ? {} : { origin: slug }),
+                    },
+                    { arrayFormat: 'brackets', encode: false },
+                  ),
+                }}
+              >
+                {origin.toLowerCase()}
+              </BarLink>
+            );
+          })}
         </>
       )}
     </Bar>
