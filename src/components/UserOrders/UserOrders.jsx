@@ -24,6 +24,7 @@ export const UserOrders = () => {
         ({
           id,
           deliverySlot: { startTime, endTime } = {},
+          orderNumber,
           orderItems = [],
           paid,
         }) => {
@@ -42,24 +43,18 @@ export const UserOrders = () => {
             ];
           });
 
-          const { totalContainerPrice = 0 } = orderItems.reduce(
-            (prevVal, currVal) => {
-              if (currVal.productVariant.container)
-                return {
-                  ...prevVal,
-                  totalContainerPrice:
-                    prevVal.totalContainerPrice +
-                    currVal.quantity *
-                      Number(currVal.productVariant.container.price),
-                };
-              else return prevVal;
-            },
-            {
-              productVariant: { container: { price: 0 } },
-              totalContainerPrice: 0,
-              quantity: 0,
-            },
-          );
+          const totalContainerPrice =
+            Math.round(
+              orderItems.reduce(
+                (prev, curr) =>
+                  curr.productVariant.container
+                    ? prev +
+                      Number(curr.quantity) *
+                        Number(curr.productVariant.container.price)
+                    : prev,
+                0,
+              ) * 100,
+            ) / 100;
 
           const totalOrderValue =
             Math.round(
@@ -83,18 +78,16 @@ export const UserOrders = () => {
           }).toFormat('cccc d LLLL');
 
           return (
-            <Card margin="1rem 0 0">
+            <Card key={id} margin="1rem 0 0">
               <Styled.CardContent>
                 <Styled.Section>
                   <Styled.Header as="header">
-                    <Styled.OrderId>
-                      #{id.substring(id.length - 6, id.length)}
-                    </Styled.OrderId>
+                    <Styled.OrderId>#{orderNumber}</Styled.OrderId>
                     <div>
-                      <span>£{totalOrderValue}</span>
+                      <span>£{totalOrderValue * 1}</span>
                       <Styled.TotalContainerPrice>
                         {totalContainerPrice ? (
-                          <span> + £{+parseFloat(totalContainerPrice)}</span>
+                          <span> + £{totalContainerPrice * 1}</span>
                         ) : null}
                       </Styled.TotalContainerPrice>
                     </div>

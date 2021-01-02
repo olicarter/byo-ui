@@ -9,6 +9,8 @@ import { ProductVariants } from './ProductVariants';
 export const OrderItem = gql`
   fragment OrderItem on OrderItem {
     id
+    isContainerReturned
+    quantity
     productVariant {
       ...ProductVariant
       product {
@@ -18,7 +20,6 @@ export const OrderItem = gql`
         ...ProductVariants
       }
     }
-    quantity
   }
   ${ProductVariant}
   ${ProductDetails}

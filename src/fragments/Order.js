@@ -7,16 +7,17 @@ import { OrderItems } from './OrderItems';
 export const Order = gql`
   fragment Order on Order {
     id
+    createdAt
+    orderNumber
+    paid
+    submitted
     address {
       ...Address
     }
-    createdAt
     deliverySlot {
       ...DeliverySlot
     }
     ...OrderItems
-    paid
-    submitted
   }
   ${Address}
   ${DeliverySlot}
