@@ -29,11 +29,11 @@ export const ProductsPage = () => {
           <Markdown>{shopHeader}</Markdown>
         </Section>
         <Section margin="0" padding="0">
+          <SearchBar />
           <CategoryBar />
           <BrandBar />
           <OriginsBar />
           <TagBar />
-          <SearchBar />
         </Section>
         <Section>
           <Products />

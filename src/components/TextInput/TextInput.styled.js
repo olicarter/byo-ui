@@ -25,7 +25,7 @@ export const TextInput = styled.input(
       lineHeight: 1,
     },
     ':focus': {
-      borderColor: focus,
+      borderColor: black,
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {

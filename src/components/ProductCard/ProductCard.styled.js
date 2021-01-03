@@ -78,7 +78,7 @@ export const Image = styled.img({
 export const Name = styled(RouterLink)(
   ({
     theme: {
-      palette: { black, focus, primary },
+      palette: { black, focus },
     },
   }) => ({
     color: black,
@@ -96,7 +96,7 @@ export const Name = styled(RouterLink)(
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: primary,
+        color: focus,
       },
     },
   }),

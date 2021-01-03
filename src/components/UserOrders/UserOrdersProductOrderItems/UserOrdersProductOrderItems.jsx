@@ -1,19 +1,26 @@
 import React from 'react';
 
+import { BrandLink } from '@components/ProductCard/BrandLink';
+
 import * as Styled from './UserOrdersProductOrderItems.styled';
 
 export const UserOrdersProductOrderItems = ({ orderItems }) => {
   const [
     {
       productVariant: {
-        product: { name: productName },
+        product: { brand, name: productName },
       },
     },
   ] = orderItems;
   return (
     <Styled.Section>
       <Styled.OrderItemHeader>
-        <Styled.Name>{productName}</Styled.Name>
+        <div>
+          <div>
+            <BrandLink brand={brand} />
+          </div>
+          <Styled.Name>{productName}</Styled.Name>
+        </div>
         <span>
           {/* £
           {
@@ -34,13 +41,31 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
       {orderItems.map(
         ({
           quantity,
-          productVariant: { container, increment, incrementPrice, name, unit },
+          productVariant: {
+            container,
+            increment,
+            incrementPrice,
+            name: productVariantName,
+            unit,
+          },
         }) => (
           <Styled.Row>
             <Styled.OrderItemProduct>
-              {quantity} x{' '}
-              {name && unit.singular.trim() === 'item' ? (
-                name
+              <span>
+                {quantity} <Styled.ContainerInfo>x</Styled.ContainerInfo>{' '}
+                {container && productVariantName ? (
+                  <span>
+                    {container.size}
+                    {container.unit} {container.type}{' '}
+                    <Styled.ContainerInfo>of</Styled.ContainerInfo>{' '}
+                  </span>
+                ) : null}
+              </span>
+
+              {productVariantName ? (
+                <>
+                  <span>{productVariantName}</span>
+                </>
               ) : (
                 <>
                   <span>
@@ -50,7 +75,8 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
                   {container ? (
                     <Styled.ContainerInfo>
                       {' '}
-                      + {container.type}
+                      + {container.size}
+                      {container.unit} {container.type}
                     </Styled.ContainerInfo>
                   ) : null}
                 </>
@@ -58,7 +84,7 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
             </Styled.OrderItemProduct>
             <Styled.Price>
               <span>£{Number(+parseFloat(incrementPrice * quantity))}</span>{' '}
-              {container ? (
+              {container && Number(container.price) ? (
                 <Styled.ContainerInfo>
                   + £{Number(+parseFloat(container.price * quantity))}
                 </Styled.ContainerInfo>

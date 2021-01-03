@@ -90,7 +90,7 @@ export const Link = styled(RouterLink)(
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: primary,
+        color: focus,
         'path:nth-of-type(1)': {
           fill: teal,
         },
@@ -105,9 +105,17 @@ export const Link = styled(RouterLink)(
   }),
 );
 
-export const LinkIcon = styled(Link)(() => ({
-  padding: '0.5rem',
-}));
+export const LinkIcon = styled(Link)(
+  ({
+    selected,
+    theme: {
+      palette: { black, focus, primary, red, teal },
+    },
+  }) => ({
+    color: selected ? primary : black,
+    padding: '0.5rem',
+  }),
+);
 
 export const Menu = styled(animated.div)(
   ({

@@ -48,7 +48,7 @@ export const Tag = styled(RouterLink)(
       ':hover': {
         '&&:after': {
           get color() {
-            if (selected || to) return primary;
+            if (selected || to) return focus;
             return transparentize(0.33, black);
           },
           content: 'attr(data-slug)',

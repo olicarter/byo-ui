@@ -7,6 +7,7 @@ import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 import { useAuth } from '@contexts';
 import { OrderItems, Orders } from '@fragments';
 import { getUnsubmittedOrderFromUser } from '@helpers';
+
 import {
   CREATE_ORDER_ITEM,
   DELETE_ORDER_ITEM,
@@ -176,7 +177,7 @@ export const ProductVariant = ({
           {quantity ? `${quantity} x ` : null}
           {`${increment}${unit.singularAbbreviated} ${(() => {
             if (container) {
-              if (!!Number(container.price)) return ` + ${container.type}`;
+              if (!!Number(container.price)) return ` ${container.type}`;
               return ` ${container.type}`;
             }
             if (unit.singularAbbreviated === ' item') return '';

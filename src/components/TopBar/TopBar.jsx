@@ -209,6 +209,7 @@ export const TopBar = () => {
                           as={as}
                           href={href}
                           onClick={onClick}
+                          selected={pathname.includes(to)}
                           target={target}
                           to={to}
                         >

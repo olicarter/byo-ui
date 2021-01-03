@@ -5,7 +5,7 @@ import { parse, stringify } from 'qs';
 import * as Styled from './BrandLink.styled';
 
 export const BrandLink = ({ brand }) => {
-  const { pathname, search } = useLocation();
+  const { search } = useLocation();
 
   const { brand: brandQuerySlug, ...restQuery } = parse(search, {
     ignoreQueryPrefix: true,
@@ -21,7 +21,7 @@ export const BrandLink = ({ brand }) => {
       loading={!name}
       selected={name && brandQuerySlug === slug}
       to={{
-        pathname,
+        pathname: '/products',
         search: stringify(
           {
             ...restQuery,

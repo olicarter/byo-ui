@@ -34,7 +34,7 @@ const inputNames = {
 export const Checkout = () => {
   const { push, replace } = useHistory();
   const formMethods = useForm({ reValidateMode: 'onSubmit' });
-  const { errors, handleSubmit, setValue, watch } = formMethods;
+  const { errors, handleSubmit, setValue } = formMethods;
 
   const {
     data: {
@@ -57,7 +57,9 @@ export const Checkout = () => {
     setValue(inputNames.phone, userPhone);
   }, [setValue, userPhone]);
 
-  const [updateAuthenticatedUser] = useMutation(UPDATE_AUTHENTICATED_USER);
+  const [updateAuthenticatedUser] = useMutation(UPDATE_AUTHENTICATED_USER, {
+    onCompleted: () => push('/account'),
+  });
 
   const [submitOrder] = useMutation(SUBMIT_ORDER, {
     variables: { id: unsubmittedOrderId, submitted: true },
@@ -65,11 +67,11 @@ export const Checkout = () => {
       const { address } = updateOrder || {};
       const { id: addressId } = address || {};
       updateAuthenticatedUser({ variables: { addressId } });
-      push('/account');
     },
   });
 
   const onValid = async ({
+    [inputNames.address]: address,
     [inputNames.deliveryInstructions]: deliveryInstructions,
     [inputNames.name]: name,
     [inputNames.phone]: phone,
@@ -101,8 +103,6 @@ export const Checkout = () => {
     replace('/basket');
     return null;
   }
-
-  const address = watch(inputNames.address);
 
   return (
     <FormProvider {...formMethods}>

@@ -20,7 +20,7 @@ export const OriginLink = styled(RouterLink)(
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: primary,
+        color: focus,
       },
     },
   }),

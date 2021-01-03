@@ -29,10 +29,6 @@ export const Footer = () => {
           Made with <Styled.Heart>♥︎</Styled.Heart> by{' '}
           <Styled.Anchor href="https://github.com/olicarter" target="_blank">
             Oli
-          </Styled.Anchor>{' '}
-          and{' '}
-          <Styled.Anchor href="https://github.com/tobzzy" target="_blank">
-            Ola
           </Styled.Anchor>
         </Styled.Paragraph>
       </Section>

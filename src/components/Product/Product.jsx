@@ -27,7 +27,6 @@ export const Product = () => {
           deliveryInfo,
           ingredients,
           origin,
-          variants = [],
           tags = [],
         } = {},
       ] = [],
@@ -37,18 +36,6 @@ export const Product = () => {
     variables: { slug: productSlug },
   });
 
-  const defaultDeliveryInfo = (() => {
-    if (
-      variants.every(({ container }) => container && !!Number(container.price))
-    )
-      return 'Delivered in refundable containers';
-    if (
-      variants.every(({ container }) => container && !Number(container.price))
-    )
-      return 'Delivered in non-refundable containers';
-    return 'Delivered in cotton bags';
-  })();
-
   return (
     <>
       <Styled.Product>
@@ -57,10 +44,12 @@ export const Product = () => {
           <>
             <Styled.Section>
               <Styled.Icon path={mdiBicycleBasket} size="2rem" />
-              <div>
-                <Styled.SectionTitle>Delivery info</Styled.SectionTitle>
-                <Styled.Info>{deliveryInfo || defaultDeliveryInfo}</Styled.Info>
-              </div>
+              {deliveryInfo ? (
+                <div>
+                  <Styled.SectionTitle>Delivery info</Styled.SectionTitle>
+                  <Styled.Info>{deliveryInfo}</Styled.Info>
+                </div>
+              ) : null}
             </Styled.Section>
             {origin ? (
               <Styled.Section>

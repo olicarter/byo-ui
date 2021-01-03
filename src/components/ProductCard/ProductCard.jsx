@@ -34,18 +34,6 @@ export const ProductCard = ({
       orderItemProductId === productId,
   );
 
-  const defaultDeliveryInfo = (() => {
-    if (
-      variants.every(({ container }) => container && !!Number(container.price))
-    )
-      return 'Delivered in refundable containers';
-    if (
-      variants.every(({ container }) => container && !Number(container.price))
-    )
-      return 'Delivered in non-refundable containers';
-    return 'Delivered in cotton bags';
-  })();
-
   const [mouseOverVariantIndex, setMouseOverVariantIndex] = useState(0);
 
   const { image: variantImage } = variants[mouseOverVariantIndex] || {};
@@ -76,10 +64,8 @@ export const ProductCard = ({
         </Styled.Header>
 
         <Styled.Info>
-          {!!orderItems.length ? (
-            <Styled.DeliveryInfo>
-              {deliveryInfo || defaultDeliveryInfo}
-            </Styled.DeliveryInfo>
+          {!!orderItems.length && deliveryInfo ? (
+            <Styled.DeliveryInfo>{deliveryInfo}</Styled.DeliveryInfo>
           ) : null}
 
           <div>
