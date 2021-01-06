@@ -4,6 +4,7 @@ const prefix = './src';
 
 const aliases = {
   '@components': `${prefix}/components`,
+  '@config': `${prefix}/config`,
   '@contexts': `${prefix}/contexts`,
   '@forms': `${prefix}/forms`,
   '@fragments': `${prefix}/fragments`,

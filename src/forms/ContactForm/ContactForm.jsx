@@ -27,7 +27,6 @@ export const ContactForm = () => {
             errorInfo={errors.name && errors.name.message}
           >
             <TextInput
-              autoFocus
               name="name"
               ref={register({
                 required: 'We need your name to send the message',
@@ -42,7 +41,6 @@ export const ContactForm = () => {
             errorInfo={errors.email && errors.email.message}
           >
             <TextInput
-              autoFocus
               name="email"
               ref={register({
                 required: 'Please enter an email',
@@ -62,7 +60,6 @@ export const ContactForm = () => {
           errorInfo={errors.message && errors.message.message}
         >
           <TextInput
-            autoFocus
             name="message"
             ref={register({ required: "There's no message to send!" })}
             type="text"
