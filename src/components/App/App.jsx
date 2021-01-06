@@ -8,7 +8,7 @@ import {
   AboutPage,
   AccountPage,
   BasketPage,
-  BlogPage,
+  // BlogPage,
   CheckoutPage,
   ContactPage,
   LoadingPage,
@@ -87,9 +87,9 @@ export const App = () => {
               <AboutPage />
             </Route>
 
-            <Route exact path="/blog">
+            {/* <Route exact path="/blog">
               <BlogPage />
-            </Route>
+            </Route> */}
 
             <Route exact path="/contact">
               <ContactPage />

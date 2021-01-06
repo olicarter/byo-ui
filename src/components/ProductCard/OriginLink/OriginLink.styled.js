@@ -8,6 +8,7 @@ export const OriginLink = styled(RouterLink)(
     theme: {
       palette: { black, focus, primary },
     },
+    to,
   }) => ({
     color: selected ? primary : transparentize(0.33, black),
     fontSize: '0.75rem',
@@ -15,13 +16,15 @@ export const OriginLink = styled(RouterLink)(
     outline: 'none',
     padding: 0,
     textDecoration: 'none',
-    ':focus': {
-      color: focus,
-    },
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: focus,
-      },
-    },
+    ...(to
+      ? {
+          ':focus': { color: focus },
+          '@media (hover: hover) and (pointer: fine)': {
+            ':hover': {
+              color: focus,
+            },
+          },
+        }
+      : {}),
   }),
 );
