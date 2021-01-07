@@ -2,10 +2,10 @@ import React from 'react';
 
 import * as Styled from './Bar.styled';
 
-export const Bar = ({ children }) => (
+export const Bar = ({ children, wrap = true }) => (
   <Styled.Bar>
     <Styled.Nav>
-      <Styled.NavItems>{children}</Styled.NavItems>
+      <Styled.NavItems wrap={wrap}>{children}</Styled.NavItems>
     </Styled.Nav>
   </Styled.Bar>
 );
