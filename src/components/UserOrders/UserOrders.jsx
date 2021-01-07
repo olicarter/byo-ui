@@ -2,6 +2,8 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
+import { formatPrice } from '@helpers';
+
 import { GET_AUTHENTICATED_USER } from './UserOrders.gql';
 import * as Styled from './UserOrders.styled';
 import { Card } from '../Card';
@@ -84,10 +86,10 @@ export const UserOrders = () => {
                   <Styled.Header as="header">
                     <Styled.OrderId>#{orderNumber}</Styled.OrderId>
                     <div>
-                      <span>£{totalOrderValue * 1}</span>
+                      <span>£{formatPrice(totalOrderValue)}</span>
                       <Styled.TotalContainerPrice>
                         {totalContainerPrice ? (
-                          <span> + £{totalContainerPrice * 1}</span>
+                          <span> + £{formatPrice(totalContainerPrice)}</span>
                         ) : null}
                       </Styled.TotalContainerPrice>
                     </div>

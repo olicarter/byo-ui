@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { formatPrice } from '@helpers';
 import { BrandLink } from '@components/ProductCard/BrandLink';
 
 import * as Styled from './UserOrdersProductOrderItems.styled';
@@ -83,10 +84,10 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
               )}
             </Styled.OrderItemProduct>
             <Styled.Price>
-              <span>£{Number(+parseFloat(incrementPrice * quantity))}</span>{' '}
+              <span>£{formatPrice(incrementPrice * quantity)}</span>{' '}
               {container && Number(container.price) ? (
                 <Styled.ContainerInfo>
-                  + £{Number(+parseFloat(container.price * quantity))}
+                  + £{formatPrice(container.price * quantity)}
                 </Styled.ContainerInfo>
               ) : null}
             </Styled.Price>

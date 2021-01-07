@@ -6,7 +6,7 @@ import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
 import { useAuth } from '@contexts';
 import { OrderItems, Orders } from '@fragments';
-import { getUnsubmittedOrderFromUser } from '@helpers';
+import { formatPrice, getUnsubmittedOrderFromUser } from '@helpers';
 
 import {
   CREATE_ORDER_ITEM,
@@ -186,11 +186,11 @@ export const ProductVariant = ({
         </Styled.Quantity>
 
         <Styled.Price>
-          £{incrementPrice * 1}
+          £{formatPrice(incrementPrice)}
           {container && Number(container.price) ? (
             <Styled.Container>
               {' '}
-              + £{Number(container.price) * 1}
+              + £{formatPrice(container.price)}
             </Styled.Container>
           ) : null}
         </Styled.Price>
