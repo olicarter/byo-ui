@@ -5,6 +5,7 @@ export const DeliverySlot = gql`
     id
     startTime
     endTime
+    deliveryCharge
     maxOrders
   }
 `;

@@ -24,6 +24,7 @@ export const ProductVariantTagList = ({
         <Styled.Tag
           className="Tag"
           data-slug={slug}
+          key={slug}
           selected={queryTags.includes(slug)}
           to={{
             pathname,

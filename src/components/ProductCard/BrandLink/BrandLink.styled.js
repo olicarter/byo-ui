@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { Link as RouterLink } from 'react-router-dom';
 
-export const BrandLink = styled(RouterLink)(
+export const BrandLink = styled.span(
   ({
     loading,
     selected,

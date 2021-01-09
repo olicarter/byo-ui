@@ -197,7 +197,11 @@ export const Checkout = () => {
         </FormGroup>
 
         <FormGroup
-          label={`£${total} total`}
+          label={
+            <span>
+              <BasketTotal showCurrencySymbol /> total
+            </span>
+          }
           largeLabel
           info={total >= minOrderValue ? orderSubmissionInfo : undefined}
         ></FormGroup>

@@ -126,7 +126,7 @@ export const Products = () => {
       <Grid>
         {allProducts.map(product => (
           <Sentry.ErrorBoundary key={product.id}>
-            <ProductCard {...product} />
+            <ProductCard product={product} />
           </Sentry.ErrorBoundary>
         ))}
       </Grid>

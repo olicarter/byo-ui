@@ -62,7 +62,7 @@ export const App = () => {
               const Tag = isPrivate ? ProtectedRoute : Route;
 
               return (
-                <Tag exact={exact} path={path}>
+                <Tag exact={exact} key={key} path={path}>
                   {component}
                 </Tag>
               );

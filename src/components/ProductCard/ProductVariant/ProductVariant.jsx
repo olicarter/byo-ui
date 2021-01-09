@@ -175,12 +175,12 @@ export const ProductVariant = ({
 
         <Styled.Quantity quantity={quantity}>
           {quantity ? `${quantity} x ` : null}
-          {`${increment}${unit.singularAbbreviated} ${(() => {
+          {`${increment}${unit?.singularAbbreviated} ${(() => {
             if (container) {
               if (!!Number(container.price)) return ` ${container.type}`;
               return ` ${container.type}`;
             }
-            if (unit.singularAbbreviated === ' item') return '';
+            if (unit?.singularAbbreviated === ' item') return '';
             return ' loose';
           })()}`}
         </Styled.Quantity>

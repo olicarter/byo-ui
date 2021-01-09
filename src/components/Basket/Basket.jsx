@@ -37,7 +37,7 @@ export const Basket = () => {
       <Grid>
         {orderItemProducts.map(({ id, productVariant: { product } = {} }) => (
           <Sentry.ErrorBoundary key={product.id}>
-            <ProductCard key={id} {...product} />
+            <ProductCard key={id} product={product} showOnlyVariantsInOrder />
           </Sentry.ErrorBoundary>
         ))}
       </Grid>

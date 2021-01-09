@@ -14,15 +14,18 @@ import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { TagList } from './TagList';
 
 export const ProductCard = ({
-  brand,
-  deliveryInfo,
-  id: productId,
-  image,
-  name,
-  origin,
-  slug,
-  tags,
-  variants = [],
+  product: {
+    brand,
+    deliveryInfo,
+    id: productId,
+    image,
+    name,
+    origin,
+    slug,
+    tags,
+    variants = [],
+  },
+  showOnlyVariantsInOrder,
 }) => {
   const { data: { authenticatedUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
@@ -33,6 +36,14 @@ export const ProductCard = ({
     ({ productVariant: { product: { id: orderItemProductId } = {} } = {} }) =>
       orderItemProductId === productId,
   );
+
+  const productVariantsInOrder = variants.filter(variant =>
+    orderItems.find(orderItem => variant.id === orderItem.productVariant.id),
+  );
+
+  const visibleVariants = showOnlyVariantsInOrder
+    ? productVariantsInOrder
+    : variants;
 
   const [mouseOverVariantIndex, setMouseOverVariantIndex] = useState(0);
 
@@ -75,16 +86,13 @@ export const ProductCard = ({
       </Styled.Content>
 
       <Styled.ProductVariants>
-        {variants.map((variant, index) => (
+        {visibleVariants.map((variant, index) => (
           <div
+            key={variant.id}
             onMouseOut={() => setMouseOverVariantIndex(0)}
             onMouseOver={() => setMouseOverVariantIndex(index)}
           >
-            <ProductVariant
-              key={variant.id}
-              productTags={tags}
-              variant={variant}
-            />
+            <ProductVariant productTags={tags} variant={variant} />
           </div>
         ))}
       </Styled.ProductVariants>

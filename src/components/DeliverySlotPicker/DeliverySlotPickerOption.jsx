@@ -2,6 +2,8 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
+import { formatPrice } from '@helpers';
+
 import {
   COUNT_DELIVERY_SLOT_ORDERS,
   GET_DELIVERY_SLOT,
@@ -12,7 +14,7 @@ export const DeliverySlotPickerOption = ({ id }) => {
     variables: { id },
   });
 
-  const { startTime, endTime, maxOrders } = DeliverySlot || {};
+  const { startTime, endTime, deliveryCharge, maxOrders } = DeliverySlot || {};
 
   const { data: { _allOrdersMeta: { count } = {} } = {} } = useQuery(
     COUNT_DELIVERY_SLOT_ORDERS,
@@ -30,7 +32,8 @@ export const DeliverySlotPickerOption = ({ id }) => {
 
   return (
     <option disabled={count > maxOrders} value={id}>
-      {startDateTime.toLocaleString(DateTime.TIME_24_SIMPLE)} -{' '}
+      {deliveryCharge * 1 ? `£${formatPrice(deliveryCharge)}` : 'Free'} -{' '}
+      {startDateTime.toLocaleString(DateTime.TIME_24_SIMPLE)}-
       {endDateTime.toLocaleString(DateTime.TIME_24_SIMPLE)},{' '}
       {startDateTime.toFormat('cccc d LLL')}
     </option>

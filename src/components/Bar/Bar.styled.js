@@ -18,9 +18,9 @@ export const Nav = styled.nav(() => ({
   padding: 0,
 }));
 
-export const NavItems = styled.ul(({ wrap }) => ({
+export const NavItems = styled.ul(({ wrapChildren }) => ({
   display: 'flex',
-  flexWrap: wrap ? 'wrap' : 'nowrap',
+  flexWrap: wrapChildren ? 'wrap' : 'nowrap',
   margin: 0,
   padding: '0 0.5rem',
 }));
