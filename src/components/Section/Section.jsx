@@ -7,7 +7,7 @@ export const Section = ({
   margin = '1rem 0 0',
   padding = '0 1rem',
 }) => (
-  <Styled.Section margin={margin} padding={padding}>
+  <Styled.Section className="Section" margin={margin} padding={padding}>
     {children}
   </Styled.Section>
 );

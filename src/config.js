@@ -1,12 +1,10 @@
 import React from 'react';
 
+import { Checkout } from '@components/Checkout';
+import { ContactForm } from '@forms';
 import {
-  AboutPage,
   AccountPage,
   BasketPage,
-  CheckoutPage,
-  ContactPage,
-  HomePage,
   LoginPage,
   ProductPage,
   ProductsPage,
@@ -19,17 +17,15 @@ export const config = {
     home: {
       path: '/',
       exact: true,
-      component: <HomePage />,
     },
     about: {
       path: '/about',
       exact: true,
-      component: <AboutPage />,
     },
     contact: {
       path: '/contact',
       exact: true,
-      component: <ContactPage />,
+      component: <ContactForm />,
     },
     products: {
       path: '/products',
@@ -68,7 +64,7 @@ export const config = {
     },
     checkout: {
       path: '/checkout',
-      component: <CheckoutPage />,
+      component: <Checkout />,
       private: true,
     },
   },

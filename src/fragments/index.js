@@ -7,6 +7,7 @@ export * from './OrderItem';
 export * from './OrderItems';
 export * from './Order';
 export * from './Orders';
+export * from './Page';
 export * from './ProductBrand';
 export * from './ProductCategory';
 export * from './ProductDetails';

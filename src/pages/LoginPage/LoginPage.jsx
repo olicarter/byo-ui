@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { stringify, parse } from 'qs';
-import { useQuery } from '@apollo/client';
-import { Helmet } from 'react-helmet';
 
 import { useAuth } from '@contexts';
-import { Layout } from '@components/Layout';
-import { Markdown } from '@components/Markdown';
 import { Section } from '@components/Section';
-import { SubTitle, Title } from '@components/Typography';
+import { SubTitle } from '@components/Typography';
 import { LoginForm } from '@forms';
 
-import { GET_ALL_SETTINGS } from './LoginPage.gql';
 import * as Styled from './LoginPage.styled';
 
 export const LoginPage = () => {
@@ -34,52 +29,41 @@ export const LoginPage = () => {
       });
   }, [from, isAuthenticated, push, restQuery]);
 
-  const {
-    data: { allSettings: [{ loginHeader = '' } = {}] = [] } = {},
-  } = useQuery(GET_ALL_SETTINGS);
-
   return (
     <>
-      <Helmet>
-        <title>BYO | Log in</title>
-      </Helmet>
-      <Layout>
-        {newUser ? (
-          <Section>
-            <Title>Welcome, {name}</Title>
-            <SubTitle>You can now log in and start shopping</SubTitle>
-          </Section>
-        ) : (
-          <Section>
-            <Markdown>{loginHeader}</Markdown>
-            <SubTitle>
-              New customer?{' '}
-              <Styled.Link
-                to={{
-                  pathname: 'register',
-                  search: stringify(restQuery, {
-                    arrayFormat: 'brackets',
-                    encode: false,
-                  }),
-                }}
-              >
-                Register
-              </Styled.Link>
-            </SubTitle>
-
-            <SubTitle>
-              Forgotten your password?{' '}
-              <Styled.Link color="red" to="reset-password">
-                Reset your password
-              </Styled.Link>
-            </SubTitle>
-          </Section>
-        )}
-
+      {newUser ? (
         <Section>
-          <LoginForm />
+          <SubTitle>You can now log in and start shopping</SubTitle>
         </Section>
-      </Layout>
+      ) : (
+        <Section>
+          <SubTitle>
+            New customer?{' '}
+            <Styled.Link
+              to={{
+                pathname: 'register',
+                search: stringify(restQuery, {
+                  arrayFormat: 'brackets',
+                  encode: false,
+                }),
+              }}
+            >
+              Register
+            </Styled.Link>
+          </SubTitle>
+
+          <SubTitle>
+            Forgotten your password?{' '}
+            <Styled.Link color="red" to="reset-password">
+              Reset your password
+            </Styled.Link>
+          </SubTitle>
+        </Section>
+      )}
+
+      <Section>
+        <LoginForm />
+      </Section>
     </>
   );
 };

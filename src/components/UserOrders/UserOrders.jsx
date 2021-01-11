@@ -23,13 +23,9 @@ export const UserOrders = () => {
   return (
     <>
       {submittedOrders.map(
-        ({
-          id,
-          deliverySlot: { startTime, endTime } = {},
-          orderNumber,
-          orderItems = [],
-          paid,
-        }) => {
+        ({ id, deliverySlot, orderNumber, orderItems = [], paid }) => {
+          if (!deliverySlot) return null;
+
           const orderItemsByProduct = [];
           const uniqueProductIds = [];
           orderItems.forEach(i => {
@@ -68,6 +64,8 @@ export const UserOrders = () => {
                 0,
               ) * 100,
             ) / 100;
+
+          const { startTime, endTime } = deliverySlot || {};
 
           const st = DateTime.fromISO(startTime, {
             zone: 'Europe/London',

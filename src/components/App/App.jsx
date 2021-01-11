@@ -5,13 +5,14 @@ import { Helmet } from 'react-helmet';
 
 import { config } from '@config';
 import { useAuth } from '@contexts';
-import { CalloutSection } from '@components/CalloutSection';
+import { Callout } from '@components/Callout';
 import { Footer } from '@components/Footer';
 import { ProtectedRoute } from '@components/ProtectedRoute';
+import { Section } from '@components/Section';
 import { TopBar } from '@components/TopBar';
-import { LoadingPage } from '@pages';
+import { LoadingPage, Page } from '@pages';
 
-import { GET_AUTHENTICATED_USER, GET_SETTINGS } from './App.gql';
+import { GET_AUTHENTICATED_USER, GET_PAGES, GET_SETTINGS } from './App.gql';
 import * as Styled from './App.styled';
 
 const { pages } = config;
@@ -26,20 +27,34 @@ export const App = () => {
   } = useQuery(GET_SETTINGS);
 
   const {
+    loading: getPagesLoading,
+    networkStatus: getPagesNetworkStatus,
+    refetch: getPagesRefetch,
+  } = useQuery(GET_PAGES);
+
+  const {
     loading: getAuthenticatedUserLoading,
     networkStatus: getAuthenticatedUserNetworkStatus,
     refetch: getAuthenticatedUserRefetch,
   } = useQuery(GET_AUTHENTICATED_USER, { notifyOnNetworkStatusChange: true });
 
   useEffect(() => {
-    getSettingsRefetch();
     getAuthenticatedUserRefetch();
-  }, [getAuthenticatedUserRefetch, getSettingsRefetch, isAuthenticated]);
+    getSettingsRefetch();
+    getPagesRefetch();
+  }, [
+    getAuthenticatedUserRefetch,
+    getPagesRefetch,
+    getSettingsRefetch,
+    isAuthenticated,
+  ]);
 
   if (
-    getSettingsLoading ||
     getAuthenticatedUserLoading ||
     getAuthenticatedUserNetworkStatus === NetworkStatus.refetch ||
+    getPagesLoading ||
+    getPagesNetworkStatus === NetworkStatus.refetch ||
+    getSettingsLoading ||
     getSettingsNetworkStatus === NetworkStatus.refetch
   )
     return <LoadingPage />;
@@ -54,7 +69,9 @@ export const App = () => {
         <Styled.App>
           <TopBar />
 
-          <CalloutSection />
+          <Section>
+            <Callout />
+          </Section>
 
           <Styled.Main>
             {Object.keys(pages).map(key => {
@@ -63,7 +80,7 @@ export const App = () => {
 
               return (
                 <Tag exact={exact} key={key} path={path}>
-                  {component}
+                  <Page>{component}</Page>
                 </Tag>
               );
             })}

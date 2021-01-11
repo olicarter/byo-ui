@@ -21,8 +21,8 @@ export const Nav = styled.nav(() => ({
 export const NavItems = styled.ul(({ wrapChildren }) => ({
   display: 'flex',
   flexWrap: wrapChildren ? 'wrap' : 'nowrap',
-  margin: 0,
-  padding: '0 0.5rem',
+  margin: '0 -0.5rem',
+  padding: 0,
 }));
 
 export const BarItem = styled.li(() => ({

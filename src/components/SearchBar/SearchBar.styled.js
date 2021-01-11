@@ -6,7 +6,7 @@ export const SearchBar = styled.div(({ theme: { palette: { black } } }) => ({
 }));
 
 export const IconWrapper = styled.div({
-  padding: '1rem',
+  padding: '0.5rem',
 });
 
 export const Input = styled.input(({ theme: { palette: { black } } }) => ({
@@ -16,6 +16,6 @@ export const Input = styled.input(({ theme: { palette: { black } } }) => ({
   fontSize: '1rem',
   fontWeight: 700,
   outline: 'none',
-  padding: '1rem 0',
+  padding: '0.5rem 0',
   width: '100%',
 }));

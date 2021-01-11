@@ -3,18 +3,19 @@ import { useHistory } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { AddressSelect } from '@components/AddressSelect';
+import { BasketTotal } from '@components/BasketTotal';
+import { DeliverySlotPicker } from '@components/DeliverySlotPicker';
+import { FloatingButton } from '@components/FloatingButton';
+import { FormGroup } from '@components/FormGroup';
 import { getUnsubmittedOrderFromUser, sumOrderItems } from '@helpers';
+
 import {
   GET_AUTHENTICATED_USER,
   GET_SETTINGS,
   SUBMIT_ORDER,
   UPDATE_AUTHENTICATED_USER,
 } from './Checkout.gql';
-import { AddressSelect } from '../AddressSelect';
-import { BasketTotal } from '../BasketTotal';
-import { DeliverySlotPicker } from '../DeliverySlotPicker';
-import { FloatingButton } from '../FloatingButton';
-import { FormGroup } from '../FormGroup';
 import { OrderDeliveryAddressDeliveryInstructionsInput } from './OrderDeliveryAddressDeliveryInstructionsInput';
 import { OrderDeliveryAddressNameInput } from './OrderDeliveryAddressNameInput';
 import { OrderDeliveryAddressPhoneInput } from './OrderDeliveryAddressPhoneInput';

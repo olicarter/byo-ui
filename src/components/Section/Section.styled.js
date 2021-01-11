@@ -5,4 +5,10 @@ export const Section = styled.section(({ margin, padding }) => ({
   flexDirection: 'column',
   margin,
   padding,
+  '.Section': {
+    padding: 0,
+    ':first-of-type': {
+      margin: 0,
+    },
+  },
 }));
