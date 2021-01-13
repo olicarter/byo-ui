@@ -1,6 +1,15 @@
 import { gql } from '@apollo/client';
 
-import { Page, ProductDetails } from '@fragments';
+import { Category, Page, ProductDetails } from '@fragments';
+
+export const GET_CATEGORIES_BY_SLUG = gql`
+  query PageGetCategoriesBySlug($slug: String!) {
+    allCategories(where: { slug: $slug }) {
+      ...Category
+    }
+  }
+  ${Category}
+`;
 
 export const GET_PAGES_BY_PATH = gql`
   query PageGetPagesByPath($path: String!) {

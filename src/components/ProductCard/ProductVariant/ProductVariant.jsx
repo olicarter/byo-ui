@@ -177,12 +177,15 @@ export const ProductVariant = ({
 
         <Styled.Quantity quantity={quantity}>
           {quantity ? `${quantity} x ` : null}
-          {`${increment}${unit?.singularAbbreviated} ${(() => {
+          {`${increment}${
+            increment > 1 ? unit.pluralAbbreviated : unit.singularAbbreviated
+          } ${(() => {
             if (container) {
               if (!!Number(container.price)) return ` ${container.type}`;
               return ` ${container.type}`;
             }
-            if (unit.singularAbbreviated === ' item') return '';
+            if (!['g', 'ml', 'kg', 'l'].includes(unit.singularAbbreviated))
+              return '';
             return ' loose';
           })()}`}
         </Styled.Quantity>
