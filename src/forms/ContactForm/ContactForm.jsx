@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 
@@ -9,9 +9,19 @@ import { TextInput } from '@components/TextInput';
 import { SEND_CONTACT_FORM } from './ContactForm.gql';
 
 export const ContactForm = () => {
-  const { handleSubmit, register, errors } = useForm();
+  const { errors, handleSubmit, register, reset } = useForm();
 
-  const [sendContactForm] = useMutation(SEND_CONTACT_FORM);
+  const [recentlySubmitted, setRecentlySubmitted] = useState(false);
+
+  const [sendContactForm] = useMutation(SEND_CONTACT_FORM, {
+    onCompleted: () => {
+      reset();
+      setRecentlySubmitted(true);
+      setTimeout(() => {
+        setRecentlySubmitted(false);
+      }, 3000);
+    },
+  });
 
   const onSubmit = ({ email, message, name, subject }) => {
     sendContactForm({ variables: { email, message, name, subject } });
@@ -66,7 +76,13 @@ export const ContactForm = () => {
           />
         </FormGroup>
 
-        <FloatingButton type="submit">Send message</FloatingButton>
+        <FloatingButton
+          backgroundColor={recentlySubmitted ? 'green' : 'primary'}
+          disabled={recentlySubmitted}
+          type="submit"
+        >
+          {recentlySubmitted ? 'Message sent' : 'Send message'}
+        </FloatingButton>
       </form>
     </>
   );

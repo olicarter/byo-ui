@@ -38,7 +38,7 @@ export const FloatingButton = styled.button(
       height: '3rem',
       justifyContent: 'center',
       lineHeight: '2rem',
-      opacity: disabled ? 0.5 : 1,
+      opacity: disabled ? 0.66 : 1,
       outline: 'none',
       padding: '0 0.75rem',
       pointerEvents: disabled ? 'none' : 'all',
