@@ -13,7 +13,7 @@ import { readableColor } from 'polished';
 import { useMedia, useMediaLayout } from 'use-media';
 
 const commonProperties = {
-  maxWidth: '133.333vmin',
+  maxWidth: '1280px',
 };
 
 const blue = 'hsl(210, 100%, 60%)';

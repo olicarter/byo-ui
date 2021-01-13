@@ -21,6 +21,8 @@ export const ProductVariant = ({
   productTags,
   variant: { id, container, increment, incrementPrice, name, tags, unit },
 }) => {
+  if (!unit) throw Error('Product variant unit not specified');
+
   const { push } = useHistory();
   const { pathname, search } = useLocation();
   const { isAuthenticated } = useAuth();
@@ -180,7 +182,7 @@ export const ProductVariant = ({
               if (!!Number(container.price)) return ` ${container.type}`;
               return ` ${container.type}`;
             }
-            if (unit?.singularAbbreviated === ' item') return '';
+            if (unit.singularAbbreviated === ' item') return '';
             return ' loose';
           })()}`}
         </Styled.Quantity>

@@ -84,8 +84,14 @@ export const Link = styled(RouterLink)(
     textDecoration: 'none',
     ':focus': {
       color: focus,
-      path: {
-        fill: focus,
+      'path:nth-of-type(1)': {
+        fill: teal,
+      },
+      'path:nth-of-type(2)': {
+        fill: yellow,
+      },
+      'path:nth-of-type(3)': {
+        fill: red,
       },
     },
     '@media (hover: hover) and (pointer: fine)': {
@@ -127,7 +133,6 @@ export const Menu = styled(animated.div)(
     display: 'flex',
     flexDirection: 'column',
     left: 0,
-    // padding: '1rem',
     position: 'fixed',
     top: '4rem',
     bottom: 0,
@@ -136,18 +141,12 @@ export const Menu = styled(animated.div)(
   }),
 );
 
-export const MenuItem = styled(animated.div)(
-  ({
-    theme: {
-      palette: { black },
-    },
-  }) => ({
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    // color: black,
-    // fontSize: '1.2rem',
-    // fontWeight: 700,
-    // padding: '1rem 0',
-  }),
-);
+export const MenuItem = styled(animated.div)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '100%',
+  // color: black,
+  // fontSize: '1.2rem',
+  // fontWeight: 700,
+  // padding: '1rem 0',
+});

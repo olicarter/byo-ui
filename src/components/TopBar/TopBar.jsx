@@ -61,7 +61,7 @@ export const TopBar = () => {
       key: 'shop',
       icon: mdiStoreOutline,
       title: 'Shop',
-      to: '/products',
+      to: '/products?category=baking',
     },
     {
       key: 'about',

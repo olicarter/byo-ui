@@ -80,8 +80,10 @@ export const Name = styled(RouterLink)(
     theme: {
       palette: { black, focus },
     },
+    to,
   }) => ({
     color: black,
+    cursor: to ? 'pointer' : 'default',
     flex: 1,
     fontSize: '1.15rem',
     fontWeight: 700,
@@ -92,11 +94,11 @@ export const Name = styled(RouterLink)(
     textDecoration: 'none',
     textTransform: 'capitalize',
     ':focus': {
-      color: focus,
+      ...(to ? { color: focus } : {}),
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: focus,
+        ...(to ? { color: focus } : {}),
       },
     },
   }),

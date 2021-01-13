@@ -16,7 +16,7 @@ export const Footer = () => {
       <Section>
         <Markdown
           overrides={{
-            a: { component: Styled.Anchor, props: { target: '_blank' } },
+            a: { component: Styled.Anchor },
             p: Styled.Paragraph,
           }}
         >

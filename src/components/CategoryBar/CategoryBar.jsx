@@ -23,7 +23,7 @@ export const CategoryBar = () => {
       ) : (
         <>
           <BarSpan>categories</BarSpan>
-          <BarLink
+          {/* <BarLink
             selected={!category}
             to={{
               pathname,
@@ -34,7 +34,7 @@ export const CategoryBar = () => {
             }}
           >
             all
-          </BarLink>
+          </BarLink> */}
           {allCategories.map(({ id, name, slug }) => (
             <BarLink
               key={id}

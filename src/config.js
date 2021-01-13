@@ -67,5 +67,9 @@ export const config = {
       component: <Checkout />,
       private: true,
     },
+    privacyPolicy: {
+      path: '/privacy-policy',
+      exact: true,
+    },
   },
 };

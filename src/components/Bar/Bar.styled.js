@@ -5,7 +5,6 @@ import { Link as RouterLink } from 'react-router-dom';
 export const Bar = styled.div(() => ({
   alignItems: 'center',
   display: 'flex',
-  overflowX: 'scroll',
   transitionDuration: '100ms',
   '::-webkit-scrollbar': {
     display: 'none',

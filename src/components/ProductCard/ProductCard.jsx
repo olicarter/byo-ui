@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { ErrorBoundary } from '@sentry/react';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
 import { Card } from '@components/Card';
@@ -68,7 +69,11 @@ export const ProductCard = ({
           </Styled.HeaderUpper>
 
           <Styled.HeaderLower>
-            <Styled.Name color="red" to={`/products/${slug}`}>
+            <Styled.Name
+              as="span"
+              color="red"
+              // to={`/products/${slug}`}
+            >
               {name}
             </Styled.Name>
           </Styled.HeaderLower>
@@ -87,13 +92,15 @@ export const ProductCard = ({
 
       <Styled.ProductVariants>
         {visibleVariants.map((variant, index) => (
-          <div
-            key={variant.id}
-            onMouseOut={() => setMouseOverVariantIndex(0)}
-            onMouseOver={() => setMouseOverVariantIndex(index)}
-          >
-            <ProductVariant productTags={tags} variant={variant} />
-          </div>
+          <ErrorBoundary>
+            <div
+              key={variant.id}
+              onMouseOut={() => setMouseOverVariantIndex(0)}
+              onMouseOver={() => setMouseOverVariantIndex(index)}
+            >
+              <ProductVariant productTags={tags} variant={variant} />
+            </div>
+          </ErrorBoundary>
         ))}
       </Styled.ProductVariants>
 

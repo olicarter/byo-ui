@@ -22,7 +22,8 @@ export const Paragraph = styled.p(({ theme: { palette: { black } } }) => ({
   lineHeight: 1.66,
 }));
 
-export const Anchor = styled.a(({ theme: { palette: { focus } } }) => ({
+export const Anchor = styled.a(({ theme: { palette: { black, focus } } }) => ({
+  color: black,
   outline: 'none',
   ':focus': {
     color: focus,
