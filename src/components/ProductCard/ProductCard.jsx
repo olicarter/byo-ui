@@ -69,11 +69,7 @@ export const ProductCard = ({
           </Styled.HeaderUpper>
 
           <Styled.HeaderLower>
-            <Styled.Name
-              as="span"
-              color="red"
-              // to={`/products/${slug}`}
-            >
+            <Styled.Name color="red" to={`/products/${slug}`}>
               {name}
             </Styled.Name>
           </Styled.HeaderLower>

@@ -1,7 +1,7 @@
-import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 
 import { Callout } from '@components/Callout';
 import { Markdown } from '@components/Markdown';
@@ -9,14 +9,29 @@ import { Layout } from '@components/Layout';
 import { Section } from '@components/Section';
 import { Title } from '@components/Typography';
 
-import { GET_PAGES_BY_PATH } from './Page.gql';
+import { GET_PAGES_BY_PATH, GET_PRODUCT_BY_SLUG } from './Page.gql';
 
 export const Page = ({ children }) => {
+  const { productSlug } = useParams();
   const { path } = useRouteMatch();
 
   const { data: { allPages } = {} } = useQuery(GET_PAGES_BY_PATH, {
     variables: { path },
   });
+
+  const [getProductBySlug, { data: { allProducts } = {} }] = useLazyQuery(
+    GET_PRODUCT_BY_SLUG,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: { slug: productSlug },
+    },
+  );
+
+  useEffect(() => {
+    if (productSlug) getProductBySlug();
+  }, [getProductBySlug, productSlug]);
+
+  const [{ name } = {}] = allProducts || [];
 
   const [{ heading, info, message, title = 'BYO' } = {}] = allPages || [];
 
@@ -33,9 +48,9 @@ export const Page = ({ children }) => {
           </Section>
         ) : null}
 
-        {heading ? (
+        {name || heading ? (
           <Section>
-            <Title>{heading}</Title>
+            <Title>{name || heading}</Title>
           </Section>
         ) : null}
 

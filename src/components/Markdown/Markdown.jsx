@@ -16,6 +16,7 @@ export const Markdown = ({ children = '', overrides = {} }) => (
         img: Styled.Image,
         ol: Styled.OrderedList,
         p: Styled.Paragraph,
+        ul: Styled.UnorderedList,
         ...overrides,
       },
     }}

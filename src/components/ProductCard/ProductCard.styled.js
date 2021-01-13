@@ -60,7 +60,7 @@ export const Border = styled.div(({ theme: { palette: { black } } }) => ({
 export const ImageWrapper = styled.div({
   height: 0,
   overflow: 'hidden',
-  paddingTop: '50%',
+  paddingTop: '61.804%',
   position: 'relative',
   width: '100%',
 });

@@ -12,14 +12,19 @@ export const Markdown = styled(MarkdownToJSX)(
 );
 
 export const Image = styled.img(() => ({
-  margin: '1rem 0',
   width: '100%',
+  ':not(:first-of-type)': {
+    margin: '1rem 0',
+  },
 }));
 
 export const Paragraph = styled.p(({ theme: { palette: { black } } }) => ({
   color: black,
   fontSize: '1.1rem',
   lineHeight: 1.66,
+  ':first-of-type': {
+    margin: 0,
+  },
 }));
 
 export const Anchor = styled.a(({ theme: { palette: { black, focus } } }) => ({
@@ -36,6 +41,15 @@ export const Anchor = styled.a(({ theme: { palette: { black, focus } } }) => ({
 }));
 
 export const OrderedList = styled.ol({
+  margin: 0,
+  li: {
+    ':not(:first-of-type)': {
+      marginTop: '0.5rem',
+    },
+  },
+});
+
+export const UnorderedList = styled.ul({
   margin: 0,
   li: {
     ':not(:first-of-type)': {
