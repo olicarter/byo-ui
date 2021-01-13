@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { darken, readableColor } from 'polished';
+import { darken } from 'polished';
 
 export const Button = styled.button(
   ({
@@ -9,7 +9,7 @@ export const Button = styled.button(
     flex,
     theme: {
       palette,
-      palette: { black, primary, white },
+      palette: { black, primary, readableColor, white },
     },
   }) => {
     const background = palette[backgroundColor] || primary;
@@ -18,7 +18,7 @@ export const Button = styled.button(
       backgroundColor: background,
       border: 'none',
       borderRadius: borderRadius ? '0.5rem' : 0,
-      color: readableColor(background, white, black),
+      color: readableColor(background),
       cursor: 'pointer',
       display: 'flex',
       flex,

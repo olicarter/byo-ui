@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import { readableColor } from 'polished';
 
 export const Callout = styled.div(
   ({
     theme: {
-      palette: { black, primary, white },
+      palette: { primary, readableColor },
     },
   }) => ({
     backgroundColor: primary,
     borderRadius: '0.5rem',
-    color: readableColor(primary, white, black),
+    color: readableColor(primary),
     display: 'flex',
     fontWeight: 600,
     lineHeight: 1.25,

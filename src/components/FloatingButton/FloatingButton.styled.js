@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { darken, readableColor } from 'polished';
+import { darken } from 'polished';
 
 export const FloatingButtonWrapper = styled.div(() => ({
   backdropFilter: 'blur(0.5rem)',
@@ -20,7 +20,7 @@ export const FloatingButton = styled.button(
     flex,
     theme: {
       palette,
-      palette: { black, primary, white },
+      palette: { primary, readableColor },
     },
   }) => {
     const background = palette[backgroundColor] || primary;
@@ -29,7 +29,7 @@ export const FloatingButton = styled.button(
       backgroundColor: background,
       border: 'none',
       borderRadius: borderRadius ? '0.5rem' : 0,
-      color: readableColor(background, white, black),
+      color: readableColor(background),
       cursor: 'pointer',
       display: 'flex',
       flex,

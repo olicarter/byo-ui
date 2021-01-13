@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { darken, readableColor, transparentize } from 'polished';
+import { darken, transparentize } from 'polished';
 
 export const SelectWrapper = styled.div(
   ({
     theme: {
-      palette: { black, primary, white },
+      palette: { black, primary, readableColor },
     },
   }) => ({
     backgroundColor: transparentize(0.9, black),
-    color: readableColor(primary, black, white),
+    color: readableColor(primary),
     fontSize: '1.1rem',
     fontWeight: 700,
     height: '3rem',
@@ -23,14 +23,14 @@ export const Select = styled.select(
     borderRadius,
     disabled,
     theme: {
-      palette: { black, lightGrey, primary, white },
+      palette: { black, primary, readableColor },
     },
   }) => ({
     appearance: 'none',
     backgroundColor: 'inherit',
     border: 'none',
     borderRadius: borderRadius ? '0.5rem' : 0,
-    color: readableColor(primary, black, white),
+    color: readableColor(primary),
     cursor: 'pointer',
     flex: 1,
     fontWeight: 'inherit',

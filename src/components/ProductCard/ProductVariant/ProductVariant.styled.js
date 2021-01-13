@@ -57,7 +57,7 @@ export const DecrementButton = styled(SquareButton)(
     },
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
-        color: blue,
+        color: focus,
       },
     },
   }),
@@ -82,7 +82,7 @@ export const IncrementButton = styled(SquareButton)(
       : {
           '@media (hover: hover) and (pointer: fine)': {
             ':hover': {
-              color: blue,
+              color: focus,
             },
           },
         }),

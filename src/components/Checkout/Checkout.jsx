@@ -58,9 +58,12 @@ export const Checkout = () => {
     setValue(inputNames.phone, userPhone);
   }, [setValue, userPhone]);
 
-  const [updateAuthenticatedUser] = useMutation(UPDATE_AUTHENTICATED_USER, {
-    onCompleted: () => push('/account'),
-  });
+  const [updateAuthenticatedUser, { loading }] = useMutation(
+    UPDATE_AUTHENTICATED_USER,
+    {
+      onCompleted: () => push('/account'),
+    },
+  );
 
   const [submitOrder] = useMutation(SUBMIT_ORDER, {
     variables: { id: unsubmittedOrderId, submitted: true },
@@ -207,7 +210,7 @@ export const Checkout = () => {
           info={total >= minOrderValue ? orderSubmissionInfo : undefined}
         ></FormGroup>
 
-        <FloatingButton type="submit">
+        <FloatingButton loading={loading} type="submit">
           Place order for <BasketTotal showCurrencySymbol />
         </FloatingButton>
       </form>

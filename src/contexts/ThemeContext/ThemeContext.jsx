@@ -9,6 +9,7 @@ import {
   createGlobalStyle,
   ThemeProvider as SCThemeProvider,
 } from 'styled-components';
+import { readableColor } from 'polished';
 import { useMedia, useMediaLayout } from 'use-media';
 
 const commonProperties = {
@@ -16,6 +17,10 @@ const commonProperties = {
 };
 
 const blue = 'hsl(210, 100%, 60%)';
+const teal = '#1d7771';
+const yellow = 'hsl(43, 98%, 55%)';
+
+const primary = teal;
 
 const themes = {
   dark: {
@@ -25,16 +30,18 @@ const themes = {
       black: 'hsl(40, 100%, 97%)',
       blue,
       cream: '#ddd5c4',
-      focus: blue,
+      focus: yellow,
       green: 'hsl(140, 66%, 44%)',
       grey: '#999',
       lightGrey: 'hsl(0, 0%, 95%)',
       pink: '#f0bac7',
-      primary: 'hsl(43, 98%, 55%)',
+      primary,
+      readableColor: color =>
+        readableColor(color, '#111', 'hsl(40, 100%, 97%)'),
       red: 'hsl(350, 75%, 50%)',
-      teal: '#1d7771',
+      teal,
       white: '#111',
-      yellow: '#f9e543',
+      yellow,
     },
   },
   light: {
@@ -44,16 +51,17 @@ const themes = {
       black: 'black',
       blue,
       cream: '#ddd5c4',
-      focus: blue,
+      focus: yellow,
       green: 'hsl(140, 66%, 47%)',
       grey: '#999',
       lightGrey: 'hsl(0, 0%, 95%)',
       pink: '#f0bac7',
-      primary: 'hsl(43, 98%, 55%)',
+      primary,
+      readableColor: color => readableColor(color, 'black', 'white'),
       red: 'hsl(350, 75%, 50%)',
-      teal: '#1d7771',
+      teal,
       white: 'white',
-      yellow: '#f9e543',
+      yellow,
     },
   },
 };

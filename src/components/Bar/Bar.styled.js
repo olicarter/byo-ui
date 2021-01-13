@@ -50,14 +50,14 @@ export const BarLink = styled(RouterLink)(
     selected,
     theme: {
       palette,
-      palette: { black, blue, focus, primary },
+      palette: { black, focus },
     },
     to,
   }) => ({
     alignItems: 'center',
     get color() {
       if (color) return palette[color];
-      if (selected) return primary;
+      if (selected) return focus;
       if (to) return black;
       return transparentize(0.33, black);
     },
@@ -74,7 +74,7 @@ export const BarLink = styled(RouterLink)(
     '@media (hover: hover) and (pointer: fine)': {
       ':hover': {
         get color() {
-          if (to) return blue;
+          if (to) return focus;
           return transparentize(0.33, black);
         },
       },

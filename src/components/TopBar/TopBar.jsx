@@ -14,7 +14,7 @@ import {
   mdiMenu,
   // mdiPostOutline,
   mdiStoreOutline,
-  mdiThemeLightDark,
+  // mdiThemeLightDark,
 } from '@mdi/js';
 
 import { useTheme } from '@contexts';
@@ -47,7 +47,10 @@ export const TopBar = () => {
     ignoreQueryPrefix: true,
   });
 
-  const { isDesktop, toggleTheme } = useTheme();
+  const {
+    isDesktop,
+    // toggleTheme,
+  } = useTheme();
 
   const {
     data: { allSettings: [{ facebookUrl, instagramUrl } = {}] = [] } = {},
@@ -81,13 +84,13 @@ export const TopBar = () => {
   ];
 
   const menuItemsRight = [
-    {
-      as: 'button',
-      key: 'themeToggle',
-      icon: mdiThemeLightDark,
-      onClick: toggleTheme,
-      title: 'Switch theme',
-    },
+    // {
+    //   as: 'button',
+    //   key: 'themeToggle',
+    //   icon: mdiThemeLightDark,
+    //   onClick: toggleTheme,
+    //   title: 'Switch theme',
+    // },
     {
       as: 'a',
       key: 'facebook',

@@ -69,12 +69,12 @@ export const Link = styled(RouterLink)(
   ({
     selected,
     theme: {
-      palette: { black, focus, primary, red, teal },
+      palette: { black, focus, red, teal, yellow },
     },
   }) => ({
     background: 'none',
     border: 'none',
-    color: selected ? primary : black,
+    color: selected ? focus : black,
     cursor: 'pointer',
     display: 'flex',
     fontSize: '1rem',
@@ -95,7 +95,7 @@ export const Link = styled(RouterLink)(
           fill: teal,
         },
         'path:nth-of-type(2)': {
-          fill: primary,
+          fill: yellow,
         },
         'path:nth-of-type(3)': {
           fill: red,
@@ -109,10 +109,10 @@ export const LinkIcon = styled(Link)(
   ({
     selected,
     theme: {
-      palette: { black, focus, primary, red, teal },
+      palette: { black, focus },
     },
   }) => ({
-    color: selected ? primary : black,
+    color: selected ? focus : black,
     padding: '0.5rem',
   }),
 );
