@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Callout } from '@components/Callout';
+import { SubTitle, Title } from '@components/Typography';
 
 import * as Styled from './Markdown.styled';
-import { SubTitle, Title } from '../Typography';
 
 export const Markdown = ({ children = '', overrides = {} }) => (
   <Styled.Markdown
@@ -14,6 +14,7 @@ export const Markdown = ({ children = '', overrides = {} }) => (
         h1: Title,
         h2: SubTitle,
         img: Styled.Image,
+        ol: Styled.OrderedList,
         p: Styled.Paragraph,
         ...overrides,
       },

@@ -34,3 +34,12 @@ export const Anchor = styled.a(({ theme: { palette: { black, focus } } }) => ({
     },
   },
 }));
+
+export const OrderedList = styled.ol({
+  margin: 0,
+  li: {
+    ':not(:first-of-type)': {
+      marginTop: '0.5rem',
+    },
+  },
+});

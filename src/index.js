@@ -23,15 +23,15 @@ Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <GQLProvider>
+    <GQLProvider>
+      <ThemeProvider>
+        <BrowserRouter>
           <AuthProvider>
             <App />
           </AuthProvider>
-        </GQLProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </GQLProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

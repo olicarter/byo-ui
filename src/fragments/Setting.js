@@ -9,5 +9,6 @@ export const Setting = gql`
     instagramUrl
     minOrderValue
     orderSubmissionInfo
+    primaryColor
   }
 `;

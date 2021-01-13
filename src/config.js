@@ -5,6 +5,7 @@ import { ContactForm } from '@forms';
 import {
   AccountPage,
   BasketPage,
+  HomePage,
   LoginPage,
   ProductPage,
   ProductsPage,
@@ -17,6 +18,7 @@ export const config = {
     home: {
       path: '/',
       exact: true,
+      component: <HomePage />,
     },
     about: {
       path: '/about',
