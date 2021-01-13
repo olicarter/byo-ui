@@ -2,9 +2,10 @@ import React from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
+import { SubTitle } from '@components/Typography';
+
 import { GET_AUTHENTICATED_USER } from './SubmittedUnpaidOrder.gql';
 import * as Styled from './SubmittedUnpaidOrder.styled';
-import { SubTitle } from '../Typography';
 
 export const SubmittedUnpaidOrder = () => {
   const {

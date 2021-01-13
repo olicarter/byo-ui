@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 
+import { TextInput } from '@components/TextInput';
+
 import {
   GET_ADDRESS_BY_ID,
   GET_AUTHENTICATED_USER,
 } from './OrderDeliveryAddressNameInput.gql';
-import { TextInput } from '../../TextInput';
 
 export const OrderDeliveryAddressNameInput = ({ name: inputName = 'name' }) => {
   const { register, setValue, watch } = useFormContext();

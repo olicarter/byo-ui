@@ -2,11 +2,11 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 
+import { Card } from '@components/Card';
 import { formatPrice } from '@helpers';
 
 import { GET_AUTHENTICATED_USER } from './UserOrders.gql';
 import * as Styled from './UserOrders.styled';
-import { Card } from '../Card';
 import { UserOrdersProductOrderItems } from './UserOrdersProductOrderItems';
 
 export const UserOrders = () => {

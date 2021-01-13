@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { Button } from '@components/Button';
 import { useAuth } from '@contexts';
-import { Button } from '../Button';
 
 export const LogoutButton = () => {
   const { logout } = useAuth();

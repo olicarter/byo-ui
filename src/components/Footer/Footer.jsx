@@ -1,10 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+
 import { GET_ALL_SETTINGS } from './Footer.gql';
 import * as Styled from './Footer.styled';
-import { Markdown } from '../Markdown';
-import { Section } from '../Section';
 
 export const Footer = () => {
   const {

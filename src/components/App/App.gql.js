@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { Page, Setting, User } from '@fragments';
+import { Setting, User } from '@fragments';
 
 export const GET_AUTHENTICATED_USER = gql`
   query AppGetAuthenticatedUser {
@@ -9,15 +9,6 @@ export const GET_AUTHENTICATED_USER = gql`
     }
   }
   ${User}
-`;
-
-export const GET_PAGES = gql`
-  query AppGetPages {
-    allPages {
-      ...Page
-    }
-  }
-  ${Page}
 `;
 
 export const GET_SETTINGS = gql`

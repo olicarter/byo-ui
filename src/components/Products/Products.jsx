@@ -10,7 +10,7 @@ import { ProductCard } from '@components/ProductCard';
 import { SubTitle } from '@components/Typography';
 import { useAuth } from '@contexts';
 
-import { GET_PRODUCTS } from './Products.gql';
+import { GET_PRODUCTS, GET_PRODUCTS_COUNT } from './Products.gql';
 
 export const Products = () => {
   const { push } = useHistory();
@@ -91,6 +91,13 @@ export const Products = () => {
     [hasFilter, brandFilter, categoryFilter, originFilter, tagsFilter],
   );
 
+  const { data: { _allProductsMeta: { count } = {} } = {} } = useQuery(
+    GET_PRODUCTS_COUNT,
+    {
+      variables: { search: querySearch, ...filter },
+    },
+  );
+
   const { data: { allProducts = [] } = {}, loading } = useQuery(GET_PRODUCTS, {
     returnPartialData: true,
     variables: { search: querySearch, ...filter },
@@ -98,8 +105,14 @@ export const Products = () => {
 
   return (
     <>
+      {loading ? (
+        <SubTitle color="grey">
+          {count
+            ? `Loading ${count} product${count === 1 ? '' : 's'}...`
+            : 'Loading'}
+        </SubTitle>
+      ) : null}
       <Grid>
-        {loading ? <SubTitle color="grey">Loading products...</SubTitle> : null}
         {allProducts.map(product => (
           <Sentry.ErrorBoundary key={product.id}>
             <ProductCard product={product} />

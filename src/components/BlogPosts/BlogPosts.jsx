@@ -1,10 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Markdown } from '@components/Markdown';
+import { SubTitle } from '@components/Typography';
+
 import { GET_ALL_PUBLISHED_BLOG_POSTS } from './BlogPosts.gql';
 import * as Styled from './BlogPosts.styled';
-import { Markdown } from '../Markdown';
-import { SubTitle } from '../Typography';
 
 export const BlogPosts = () => {
   const { data: { allBlogPosts } = {} } = useQuery(

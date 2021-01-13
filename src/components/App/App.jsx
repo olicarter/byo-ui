@@ -3,16 +3,16 @@ import { Route } from 'react-router-dom';
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
 
-import { config } from '@config';
-import { useAuth } from '@contexts';
 import { Callout } from '@components/Callout';
 import { Footer } from '@components/Footer';
 import { ProtectedRoute } from '@components/ProtectedRoute';
 import { Section } from '@components/Section';
 import { TopBar } from '@components/TopBar';
+import { config } from '@config';
+import { useAuth } from '@contexts';
 import { LoadingPage, Page } from '@pages';
 
-import { GET_AUTHENTICATED_USER, GET_PAGES, GET_SETTINGS } from './App.gql';
+import { GET_AUTHENTICATED_USER, GET_SETTINGS } from './App.gql';
 import * as Styled from './App.styled';
 
 const { pages } = config;
@@ -27,12 +27,6 @@ export const App = () => {
   } = useQuery(GET_SETTINGS);
 
   const {
-    loading: getPagesLoading,
-    networkStatus: getPagesNetworkStatus,
-    refetch: getPagesRefetch,
-  } = useQuery(GET_PAGES);
-
-  const {
     loading: getAuthenticatedUserLoading,
     networkStatus: getAuthenticatedUserNetworkStatus,
     refetch: getAuthenticatedUserRefetch,
@@ -41,19 +35,11 @@ export const App = () => {
   useEffect(() => {
     getAuthenticatedUserRefetch();
     getSettingsRefetch();
-    getPagesRefetch();
-  }, [
-    getAuthenticatedUserRefetch,
-    getPagesRefetch,
-    getSettingsRefetch,
-    isAuthenticated,
-  ]);
+  }, [getAuthenticatedUserRefetch, getSettingsRefetch, isAuthenticated]);
 
   if (
     getAuthenticatedUserLoading ||
     getAuthenticatedUserNetworkStatus === NetworkStatus.refetch ||
-    getPagesLoading ||
-    getPagesNetworkStatus === NetworkStatus.refetch ||
     getSettingsLoading ||
     getSettingsNetworkStatus === NetworkStatus.refetch
   )

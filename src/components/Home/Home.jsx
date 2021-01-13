@@ -1,8 +1,9 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
+import { Markdown } from '@components/Markdown';
+
 import { GET_ALL_SETTINGS } from './Home.gql';
-import { Markdown } from '../Markdown';
 
 export const Home = () => {
   const {

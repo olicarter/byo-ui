@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 
+import { TextInput } from '@components/TextInput';
+
 import { GET_ADDRESS_BY_ID } from './OrderDeliveryAddressDeliveryInstructionsInput.gql';
-import { TextInput } from '../../TextInput';
 
 export const OrderDeliveryAddressDeliveryInstructionsInput = ({
   name = 'deliveryInstructions',

@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useFormContext } from 'react-hook-form';
 
+import { Select } from '@components/Select';
 import { getUnsubmittedOrderFromUser } from '@helpers';
+
 import { GET_AUTHENTICATED_USER } from './AddressSelect.gql';
 import * as Styled from './AddressSelect.styled';
 import { AddressSelectOption } from './AddressSelectOption';
-import { Select } from '../Select';
 
 export const AddressSelect = ({ name = 'address' }) => {
   const { register, setValue } = useFormContext();

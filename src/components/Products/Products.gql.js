@@ -21,3 +21,11 @@ export const GET_PRODUCTS = gql`
   ${ProductTags}
   ${ProductVariants}
 `;
+
+export const GET_PRODUCTS_COUNT = gql`
+  query ProductsGetProductsCount($search: String, $where: ProductWhereInput) {
+    _allProductsMeta(search: $search, where: $where) {
+      count
+    }
+  }
+`;

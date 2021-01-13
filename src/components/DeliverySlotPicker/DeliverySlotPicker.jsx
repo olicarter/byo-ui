@@ -3,7 +3,9 @@ import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useFormContext } from 'react-hook-form';
 
+import { Select } from '@components/Select';
 import { getUnsubmittedOrderFromUser } from '@helpers';
+
 import {
   GET_AUTHENTICATED_USER,
   GET_DELIVERY_SLOTS,
@@ -11,7 +13,6 @@ import {
 } from './DeliverySlotPicker.gql';
 import * as Styled from './DeliverySlotPicker.styled';
 import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
-import { Select } from '../Select';
 
 export const DeliverySlotPicker = () => {
   const { register } = useFormContext();

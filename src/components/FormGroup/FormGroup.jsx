@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { Label } from '@components/Label';
+
 import * as Styled from './FormGroup.styled';
-import { Label } from '../Label';
 
 export const FormGroup = ({
   children,
