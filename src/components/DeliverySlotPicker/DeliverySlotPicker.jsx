@@ -38,9 +38,9 @@ export const DeliverySlotPicker = () => {
   return (
     <Styled.DeliverySlotPicker>
       <Select name="deliverySlot" ref={register()}>
-        <option value="">Collect from store</option>
+        <option value="">£2.00 - Collect from store</option>
         {Object.keys(deliverySlotsByDay).map(day => (
-          <optgroup label={day}>
+          <optgroup key={day} label={day}>
             {deliverySlotsByDay[day].map(({ id }) => (
               <DeliverySlotPickerOption key={id} id={id} />
             ))}

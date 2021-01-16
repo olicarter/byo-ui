@@ -30,7 +30,9 @@ export const Basket = () => {
     a.productVariant.product.name.localeCompare(b.productVariant.product.name),
   );
 
-  const meetsMinOrderValue = BasketTotal() >= minOrderValue;
+  const basketTotal = BasketTotal();
+  const meetsMinOrderValue = basketTotal >= minOrderValue;
+  console.log(basketTotal);
 
   return (
     <>

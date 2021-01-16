@@ -60,23 +60,26 @@ export const CheckoutForm = () => {
     setValue(inputNames.phone, userPhone);
   }, [setValue, userPhone]);
 
-  const [updateAuthenticatedUser, { loading }] = useMutation(
-    UPDATE_AUTHENTICATED_USER,
+  const [
+    updateAuthenticatedUser,
+    { loading: updateAuthenticatedUserLoading },
+  ] = useMutation(UPDATE_AUTHENTICATED_USER, {
+    onCompleted: () => push('/account'),
+  });
+
+  const [submitOrder, { loading: submitOrderLoading }] = useMutation(
+    SUBMIT_ORDER,
     {
-      onCompleted: () => push('/account'),
+      variables: { id: unsubmittedOrderId, submitted: true },
+      onCompleted: ({ updateOrder }) => {
+        const { address } = updateOrder || {};
+        if (address) {
+          const { id: addressId } = address || {};
+          updateAuthenticatedUser({ variables: { addressId } });
+        }
+      },
     },
   );
-
-  const [submitOrder] = useMutation(SUBMIT_ORDER, {
-    variables: { id: unsubmittedOrderId, submitted: true },
-    onCompleted: ({ updateOrder }) => {
-      const { address } = updateOrder || {};
-      if (address) {
-        const { id: addressId } = address || {};
-        updateAuthenticatedUser({ variables: { addressId } });
-      }
-    },
-  });
 
   const onValid = async ({
     [inputNames.address]: address,
@@ -218,15 +221,19 @@ export const CheckoutForm = () => {
         <FormGroup
           label={
             <span>
-              <BasketTotal showCurrencySymbol /> total
+              <BasketTotal includeDeliveryCharge showCurrencySymbol /> total
             </span>
           }
           largeLabel
           info={total >= minOrderValue ? orderSubmissionInfo : undefined}
         ></FormGroup>
 
-        <FloatingButton loading={loading} type="submit">
-          Place order for <BasketTotal showCurrencySymbol />
+        <FloatingButton
+          loading={submitOrderLoading || updateAuthenticatedUserLoading}
+          type="submit"
+        >
+          Place order for{' '}
+          <BasketTotal includeDeliveryCharge showCurrencySymbol />
         </FloatingButton>
       </form>
     </FormProvider>
