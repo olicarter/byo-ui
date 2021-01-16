@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Checkout } from '@components/Checkout';
-import { ContactForm } from '@forms';
+import { CheckoutForm, ContactForm } from '@forms';
 import {
   AccountPage,
   BasketPage,
@@ -66,7 +65,7 @@ export const config = {
     },
     checkout: {
       path: '/checkout',
-      component: <Checkout />,
+      component: <CheckoutForm />,
       private: true,
     },
     privacyPolicy: {

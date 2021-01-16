@@ -1,16 +1,11 @@
 import React from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useFormContext } from 'react-hook-form';
 
 import { Select } from '@components/Select';
-import { getUnsubmittedOrderFromUser } from '@helpers';
 
-import {
-  GET_AUTHENTICATED_USER,
-  GET_DELIVERY_SLOTS,
-  SET_ORDER_DELIVERY_SLOT,
-} from './DeliverySlotPicker.gql';
+import { GET_DELIVERY_SLOTS } from './DeliverySlotPicker.gql';
 import * as Styled from './DeliverySlotPicker.styled';
 import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
 
@@ -25,26 +20,9 @@ export const DeliverySlotPicker = () => {
     .startOf('day')
     .toISO();
 
-  const {
-    data: { allDeliverySlots } = {},
-    loading: getDeliverySlotsLoading,
-  } = useQuery(GET_DELIVERY_SLOTS, { variables: { startTime_gt } });
-
-  const {
-    data: { authenticatedUser } = {},
-    loading: getAuthenticatedUserLoading,
-  } = useQuery(GET_AUTHENTICATED_USER);
-
-  const { id: unsubmittedOrderId, deliverySlot } = getUnsubmittedOrderFromUser(
-    authenticatedUser,
-  );
-  const { id: unsubmittedOrderDeliverySlotId = '' } = deliverySlot || {};
-
-  /** @todo update delivery slot count after mutation */
-  const [
-    setOrderDeliverySlot,
-    { loading: setOrderDeliverySlotLoading },
-  ] = useMutation(SET_ORDER_DELIVERY_SLOT);
+  const { data: { allDeliverySlots } = {} } = useQuery(GET_DELIVERY_SLOTS, {
+    variables: { startTime_gt },
+  });
 
   const deliverySlotsByDay = {};
 
@@ -57,33 +35,10 @@ export const DeliverySlotPicker = () => {
     ];
   });
 
-  const handleChange = ({ target: { value } }) => {
-    if (unsubmittedOrderId) {
-      setOrderDeliverySlot({
-        variables: { id: unsubmittedOrderId, deliverySlotId: value },
-      });
-    }
-  };
-
   return (
     <Styled.DeliverySlotPicker>
-      <Select
-        loading={(() => {
-          if (getDeliverySlotsLoading || getAuthenticatedUserLoading)
-            return 'Loading delivery slots...';
-          if (setOrderDeliverySlotLoading) return 'Selecting slot...';
-          return undefined;
-        })()}
-        name="deliverySlot"
-        onChange={handleChange}
-        ref={register({
-          required: 'You must select a delivery slot',
-        })}
-        value={unsubmittedOrderDeliverySlotId}
-      >
-        <option disabled value="">
-          Choose a delivery slot
-        </option>
+      <Select name="deliverySlot" ref={register()}>
+        <option value="">Collect from store</option>
         {Object.keys(deliverySlotsByDay).map(day => (
           <optgroup label={day}>
             {deliverySlotsByDay[day].map(({ id }) => (

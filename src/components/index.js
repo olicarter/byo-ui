@@ -10,7 +10,6 @@ export * from './Button';
 export * from './Callout';
 export * from './Card';
 export * from './CategoryBar';
-export * from './Checkout';
 export * from './DeliverySlotPicker';
 export * from './FloatingButton';
 export * from './Footer';

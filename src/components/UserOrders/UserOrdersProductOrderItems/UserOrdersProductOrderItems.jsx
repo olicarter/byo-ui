@@ -17,9 +17,11 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
     <Styled.Section>
       <Styled.OrderItemHeader>
         <div>
-          <div>
-            <BrandLink brand={brand} />
-          </div>
+          {brand ? (
+            <div>
+              <BrandLink brand={brand} />
+            </div>
+          ) : null}
           <Styled.Name>{productName}</Styled.Name>
         </div>
         <span>

@@ -15,7 +15,7 @@ import {
   GET_SETTINGS,
   SUBMIT_ORDER,
   UPDATE_AUTHENTICATED_USER,
-} from './Checkout.gql';
+} from './CheckoutForm.gql';
 import { OrderDeliveryAddressDeliveryInstructionsInput } from './OrderDeliveryAddressDeliveryInstructionsInput';
 import { OrderDeliveryAddressNameInput } from './OrderDeliveryAddressNameInput';
 import { OrderDeliveryAddressPhoneInput } from './OrderDeliveryAddressPhoneInput';
@@ -32,10 +32,12 @@ const inputNames = {
   street: 'street',
 };
 
-export const Checkout = () => {
+export const CheckoutForm = () => {
   const { push, replace } = useHistory();
   const formMethods = useForm({ reValidateMode: 'onSubmit' });
-  const { errors, handleSubmit, setValue } = formMethods;
+  const { errors, handleSubmit, setValue, watch } = formMethods;
+
+  const deliverySlot = watch(inputNames.deliverySlot);
 
   const {
     data: {
@@ -69,8 +71,10 @@ export const Checkout = () => {
     variables: { id: unsubmittedOrderId, submitted: true },
     onCompleted: ({ updateOrder }) => {
       const { address } = updateOrder || {};
-      const { id: addressId } = address || {};
-      updateAuthenticatedUser({ variables: { addressId } });
+      if (address) {
+        const { id: addressId } = address || {};
+        updateAuthenticatedUser({ variables: { addressId } });
+      }
     },
   });
 
@@ -85,9 +89,12 @@ export const Checkout = () => {
     submitOrder({
       variables: {
         id: unsubmittedOrderId,
-        address: address
-          ? { connect: { id: address } }
-          : {
+        get address() {
+          if (!deliverySlot) return null;
+          if (address) {
+            return { connect: { id: address } };
+          } else {
+            return {
               create: {
                 deliveryInstructions,
                 name,
@@ -95,7 +102,10 @@ export const Checkout = () => {
                 postcode,
                 street,
               },
-            },
+            };
+          }
+        },
+        deliverySlot: deliverySlot ? { connect: { id: deliverySlot } } : null,
       },
     });
   };
@@ -112,7 +122,7 @@ export const Checkout = () => {
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onValid)}>
         <FormGroup
-          label="Choose a delivery slot"
+          label="Collect from store or choose delivery slot"
           largeLabel
           info={chooseDeliverySlotInfo}
           errorInfo={
@@ -124,81 +134,86 @@ export const Checkout = () => {
           <DeliverySlotPicker name={inputNames.deliverySlot} />
         </FormGroup>
 
-        <FormGroup
-          label="Delivery address"
-          largeLabel
-          info="Enter the address you would like your order delivered to."
-        >
+        {deliverySlot ? (
           <FormGroup
-            errorInfo={
-              errors[inputNames.address] && errors[inputNames.address].message
-            }
-            margin="0"
+            label="Delivery address"
+            largeLabel
+            info="Enter the address you would like your order delivered to."
           >
-            <AddressSelect name={inputNames.address} />
-          </FormGroup>
+            <FormGroup
+              errorInfo={
+                errors[inputNames.address] && errors[inputNames.address].message
+              }
+              margin="0"
+            >
+              <AddressSelect name={inputNames.address} />
+            </FormGroup>
 
-          <FormGroup>
-            <FormGroup horizontal margin="0">
-              <FormGroup
-                label="Name"
-                errorInfo={
-                  errors[inputNames.name] && errors[inputNames.name].message
-                }
-                margin="0"
-              >
-                <OrderDeliveryAddressNameInput name={inputNames.name} />
+            <FormGroup>
+              <FormGroup horizontal margin="0">
+                <FormGroup
+                  label="Name"
+                  errorInfo={
+                    errors[inputNames.name] && errors[inputNames.name].message
+                  }
+                  margin="0"
+                >
+                  <OrderDeliveryAddressNameInput name={inputNames.name} />
+                </FormGroup>
+
+                <FormGroup
+                  label="Phone number"
+                  errorInfo={
+                    errors[inputNames.phone] && errors[inputNames.phone].message
+                  }
+                  flex={1}
+                  margin="0"
+                >
+                  <OrderDeliveryAddressPhoneInput name={inputNames.phone} />
+                </FormGroup>
               </FormGroup>
 
-              <FormGroup
-                label="Phone number"
-                errorInfo={
-                  errors[inputNames.phone] && errors[inputNames.phone].message
-                }
-                flex={1}
-                margin="0"
-              >
-                <OrderDeliveryAddressPhoneInput name={inputNames.phone} />
+              <FormGroup horizontal>
+                <FormGroup
+                  label="Address"
+                  errorInfo={
+                    errors[inputNames.street] &&
+                    errors[inputNames.street].message
+                  }
+                  flex={1}
+                  margin="0"
+                >
+                  <OrderDeliveryAddressStreetInput name="street" />
+                </FormGroup>
+
+                <FormGroup
+                  label="Postcode"
+                  errorInfo={(() => {
+                    if (!errors[inputNames.postcode]) return null;
+                    if (errors[inputNames.postcode].type === 'validate')
+                      return "Sorry, we don't deliver here yet";
+                    return errors[inputNames.postcode].message;
+                  })()}
+                  flex={1}
+                  margin="0"
+                >
+                  <OrderDeliveryAddressPostcodeInput
+                    name={inputNames.postcode}
+                  />
+                </FormGroup>
               </FormGroup>
             </FormGroup>
 
-            <FormGroup horizontal>
-              <FormGroup
-                label="Address"
-                errorInfo={
-                  errors[inputNames.street] && errors[inputNames.street].message
-                }
-                flex={1}
-                margin="0"
-              >
-                <OrderDeliveryAddressStreetInput name="street" />
-              </FormGroup>
-
-              <FormGroup
-                label="Postcode"
-                errorInfo={(() => {
-                  if (!errors[inputNames.postcode]) return null;
-                  if (errors[inputNames.postcode].type === 'validate')
-                    return "Sorry, we don't deliver here yet";
-                  return errors[inputNames.postcode].message;
-                })()}
-                flex={1}
-                margin="0"
-              >
-                <OrderDeliveryAddressPostcodeInput name={inputNames.postcode} />
-              </FormGroup>
+            <FormGroup
+              label="Delivery instructions"
+              info="Put any helpful delivery instructions here"
+            >
+              <OrderDeliveryAddressDeliveryInstructionsInput
+                name={inputNames.deliveryInstructions}
+              />
             </FormGroup>
           </FormGroup>
-
-          <FormGroup
-            label="Delivery instructions"
-            info="Put any helpful delivery instructions here"
-          >
-            <OrderDeliveryAddressDeliveryInstructionsInput
-              name={inputNames.deliveryInstructions}
-            />
-          </FormGroup>
-        </FormGroup>
+        ) : null}
 
         <FormGroup
           label={

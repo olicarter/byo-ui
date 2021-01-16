@@ -24,8 +24,6 @@ export const UserOrders = () => {
     <>
       {submittedOrders.map(
         ({ id, deliverySlot, orderNumber, orderItems = [], paid }) => {
-          if (!deliverySlot) return null;
-
           const orderItemsByProduct = [];
           const uniqueProductIds = [];
           orderItems.forEach(i => {
@@ -96,11 +94,15 @@ export const UserOrders = () => {
 
                 <Styled.Section>
                   <Styled.Row>
-                    <Styled.Status>
-                      {paid
-                        ? 'Delivered'
-                        : `Delivery between ${st} and ${et} on ${day}`}
-                    </Styled.Status>
+                    {deliverySlot ? (
+                      <Styled.Status>
+                        {paid
+                          ? 'Delivered'
+                          : `Delivery between ${st} and ${et} on ${day}`}
+                      </Styled.Status>
+                    ) : (
+                      <Styled.Status>Collect from store</Styled.Status>
+                    )}
                   </Styled.Row>
                 </Styled.Section>
 

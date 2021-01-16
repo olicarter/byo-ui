@@ -21,8 +21,15 @@ export const GET_AUTHENTICATED_USER = gql`
 `;
 
 export const SUBMIT_ORDER = gql`
-  mutation CheckoutSubmitOrder($id: ID!, $address: AddressRelateToOneInput!) {
-    updateOrder(id: $id, data: { address: $address, submitted: true }) {
+  mutation CheckoutSubmitOrder(
+    $id: ID!
+    $address: AddressRelateToOneInput
+    $deliverySlot: DeliverySlotRelateToOneInput
+  ) {
+    updateOrder(
+      id: $id
+      data: { address: $address, deliverySlot: $deliverySlot, submitted: true }
+    ) {
       ...Order
     }
   }
