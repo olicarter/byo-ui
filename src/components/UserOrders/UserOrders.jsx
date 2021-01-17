@@ -110,7 +110,7 @@ export const UserOrders = () => {
                             : `Delivery between ${st} and ${et} on ${day}`}
                         </Styled.Status>
 
-                        <Styled.Status>
+                        <Styled.Status textAlign="right">
                           includes £{formatPrice(deliverySlot.deliveryCharge)}{' '}
                           delivery charge
                         </Styled.Status>
