@@ -35,10 +35,18 @@ export const OrderItemHeader = styled(Row)(() => ({
   fontWeight: 700,
 }));
 
-export const Status = styled.span(({ theme: { palette: { primary } } }) => ({
-  color: primary,
-  fontWeight: 600,
-}));
+export const Status = styled.span(
+  ({
+    textAlign = 'left',
+    theme: {
+      palette: { primary },
+    },
+  }) => ({
+    color: primary,
+    fontWeight: 600,
+    textAlign,
+  }),
+);
 
 export const Name = styled.span(() => ({
   height: '16px',

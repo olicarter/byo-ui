@@ -119,7 +119,7 @@ export const UserOrders = () => {
                       <>
                         <Styled.Status>Collect from store</Styled.Status>
 
-                        <Styled.Status>
+                        <Styled.Status textAlign="right">
                           includes £{formatPrice(2)} collection charge
                         </Styled.Status>
                       </>
