@@ -4,12 +4,11 @@ import { transparentize } from 'polished';
 export const CardContent = styled.div(({ theme: { palette: { black } } }) => ({
   color: black,
   cursor: 'default',
-  padding: '0.5rem',
 }));
 
 export const Section = styled.section(() => ({
   ':not(:first-of-type)': {
-    marginTop: '0.5rem',
+    marginTop: '1rem',
   },
 }));
 
