@@ -2,26 +2,19 @@ import React from 'react';
 import pluralize from 'pluralize';
 
 import { formatPrice } from '@helpers';
-import { BrandLink } from '@components/ProductCard/BrandLink';
 
 import * as Styled from './UserOrdersProductOrderItems.styled';
 
 export const UserOrdersProductOrderItems = ({ orderItems }) => {
-  const [
-    {
-      productVariant: {
-        product: { brand, name: productName },
-      },
-    },
-  ] = orderItems;
+  const [{ productBrandName = '-', productName }] = orderItems;
 
   return (
     <Styled.Section>
       <Styled.OrderItemHeader>
         <div>
-          {brand ? (
+          {productBrandName ? (
             <div>
-              <BrandLink brand={brand} />
+              <Styled.BrandName>{productBrandName}</Styled.BrandName>
             </div>
           ) : null}
 
@@ -31,20 +24,20 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
 
       {orderItems.map(
         ({
-          productVariant: {
-            container,
-            increment,
-            incrementPrice,
-            name: productVariantName,
-            unit,
-          },
+          productVariantName,
+          productVariantContainerPrice,
+          productVariantContainerSize,
+          productVariantContainerUnit,
+          productVariantContainerType,
+          productVariantIncrement,
+          productVariantIncrementPrice,
+          productVariantUnit,
           quantity,
         }) => {
           const isLoose =
-            ['g', 'kg', 'ml', 'L', ' liner', ' tampon', ' pad'].includes(
-              unit.singularAbbreviated,
-            ) &&
-            (!container || (container && Number(container.price)));
+            !productVariantContainerSize ||
+            (productVariantContainerSize &&
+              Number(productVariantContainerPrice));
 
           return (
             <>
@@ -59,25 +52,37 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
               <Styled.Row>
                 <Styled.OrderItemProduct>
                   {isLoose ? null : `${quantity} x `}
-                  {`${isLoose ? increment * quantity : increment}${
-                    unit.pluralAbbreviated
+                  {`${
+                    isLoose
+                      ? productVariantIncrement * quantity
+                      : productVariantIncrement
+                  }${
+                    Number(quantity) * Number(productVariantIncrement) > 1
+                      ? productVariantUnit.pluralAbbreviated
+                      : productVariantUnit.singularAbbreviated
                   }`}
-                  {container && Number(container.price) ? (
+                  {productVariantContainerSize &&
+                  Number(productVariantContainerPrice) ? (
                     <Styled.GreySpan>
-                      {` in returnable ${container.size}${
-                        container.unit
-                      } ${pluralize(container.type, quantity)}`}
+                      {` in returnable ${productVariantContainerSize}${productVariantContainerUnit} ${pluralize(
+                        productVariantContainerType,
+                        Number(quantity) * Number(productVariantIncrement),
+                      )}`}
                     </Styled.GreySpan>
                   ) : null}
-                  {container && !Number(container.price)
-                    ? ` ${container.type}`
+                  {productVariantContainerSize &&
+                  !Number(productVariantContainerPrice)
+                    ? ` ${productVariantContainerType}`
                     : null}
                 </Styled.OrderItemProduct>
                 <Styled.Price>
-                  <span>£{formatPrice(incrementPrice * quantity)}</span>{' '}
-                  {container && Number(container.price) ? (
+                  <span>
+                    £{formatPrice(productVariantIncrementPrice * quantity)}
+                  </span>{' '}
+                  {productVariantContainerSize &&
+                  Number(productVariantContainerPrice) ? (
                     <Styled.GreySpan>
-                      + £{formatPrice(container.price * quantity)}
+                      + £{formatPrice(productVariantContainerPrice * quantity)}
                     </Styled.GreySpan>
                   ) : null}
                 </Styled.Price>

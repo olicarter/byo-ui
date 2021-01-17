@@ -26,7 +26,7 @@ export const OrderItem = gql`
     # at time of order submission, to ensure the data doesn't change
     # in past orders screen.
     productName
-    productBrand
+    productBrandName
     productVariantName
     productVariantIncrement
     productVariantIncrementPrice
