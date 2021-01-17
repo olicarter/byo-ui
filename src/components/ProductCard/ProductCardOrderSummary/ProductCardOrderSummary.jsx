@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { sumOrderItems } from '@helpers';
+import { formatPrice, sumOrderItems } from '@helpers';
 
 import * as Styled from './ProductCardOrderSummary.styled';
 
@@ -33,11 +33,11 @@ export const ProductCardOrderSummary = ({ orderItems }) => {
   return (
     <Styled.OrderSummary>
       <span>
-        £{sumOrderItems(orderItems).total.toFixed(2)}
+        £{sumOrderItems(orderItems).products.toFixed(2)}
         {orderItemsWithRefundableContainers.length ? (
           <Styled.ContainersTotalPrice>
             {' '}
-            + £{totalRefundableContainersPrice}
+            + £{formatPrice(totalRefundableContainersPrice)}
           </Styled.ContainersTotalPrice>
         ) : null}{' '}
         in basket

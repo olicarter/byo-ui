@@ -6,7 +6,7 @@ export const ProductDetails = gql`
     name
     slug
     allergenInfo
-    deliveryInfo
+    description
     image {
       id
       publicUrl

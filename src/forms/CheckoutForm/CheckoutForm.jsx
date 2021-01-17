@@ -73,10 +73,9 @@ export const CheckoutForm = () => {
       variables: { id: unsubmittedOrderId, submitted: true },
       onCompleted: ({ updateOrder }) => {
         const { address } = updateOrder || {};
-        if (address) {
-          const { id: addressId } = address || {};
-          updateAuthenticatedUser({ variables: { addressId } });
-        }
+        const { id: addressId } = address || {};
+        if (addressId) updateAuthenticatedUser({ variables: { addressId } });
+        else push('/account');
       },
     },
   );

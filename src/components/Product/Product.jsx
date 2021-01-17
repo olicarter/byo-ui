@@ -14,7 +14,7 @@ export const Product = () => {
   const {
     data: {
       allProducts: [
-        { allergenInfo, deliveryInfo, ingredients, origin, tags = [] } = {},
+        { allergenInfo, description, ingredients, origin, tags = [] } = {},
       ] = [],
     } = {},
     loading,
@@ -27,11 +27,10 @@ export const Product = () => {
       {loading || (
         <Markdown>
           {`
+${description}
+
 ## Allergen info
 ${allergenInfo || 'Unknown'}
-
-## Delivery info
-${deliveryInfo || 'Unknown'}
 
 ## Ingredients
 ${ingredients || 'Unknown'}

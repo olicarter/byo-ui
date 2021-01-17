@@ -17,7 +17,6 @@ import { TagList } from './TagList';
 export const ProductCard = ({
   product: {
     brand,
-    deliveryInfo,
     id: productId,
     image,
     name,
@@ -76,13 +75,7 @@ export const ProductCard = ({
         </Styled.Header>
 
         <Styled.Info>
-          {!!orderItems.length && deliveryInfo ? (
-            <Styled.DeliveryInfo>{deliveryInfo}</Styled.DeliveryInfo>
-          ) : null}
-
-          <div>
-            <OriginLink origin={origin} />
-          </div>
+          <OriginLink origin={origin} />
         </Styled.Info>
       </Styled.Content>
 

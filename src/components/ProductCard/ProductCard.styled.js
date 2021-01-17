@@ -136,8 +136,6 @@ export const Origin = styled.span(({ theme: { palette: { black } } }) => ({
   },
 }));
 
-export const DeliveryInfo = styled(Origin)({});
-
 export const Info = styled.div(({ theme: { palette: { black } } }) => ({
   color: transparentize(0.33, black),
   fontSize: '0.8rem',

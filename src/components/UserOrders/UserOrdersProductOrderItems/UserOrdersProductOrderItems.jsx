@@ -54,37 +54,24 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
         }) => (
           <Styled.Row>
             <Styled.OrderItemProduct>
-              <span>
-                {quantity} <Styled.ContainerInfo>x</Styled.ContainerInfo>{' '}
-                {container && productVariantName ? (
-                  <span>
-                    {container.size}
-                    {container.unit} {container.type}{' '}
-                    <Styled.ContainerInfo>of</Styled.ContainerInfo>{' '}
-                  </span>
-                ) : null}
-              </span>
-
+              {quantity} x{' '}
+              {container && productVariantName
+                ? `${container.size} ${container.unit} ${container.type} of `
+                : null}
               {productVariantName ? (
-                <>
-                  <span>{productVariantName}</span>
-                </>
+                productVariantName
               ) : (
                 <>
-                  <span>
-                    {increment}
-                    {unit.pluralAbbreviated}
-                  </span>
+                  {`${increment}${unit.pluralAbbreviated}`}
                   {container ? (
                     <Styled.ContainerInfo>
-                      {' '}
-                      + {container.size}
-                      {container.unit} {container.type}
+                      {` + ${container.size}${container.unit} ${container.type}`}
                     </Styled.ContainerInfo>
                   ) : null}
                 </>
               )}
             </Styled.OrderItemProduct>
+
             <Styled.Price>
               <span>£{formatPrice(incrementPrice * quantity)}</span>{' '}
               {container && Number(container.price) ? (

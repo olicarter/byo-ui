@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export const FloatingButtonWrapper = styled.div(() => ({
-  backdropFilter: 'blur(0.5rem)',
+  backdropFilter: 'blur(1rem)',
   bottom: 0,
   left: 0,
-  padding: '1rem 0',
+  padding: '1rem 0 21px',
   position: 'sticky',
   right: 0,
   width: '100%',

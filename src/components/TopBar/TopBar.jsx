@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { parse } from 'qs';
+import { parse, stringify } from 'qs';
 import { useQuery } from '@apollo/client';
 import { useChain, useTransition } from 'react-spring';
 import Icon from '@mdi/react';
@@ -43,7 +43,7 @@ const Logo = () => (
 export const TopBar = () => {
   const { pathname, search } = useLocation();
 
-  const { 'menu-visible': menuVisible } = parse(search, {
+  const { 'menu-visible': menuVisible, ...restQuery } = parse(search, {
     ignoreQueryPrefix: true,
   });
 
@@ -236,9 +236,13 @@ export const TopBar = () => {
               ) : (
                 <Styled.NavItem>
                   <Styled.LinkIcon
-                    to={({ pathname }) =>
-                      menuVisible ? pathname : `${pathname}?menu-visible=true`
-                    }
+                    to={({ pathname }) => ({
+                      pathname,
+                      search: stringify(
+                        { ...restQuery, 'menu-visible': true },
+                        { arrayFormat: 'brackets', encode: false },
+                      ),
+                    })}
                   >
                     {menuVisible ? (
                       <Icon path={mdiClose} size={1} title="CloseMenu" />
