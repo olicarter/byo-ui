@@ -1,4 +1,5 @@
 import React from 'react';
+import pluralize from 'pluralize';
 
 import { formatPrice } from '@helpers';
 import { BrandLink } from '@components/ProductCard/BrandLink';
@@ -13,6 +14,7 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
       },
     },
   ] = orderItems;
+
   return (
     <Styled.Section>
       <Styled.OrderItemHeader>
@@ -22,28 +24,13 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
               <BrandLink brand={brand} />
             </div>
           ) : null}
+
           <Styled.Name>{productName}</Styled.Name>
         </div>
-        <span>
-          {/* £
-          {
-            +parseFloat(
-              Math.round(
-                orderItems.reduce(
-                  (prev, curr) =>
-                    prev +
-                    Number(curr.quantity) *
-                      Number(curr.productVariant.incrementPrice),
-                  0,
-                ) * 100,
-              ) / 100,
-            )
-          } */}
-        </span>
       </Styled.OrderItemHeader>
+
       {orderItems.map(
         ({
-          quantity,
           productVariant: {
             container,
             increment,
@@ -51,37 +38,53 @@ export const UserOrdersProductOrderItems = ({ orderItems }) => {
             name: productVariantName,
             unit,
           },
-        }) => (
-          <Styled.Row>
-            <Styled.OrderItemProduct>
-              {quantity} x{' '}
-              {container && productVariantName
-                ? `${container.size} ${container.unit} ${container.type} of `
-                : null}
-              {productVariantName ? (
-                productVariantName
-              ) : (
-                <>
-                  {`${increment}${unit.pluralAbbreviated}`}
-                  {container ? (
-                    <Styled.ContainerInfo>
-                      {` + ${container.size}${container.unit} ${container.type}`}
-                    </Styled.ContainerInfo>
-                  ) : null}
-                </>
-              )}
-            </Styled.OrderItemProduct>
+          quantity,
+        }) => {
+          const isLoose =
+            ['g', 'kg', 'ml', 'L', ' liner', ' tampon', ' pad'].includes(
+              unit.singularAbbreviated,
+            ) &&
+            (!container || (container && Number(container.price)));
 
-            <Styled.Price>
-              <span>£{formatPrice(incrementPrice * quantity)}</span>{' '}
-              {container && Number(container.price) ? (
-                <Styled.ContainerInfo>
-                  + £{formatPrice(container.price * quantity)}
-                </Styled.ContainerInfo>
+          return (
+            <>
+              {productVariantName ? (
+                <div>
+                  <Styled.ProductVariantName>
+                    {productVariantName}
+                  </Styled.ProductVariantName>
+                </div>
               ) : null}
-            </Styled.Price>
-          </Styled.Row>
-        ),
+
+              <Styled.Row>
+                <Styled.OrderItemProduct>
+                  {isLoose ? null : `${quantity} x `}
+                  {`${isLoose ? increment * quantity : increment}${
+                    unit.pluralAbbreviated
+                  }`}
+                  {container && Number(container.price) ? (
+                    <Styled.GreySpan>
+                      {` in returnable ${container.size}${
+                        container.unit
+                      } ${pluralize(container.type, quantity)}`}
+                    </Styled.GreySpan>
+                  ) : null}
+                  {container && !Number(container.price)
+                    ? ` ${container.type}`
+                    : null}
+                </Styled.OrderItemProduct>
+                <Styled.Price>
+                  <span>£{formatPrice(incrementPrice * quantity)}</span>{' '}
+                  {container && Number(container.price) ? (
+                    <Styled.GreySpan>
+                      + £{formatPrice(container.price * quantity)}
+                    </Styled.GreySpan>
+                  ) : null}
+                </Styled.Price>
+              </Styled.Row>
+            </>
+          );
+        },
       )}
     </Styled.Section>
   );

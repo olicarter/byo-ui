@@ -11,7 +11,7 @@ import { BrandLink } from './BrandLink';
 // import { LoadingProductVariants } from './LoadingProductVariants';
 import { ProductVariant } from './ProductVariant';
 import { OriginLink } from './OriginLink';
-import { ProductCardOrderSummary } from './ProductCardOrderSummary';
+// import { ProductCardOrderSummary } from './ProductCardOrderSummary';
 import { TagList } from './TagList';
 
 export const ProductCard = ({
@@ -93,11 +93,11 @@ export const ProductCard = ({
         ))}
       </Styled.ProductVariants>
 
-      <Styled.Buttons>
+      {/* <Styled.Buttons>
         {!!orderItems.length ? (
           <ProductCardOrderSummary orderItems={orderItems} />
         ) : null}
-      </Styled.Buttons>
+      </Styled.Buttons> */}
     </Card>
   );
 };

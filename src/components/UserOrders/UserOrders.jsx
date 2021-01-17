@@ -83,11 +83,11 @@ export const UserOrders = () => {
                     <Styled.OrderId>#{orderNumber}</Styled.OrderId>
                     <div>
                       <span>£{formatPrice(totalOrderValue)}</span>
-                      <Styled.TotalContainerPrice>
+                      <Styled.GreySpan>
                         {totalContainerPrice ? (
                           <span> + £{formatPrice(totalContainerPrice)}</span>
                         ) : null}
-                      </Styled.TotalContainerPrice>
+                      </Styled.GreySpan>
                     </div>
                   </Styled.Header>
                 </Styled.Section>

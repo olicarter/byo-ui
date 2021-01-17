@@ -45,12 +45,19 @@ export const Price = styled.span({
   flexShrink: 0,
 });
 
-export const ContainerInfo = styled.span(
+export const GreySpan = styled.span(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.5, black),
+}));
+
+export const ProductVariantName = styled.span(
   ({
     theme: {
-      palette: { black },
+      palette: { primary },
     },
   }) => ({
-    color: transparentize(0.5, black),
+    color: primary,
+    flexShrink: 0,
+    fontSize: '0.8rem',
+    whiteSpace: 'pre',
   }),
 );

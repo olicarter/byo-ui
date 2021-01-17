@@ -52,12 +52,6 @@ export const Quantity = styled.span(() => ({
   lineHeight: '13px',
 }));
 
-export const TotalContainerPrice = styled.span(
-  ({
-    theme: {
-      palette: { black },
-    },
-  }) => ({
-    color: transparentize(0.5, black),
-  }),
-);
+export const GreySpan = styled.span(({ theme: { palette: { black } } }) => ({
+  color: transparentize(0.5, black),
+}));
