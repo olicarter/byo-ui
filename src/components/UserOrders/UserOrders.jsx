@@ -82,7 +82,15 @@ export const UserOrders = () => {
                   <Styled.Header as="header">
                     <Styled.OrderId>#{orderNumber}</Styled.OrderId>
                     <div>
-                      <span>£{formatPrice(totalOrderValue)}</span>
+                      <span>
+                        £
+                        {formatPrice(
+                          Number(totalOrderValue) +
+                            (deliverySlot
+                              ? Number(deliverySlot.deliveryCharge)
+                              : 2),
+                        )}
+                      </span>
                       <Styled.GreySpan>
                         {totalContainerPrice ? (
                           <span> + £{formatPrice(totalContainerPrice)}</span>
@@ -95,13 +103,26 @@ export const UserOrders = () => {
                 <Styled.Section>
                   <Styled.Row>
                     {deliverySlot ? (
-                      <Styled.Status>
-                        {paid
-                          ? 'Delivered'
-                          : `Delivery between ${st} and ${et} on ${day}`}
-                      </Styled.Status>
+                      <>
+                        <Styled.Status>
+                          {paid
+                            ? 'Delivered'
+                            : `Delivery between ${st} and ${et} on ${day}`}
+                        </Styled.Status>
+
+                        <Styled.Status>
+                          includes £{formatPrice(deliverySlot.deliveryCharge)}{' '}
+                          delivery charge
+                        </Styled.Status>
+                      </>
                     ) : (
-                      <Styled.Status>Collect from store</Styled.Status>
+                      <>
+                        <Styled.Status>Collect from store</Styled.Status>
+
+                        <Styled.Status>
+                          includes £{formatPrice(2)} collection charge
+                        </Styled.Status>
+                      </>
                     )}
                   </Styled.Row>
                 </Styled.Section>
