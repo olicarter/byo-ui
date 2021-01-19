@@ -32,7 +32,6 @@ export const Basket = () => {
 
   const basketTotal = BasketTotal();
   const meetsMinOrderValue = basketTotal >= minOrderValue;
-  console.log(basketTotal);
 
   return (
     <>

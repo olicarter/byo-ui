@@ -12,11 +12,13 @@ import { DeliverySlotPickerOption } from './DeliverySlotPickerOption';
 export const DeliverySlotPicker = () => {
   const { register } = useFormContext();
 
-  const localDateTime = DateTime.local().setZone('Europe/London');
+  const localDateTime = DateTime.local().setZone('Europe/London').toUTC();
+
+  const isAfternoon =
+    localDateTime.endOf('day').diff(localDateTime, 'hours').values.hours < 12;
 
   const startTime_gt = localDateTime
-    .toUTC()
-    .plus({ days: 1 })
+    .plus({ days: isAfternoon ? 2 : 1 })
     .startOf('day')
     .toISO();
 
@@ -37,8 +39,14 @@ export const DeliverySlotPicker = () => {
 
   return (
     <Styled.DeliverySlotPicker>
-      <Select name="deliverySlot" ref={register()}>
-        <option value="">£2.00 - Collect from store</option>
+      <Select
+        name="deliverySlot"
+        ref={register({
+          required: 'Please choose collection or a delivery slot',
+        })}
+      >
+        <option value="">Select collection or delivery slot</option>
+        <option value="collection">£2.00 - Collect from store</option>
         {Object.keys(deliverySlotsByDay).map(day => (
           <optgroup key={day} label={day}>
             {deliverySlotsByDay[day].map(({ id }) => (

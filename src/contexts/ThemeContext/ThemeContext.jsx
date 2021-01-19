@@ -108,11 +108,11 @@ export const ThemeProvider = ({ children }) => {
   const prefersDarkTheme = useMedia({ prefersColorScheme: 'dark' });
 
   const getTheme = useCallback(() => {
-    if (localStorage.getItem('byo.theme'))
+    if (localStorage.getItem('byo.theme')) {
       return themes[localStorage.getItem('byo.theme')];
-    if (prefersDarkTheme) return themes.dark;
+    }
     return themes.light;
-  }, [prefersDarkTheme, themes]);
+  }, [themes]);
 
   const [theme, setTheme] = useState(getTheme());
 

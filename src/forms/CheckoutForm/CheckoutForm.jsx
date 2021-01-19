@@ -34,7 +34,7 @@ const inputNames = {
 
 export const CheckoutForm = () => {
   const { push, replace } = useHistory();
-  const formMethods = useForm({ reValidateMode: 'onSubmit' });
+  const formMethods = useForm({ mode: 'onChange', reValidateMode: 'onChange' });
   const { errors, handleSubmit, setValue, watch } = formMethods;
 
   const deliverySlot = watch(inputNames.deliverySlot);
@@ -92,7 +92,7 @@ export const CheckoutForm = () => {
       variables: {
         id: unsubmittedOrderId,
         get address() {
-          if (!deliverySlot) return null;
+          if (!deliverySlot || deliverySlot === 'collection') return null;
           if (address) {
             return { connect: { id: address } };
           } else {
@@ -107,7 +107,10 @@ export const CheckoutForm = () => {
             };
           }
         },
-        deliverySlot: deliverySlot ? { connect: { id: deliverySlot } } : null,
+        deliverySlot:
+          deliverySlot && deliverySlot !== 'collection'
+            ? { connect: { id: deliverySlot } }
+            : null,
       },
     });
   };
@@ -136,7 +139,7 @@ export const CheckoutForm = () => {
           <DeliverySlotPicker name={inputNames.deliverySlot} />
         </FormGroup>
 
-        {deliverySlot ? (
+        {deliverySlot && deliverySlot !== 'collection' ? (
           <FormGroup
             label="Delivery address"
             largeLabel
