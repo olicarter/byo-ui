@@ -4,12 +4,15 @@ import { stringify, parse } from 'qs';
 import Icon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
 
+import { useTheme } from '@contexts';
 import { useDebounce } from '@hooks';
+
 import * as Styled from './SearchBar.styled';
 
 export const SearchBar = () => {
   const { push } = useHistory();
   const { search } = useLocation();
+  const { isDesktop } = useTheme();
 
   const [value, setValue] = useState();
 
@@ -39,7 +42,7 @@ export const SearchBar = () => {
         <Icon path={mdiMagnify} size={1} />
       </Styled.IconWrapper>
       <Styled.Input
-        autoFocus
+        autoFocus={isDesktop}
         defaultValue={searchQuery}
         onChange={handleChange}
         placeholder="search..."

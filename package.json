@@ -36,6 +36,7 @@
     "react-use-fuzzy": "^1.0.4",
     "slugify": "^1.4.6",
     "styled-components": "^5.2.0",
+    "title-case": "^3.0.3",
     "use-media": "^1.4.0"
   },
   "scripts": {
