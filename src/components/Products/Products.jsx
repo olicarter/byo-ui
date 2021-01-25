@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { parse, stringify } from 'qs';
+import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
 
 import { FloatingButton } from '@components/FloatingButton';
@@ -105,21 +105,6 @@ export const Products = () => {
 
   return (
     <>
-      {!queryCategorySlug ? (
-        <Redirect
-          to={{
-            pathname: '/products',
-            search: stringify(
-              { category: 'baking' },
-              {
-                arrayFormat: 'brackets',
-                encode: false,
-              },
-            ),
-          }}
-        />
-      ) : null}
-
       {loading ? (
         <SubTitle color="grey">
           {count
@@ -127,6 +112,7 @@ export const Products = () => {
             : 'Loading'}
         </SubTitle>
       ) : null}
+
       <Grid>
         {allProducts.map(product => (
           <Sentry.ErrorBoundary key={product.id}>
@@ -134,6 +120,7 @@ export const Products = () => {
           </Sentry.ErrorBoundary>
         ))}
       </Grid>
+
       {isAuthenticated ? (
         <FloatingButton onClick={() => push('/basket')}>
           View basket
