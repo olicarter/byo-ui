@@ -118,7 +118,11 @@ export const CheckoutForm = () => {
   let { total } = sumOrderItems(orderItems);
   total = total.toFixed(2);
 
-  if (total < minOrderValue) {
+  if (
+    isNaN(Number(total)) ||
+    isNaN(Number(minOrderValue)) ||
+    Number(total) < Number(minOrderValue)
+  ) {
     replace('/basket');
     return null;
   }

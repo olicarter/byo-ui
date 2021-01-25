@@ -11,8 +11,8 @@ import { Section } from '@components/Section';
 import { Title } from '@components/Typography';
 
 import {
+  GET_ALL_PAGES,
   GET_CATEGORIES_BY_SLUG,
-  GET_PAGES_BY_PATH,
   GET_PRODUCT_BY_SLUG,
 } from './Page.gql';
 
@@ -25,9 +25,7 @@ export const Page = ({ children }) => {
     ignoreQueryPrefix: true,
   });
 
-  const { data: { allPages } = {} } = useQuery(GET_PAGES_BY_PATH, {
-    variables: { path },
-  });
+  const { data: { allPages } = {} } = useQuery(GET_ALL_PAGES);
 
   const [getCategoryBySlug, { data: { allCategories } = {} }] = useLazyQuery(
     GET_CATEGORIES_BY_SLUG,
@@ -57,7 +55,16 @@ export const Page = ({ children }) => {
 
   const [{ name } = {}] = allProducts || [];
 
-  const [{ heading, info, message, title = 'BYO' } = {}] = allPages || [];
+  const { heading, info, message, title = 'BYO' } =
+    (allPages || []).find(page => page.path === path) || {};
+
+  const computedHeading =
+    heading ||
+    category ||
+    (categorySlug || '').replaceAll('-', ' ') ||
+    name ||
+    (productSlug || '').replaceAll('-', ' ') ||
+    '-';
 
   return (
     <>
@@ -73,7 +80,7 @@ export const Page = ({ children }) => {
         ) : null}
 
         <Section>
-          <Title>{heading || category || name || '-'}</Title>
+          <Title>{computedHeading}</Title>
         </Section>
 
         {info ? (

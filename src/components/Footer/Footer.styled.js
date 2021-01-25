@@ -26,6 +26,7 @@ export const Heart = styled.span(({ theme: { palette: { red } } }) => ({
 
 export const Anchor = styled.a(({ theme: { palette: { grey, focus } } }) => ({
   color: grey,
+  display: 'inline-block',
   outline: 'none',
   textDecoration: 'none',
   ':focus': {
