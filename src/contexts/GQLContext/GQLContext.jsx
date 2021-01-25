@@ -25,25 +25,7 @@ export const useGQL = () => useContext(GQLContext);
 
 export const GQLProvider = ({ children }) => {
   const client = new ApolloClient({
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            Page: {
-              read: (existing, { args, toReference }) => {
-                console.log('args', args);
-                if (args.where.id) {
-                  return toReference({
-                    __typename: 'Page',
-                    id: args.where.id,
-                  });
-                }
-              },
-            },
-          },
-        },
-      },
-    }),
+    cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: {
         fetchPolicy: 'cache-first',
