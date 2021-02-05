@@ -45,6 +45,7 @@ const SquareButton = styled.button(() => ({
 
 export const DecrementButton = styled(SquareButton)(
   ({
+    disabled,
     theme: {
       palette: { blue, focus, red },
     },
@@ -52,14 +53,20 @@ export const DecrementButton = styled(SquareButton)(
   }) => ({
     color: red,
     display: quantity ? 'flex' : 'none',
+    opacity: disabled ? 0.5 : 1,
+    pointerEvents: disabled ? 'none' : 'all',
     ':focus': {
       color: focus,
     },
-    '@media (hover: hover) and (pointer: fine)': {
-      ':hover': {
-        color: focus,
-      },
-    },
+    ...(disabled
+      ? {}
+      : {
+          '@media (hover: hover) and (pointer: fine)': {
+            ':hover': {
+              color: focus,
+            },
+          },
+        }),
   }),
 );
 

@@ -16,11 +16,13 @@ import {
   SUBMIT_ORDER,
   UPDATE_AUTHENTICATED_USER,
 } from './CheckoutForm.gql';
-import { OrderDeliveryAddressDeliveryInstructionsInput } from './OrderDeliveryAddressDeliveryInstructionsInput';
-import { OrderDeliveryAddressNameInput } from './OrderDeliveryAddressNameInput';
-import { OrderDeliveryAddressPhoneInput } from './OrderDeliveryAddressPhoneInput';
-import { OrderDeliveryAddressStreetInput } from './OrderDeliveryAddressStreetInput';
-import { OrderDeliveryAddressPostcodeInput } from './OrderDeliveryAddressPostcodeInput';
+import {
+  OrderDeliveryAddressDeliveryInstructionsInput,
+  OrderDeliveryAddressNameInput,
+  OrderDeliveryAddressPhoneInput,
+  OrderDeliveryAddressStreetInput,
+  OrderDeliveryAddressPostcodeInput,
+} from './components';
 
 const inputNames = {
   address: 'address',

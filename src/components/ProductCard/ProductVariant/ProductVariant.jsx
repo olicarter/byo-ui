@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { stringify, parse } from 'qs';
 import { useMutation, useQuery } from '@apollo/client';
-import { mdiLoading, mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
+import { mdiMinusCircle, mdiPlusCircle } from '@mdi/js';
 
 import { useAuth } from '@contexts';
 import { OrderItems, Orders } from '@fragments';
@@ -10,9 +10,10 @@ import { formatPrice, getUnsubmittedOrderFromUser } from '@helpers';
 
 import {
   CREATE_ORDER_ITEM,
+  DECREMENT_ORDER_ITEM,
   DELETE_ORDER_ITEM,
   GET_AUTHENTICATED_USER,
-  UPDATE_ORDER_ITEM,
+  INCREMENT_ORDER_ITEM,
 } from './ProductVariant.gql';
 import * as Styled from './ProductVariant.styled';
 import { ProductVariantTagList } from './ProductVariantTagList';
@@ -31,9 +32,6 @@ export const ProductVariant = ({
     ignoreQueryPrefix: true,
   });
 
-  const [incrementLoading, setIncrementLoading] = useState(false);
-  const [decrementLoading, setDecrementLoading] = useState(false);
-
   const {
     data: { authenticatedUser } = {},
     loading: getAuthenticatedUserLoading,
@@ -47,63 +45,70 @@ export const ProductVariant = ({
       ({ productVariant: { id: variantId } }) => id === variantId,
     ) || {};
 
-  const [createOrderItem] = useMutation(CREATE_ORDER_ITEM, {
-    onCompleted: () => setIncrementLoading(false),
-    update: (cache, { data: { createOrderItem } }) => {
-      if (!unsubmittedOrderId) {
-        const userCacheId = cache.identify(authenticatedUser);
-        const { orders: currentOrders = [] } = cache.readFragment({
-          id: userCacheId,
-          fragment: Orders,
-          fragmentName: 'Orders',
+  const [createOrderItem, { loading: createOrderItemLoading }] = useMutation(
+    CREATE_ORDER_ITEM,
+    {
+      update: (cache, { data: { createOrderItem } }) => {
+        if (!unsubmittedOrderId) {
+          const userCacheId = cache.identify(authenticatedUser);
+          const { orders: currentOrders = [] } = cache.readFragment({
+            id: userCacheId,
+            fragment: Orders,
+            fragmentName: 'Orders',
+          });
+          cache.writeFragment({
+            id: userCacheId,
+            fragment: Orders,
+            fragmentName: 'Orders',
+            data: {
+              orders: [...currentOrders, createOrderItem.order],
+            },
+          });
+        }
+      },
+    },
+  );
+
+  const [
+    incrementOrderItem,
+    { loading: incrementOrderItemLoading },
+  ] = useMutation(INCREMENT_ORDER_ITEM, { variables: { id: orderItemId } });
+
+  const [
+    decrementOrderItem,
+    { loading: decrementOrderItemLoading },
+  ] = useMutation(DECREMENT_ORDER_ITEM, { variables: { id: orderItemId } });
+
+  const [deleteOrderItem, { loading: deleteOrderItemLoading }] = useMutation(
+    DELETE_ORDER_ITEM,
+    {
+      update: (
+        cache,
+        {
+          data: {
+            deleteOrderItem: { id: deletedOrderItemId },
+          },
+        },
+      ) => {
+        const id = cache.identify(unsubmittedOrder);
+        const { orderItems: currentOrderItems = [] } = cache.readFragment({
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
         });
         cache.writeFragment({
-          id: userCacheId,
-          fragment: Orders,
-          fragmentName: 'Orders',
+          id,
+          fragment: OrderItems,
+          fragmentName: 'OrderItems',
           data: {
-            orders: [...currentOrders, createOrderItem.order],
+            orderItems: currentOrderItems.filter(
+              ({ id: orderItemId }) => orderItemId !== deletedOrderItemId,
+            ),
           },
         });
-      }
-    },
-  });
-
-  const [updateOrderItem] = useMutation(UPDATE_ORDER_ITEM, {
-    onCompleted: () => {
-      setIncrementLoading(false);
-      setDecrementLoading(false);
-    },
-  });
-
-  const [deleteOrderItem] = useMutation(DELETE_ORDER_ITEM, {
-    onCompleted: () => setDecrementLoading(false),
-    update: (
-      cache,
-      {
-        data: {
-          deleteOrderItem: { id: deletedOrderItemId },
-        },
       },
-    ) => {
-      const id = cache.identify(unsubmittedOrder);
-      const { orderItems: currentOrderItems = [] } = cache.readFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-      });
-      cache.writeFragment({
-        id,
-        fragment: OrderItems,
-        fragmentName: 'OrderItems',
-        data: {
-          orderItems: currentOrderItems.filter(
-            ({ id: orderItemId }) => orderItemId !== deletedOrderItemId,
-          ),
-        },
-      });
     },
-  });
+  );
 
   const handleCreateOrderItem = () => {
     createOrderItem({
@@ -121,15 +126,11 @@ export const ProductVariant = ({
     });
   };
 
-  const handleUpdateOrderItem = newQuantity => {
-    updateOrderItem({ variables: { id: orderItemId, quantity: newQuantity } });
-  };
-
   const handleDeleteOrderItem = () => {
     deleteOrderItem({ variables: { id: orderItemId } });
   };
 
-  const incrementOrderItem = () => {
+  const redirectIfUnauthenticated = () => {
     if (!isAuthenticated) {
       return push({
         pathname: '/login',
@@ -142,33 +143,21 @@ export const ProductVariant = ({
         ),
       });
     }
-    setIncrementLoading(true);
-    if (!!quantity) handleUpdateOrderItem(quantity + 1);
+  };
+
+  const handleIncrementOrderItem = () => {
+    redirectIfUnauthenticated();
+    if (orderItemId) incrementOrderItem();
     else handleCreateOrderItem();
   };
 
-  const decrementOrderItem = () => {
-    if (!isAuthenticated) {
-      return push({
-        pathname: '/login',
-        search: stringify(
-          {
-            ...queryParams,
-            from: pathname,
-          },
-          { arrayFormat: 'brackets', encode: false },
-        ),
-      });
+  const handleDecrementOrderItem = () => {
+    redirectIfUnauthenticated();
+    if (orderItemId) {
+      if (quantity > 1) decrementOrderItem();
+      else handleDeleteOrderItem();
     }
-    if (!quantity) return;
-    setDecrementLoading(true);
-    if (quantity > 1) handleUpdateOrderItem(quantity - 1);
-    else handleDeleteOrderItem();
   };
-
-  const loadingIcon = (
-    <Styled.Icon path={mdiLoading} rotate={90} spin size={1} title="Loading" />
-  );
 
   return (
     <Styled.ProductVariant>
@@ -206,23 +195,23 @@ export const ProductVariant = ({
         />
       </Styled.Info>
 
-      <Styled.DecrementButton onClick={decrementOrderItem} quantity={quantity}>
-        {decrementLoading ? (
-          loadingIcon
-        ) : (
-          <Styled.Icon path={mdiMinusCircle} size={0.8} title="Decrement" />
-        )}
+      <Styled.DecrementButton
+        disabled={decrementOrderItemLoading || deleteOrderItemLoading}
+        onClick={handleDecrementOrderItem}
+        quantity={quantity}
+      >
+        <Styled.Icon path={mdiMinusCircle} size={0.8} title="Decrement" />
       </Styled.DecrementButton>
 
       <Styled.IncrementButton
-        disabled={getAuthenticatedUserLoading}
-        onClick={incrementOrderItem}
+        disabled={
+          getAuthenticatedUserLoading ||
+          createOrderItemLoading ||
+          incrementOrderItemLoading
+        }
+        onClick={handleIncrementOrderItem}
       >
-        {incrementLoading ? (
-          loadingIcon
-        ) : (
-          <Styled.Icon path={mdiPlusCircle} size={0.8} title="Increment" />
-        )}
+        <Styled.Icon path={mdiPlusCircle} size={0.8} title="Increment" />
       </Styled.IncrementButton>
     </Styled.ProductVariant>
   );

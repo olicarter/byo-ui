@@ -24,13 +24,22 @@ export const CREATE_ORDER_ITEM = gql`
   ${Order}
 `;
 
-export const UPDATE_ORDER_ITEM = gql`
-  mutation UpdateOrderItem($id: ID!, $quantity: Int!) {
-    updateOrderItem(id: $id, data: { quantity: $quantity }) {
-      ...OrderItem
+export const DECREMENT_ORDER_ITEM = gql`
+  mutation DecrementOrderItem($id: ID!) {
+    decrementOrderItem(id: $id) {
+      id
+      quantity
     }
   }
-  ${OrderItem}
+`;
+
+export const INCREMENT_ORDER_ITEM = gql`
+  mutation IncrementOrderItem($id: ID!) {
+    incrementOrderItem(id: $id) {
+      id
+      quantity
+    }
+  }
 `;
 
 export const DELETE_ORDER_ITEM = gql`
