@@ -3,11 +3,16 @@ import MarkdownToJSX from 'markdown-to-jsx';
 
 export const Markdown = styled(MarkdownToJSX)(
   ({
+    lines,
     theme: {
       palette: { black },
     },
   }) => ({
     color: black,
+    display: lines ? '-webkit-box' : 'block',
+    overflow: 'hidden',
+    WebkitBoxOrient: lines && 'vertical',
+    WebkitLineClamp: lines,
   }),
 );
 

@@ -5,8 +5,9 @@ import { SubTitle, Title } from '@components/Typography';
 
 import * as Styled from './Markdown.styled';
 
-export const Markdown = ({ children = '', overrides = {} }) => (
+export const Markdown = ({ children = '', lines = 0, overrides = {} }) => (
   <Styled.Markdown
+    lines={lines}
     options={{
       overrides: {
         a: Styled.Anchor,

@@ -14,7 +14,7 @@ import { GET_ALL_PAGES } from './Page.gql';
 
 export const Page = ({ children }) => {
   const { search } = useLocation();
-  const { productSlug } = useParams();
+  const { postSlug, productSlug } = useParams();
   const { path } = useRouteMatch();
 
   const { category: categorySlug } = parse(search, {
@@ -29,6 +29,7 @@ export const Page = ({ children }) => {
   const computedHeading =
     heading ||
     (categorySlug || '').replaceAll('-', ' ') ||
+    (postSlug || '').replaceAll('-', ' ') ||
     (productSlug || '').replaceAll('-', ' ') ||
     '-';
 
