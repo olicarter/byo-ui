@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 
 export const FloatingButtonWrapper = styled.div(
   ({
@@ -7,10 +7,13 @@ export const FloatingButtonWrapper = styled.div(
       palette: { white },
     },
   }) => ({
-    backdropFilter: 'blur(5rem)',
+    backdropFilter: 'blur(2rem)',
     bottom: 0,
+    boxShadow: `0 0 3rem ${transparentize(0.66, white)}`,
+    display: 'flex',
+    justifyContent: 'center',
     left: 0,
-    padding: '1rem 0 21px',
+    padding: '1rem 1rem 21px',
     position: 'sticky',
     right: 0,
     width: '100%',
@@ -25,6 +28,7 @@ export const FloatingButton = styled.button(
     disabled,
     flex,
     theme: {
+      maxWidth,
       palette,
       palette: { primary, readableColor },
     },
@@ -44,6 +48,7 @@ export const FloatingButton = styled.button(
       height: '3rem',
       justifyContent: 'center',
       lineHeight: '2rem',
+      maxWidth: `calc(${maxWidth} - 2rem)`,
       opacity: disabled ? 0.66 : 1,
       outline: 'none',
       padding: '0 0.75rem',

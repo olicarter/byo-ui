@@ -9,7 +9,7 @@ import { ProtectedRoute } from '@components/ProtectedRoute';
 import { Section } from '@components/Section';
 import { TopBar } from '@components/TopBar';
 import { config } from '@config';
-import { useAuth } from '@contexts';
+import { useApp, useAuth } from '@contexts';
 import { LoadingPage, Page } from '@pages';
 
 import { GET_AUTHENTICATED_USER, GET_PAGES, GET_SETTINGS } from './App.gql';
@@ -19,6 +19,7 @@ const { pages } = config;
 
 export const App = () => {
   const { isAuthenticated } = useAuth();
+  const { portalNodes } = useApp();
 
   const {
     loading: getSettingsLoading,
@@ -85,6 +86,8 @@ export const App = () => {
               );
             })}
           </Styled.Main>
+
+          <Styled.FloatingButtonPortal ref={portalNodes.floatingButton} />
 
           <Footer />
         </Styled.App>

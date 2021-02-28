@@ -4,7 +4,12 @@ import { BrowserRouter } from 'react-router-dom';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 
-import { AuthProvider, GQLProvider, ThemeProvider } from './contexts';
+import {
+  AppProvider,
+  AuthProvider,
+  GQLProvider,
+  ThemeProvider,
+} from './contexts';
 import { App } from './components';
 import * as serviceWorker from './serviceWorker';
 
@@ -27,7 +32,9 @@ ReactDOM.render(
       <ThemeProvider>
         <BrowserRouter>
           <AuthProvider>
-            <App />
+            <AppProvider>
+              <App />
+            </AppProvider>
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>
