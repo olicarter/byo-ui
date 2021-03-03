@@ -9,11 +9,15 @@ import { GET_BLOG_POST_BY_SLUG } from './PostPage.gql';
 export const PostPage = () => {
   const { postSlug } = useParams();
 
-  const { data: { allBlogPosts } = {} } = useQuery(GET_BLOG_POST_BY_SLUG, {
-    variables: { slug: postSlug },
-  });
+  const { data: { allBlogPosts: [blogPost] = [] } = {} } = useQuery(
+    GET_BLOG_POST_BY_SLUG,
+    {
+      variables: { slug: postSlug },
+    },
+  );
 
-  const [blogPost] = allBlogPosts || [];
+  if (!blogPost) return null;
+
   const { content } = blogPost || {};
 
   return <Markdown>{content}</Markdown>;

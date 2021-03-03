@@ -31,7 +31,7 @@ export const Page = ({ children }) => {
     (categorySlug || '').replaceAll('-', ' ') ||
     (postSlug || '').replaceAll('-', ' ') ||
     (productSlug || '').replaceAll('-', ' ') ||
-    '-';
+    '';
 
   return (
     <>
@@ -46,9 +46,11 @@ export const Page = ({ children }) => {
           </Section>
         ) : null}
 
-        <Section>
-          <Title>{computedHeading}</Title>
-        </Section>
+        {computedHeading ? (
+          <Section>
+            <Title>{computedHeading}</Title>
+          </Section>
+        ) : null}
 
         {info ? (
           <Section>

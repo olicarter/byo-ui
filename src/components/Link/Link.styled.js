@@ -11,6 +11,6 @@ export const Link = styled(RouterLink)(
     },
   }) => ({
     color: palette[color] || black,
-    fontWeight: bold ? 600 : 400,
+    // fontWeight: bold ? 600 : 400,
   }),
 );
