@@ -1,21 +1,25 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export const AppContext = createContext({});
 
 export const useApp = () => useContext(AppContext);
 
 export const AppProvider = ({ children }) => {
-  const floatingButtonPortalNode = useRef(null);
+  const [portalRefs, setPortalRefs] = useState({});
+
+  const callToActionButtonRef = useRef(null);
+
+  useEffect(() => {
+    setPortalRefs({ callToActionButton: callToActionButtonRef });
+  }, [callToActionButtonRef]);
 
   return (
-    <AppContext.Provider
-      value={{
-        portalNodes: {
-          floatingButton: floatingButtonPortalNode,
-        },
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={{ portalRefs }}>{children}</AppContext.Provider>
   );
 };

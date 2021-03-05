@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { Markdown } from '@components/Markdown';
 
 import { GET_PRODUCTS_BY_SLUG } from './Product.gql';
@@ -44,7 +44,7 @@ ${tags.map(({ name }) => name.toLowerCase()).join(', ')}
         </Markdown>
       )}
 
-      <FloatingButton onClick={goBack}>Go back</FloatingButton>
+      <CallToActionButton onClick={goBack}>Go back</CallToActionButton>
     </>
   );
 };

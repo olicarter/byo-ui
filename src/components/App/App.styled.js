@@ -55,6 +55,6 @@ export const Flex = styled.div({
   marginTop: '20px',
 });
 
-export const FloatingButtonPortal = styled.div({
+export const CallToActionButtonPortal = styled.div({
   display: 'contents',
 });

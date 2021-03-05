@@ -1,29 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Icon from '@mdi/react';
 import { mdiLoading } from '@mdi/js';
 
 import { useApp } from '@contexts';
 
-import * as Styled from './FloatingButton.styled';
+import * as Styled from './CallToActionButton.styled';
 
-export const FloatingButton = ({
+export const CallToActionButton = ({
   backgroundColor = 'primary',
   borderRadius = true,
   children,
   disabled = false,
   flex = 1,
+  isSticky = true,
   loading = false,
   onClick,
   type = 'button',
 }) => {
-  const { portalNodes } = useApp();
+  const { portalRefs } = useApp();
 
-  if (!portalNodes.floatingButton.current) return null;
+  const [portalNode, setPortalNode] = useState(null);
+
+  useEffect(() => {
+    if (portalRefs.callToActionButton.current) {
+      setPortalNode(portalRefs.callToActionButton.current);
+    }
+  }, [portalRefs]);
+
+  if (!portalNode) return null;
 
   return createPortal(
-    <Styled.FloatingButtonWrapper>
-      <Styled.FloatingButton
+    <Styled.CallToActionButtonWrapper isSticky={isSticky}>
+      <Styled.CallToActionButton
         backgroundColor={backgroundColor}
         borderRadius={borderRadius}
         disabled={disabled || loading}
@@ -36,8 +45,8 @@ export const FloatingButton = ({
         ) : (
           children
         )}
-      </Styled.FloatingButton>
-    </Styled.FloatingButtonWrapper>,
-    portalNodes.floatingButton.current,
+      </Styled.CallToActionButton>
+    </Styled.CallToActionButtonWrapper>,
+    portalNode,
   );
 };

@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-export const FloatingButtonWrapper = styled.div({
+export const CallToActionButtonWrapper = styled.div(({ isSticky }) => ({
   backdropFilter: 'blur(4rem)',
   bottom: 0,
   display: 'flex',
   justifyContent: 'center',
   left: 0,
   padding: '1rem 1rem 21px',
-  position: 'sticky',
+  position: isSticky ? 'sticky' : 'relative',
   right: 0,
   width: '100%',
   zIndex: 1,
-});
+}));
 
-export const FloatingButton = styled.button(
+export const CallToActionButton = styled.button(
   ({
     backgroundColor,
     borderRadius,

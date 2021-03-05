@@ -2,7 +2,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useAuth } from '@contexts';
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { FormGroup } from '@components/FormGroup';
 import { Label } from '@components/Label';
 import { PostcodeInput } from '@components/PostcodeInput';
@@ -115,7 +115,7 @@ export const RegisterForm = () => {
           />
         </FormGroup>
 
-        <FloatingButton type="submit">Register</FloatingButton>
+        <CallToActionButton type="submit">Register</CallToActionButton>
       </form>
 
       {registerError ? (

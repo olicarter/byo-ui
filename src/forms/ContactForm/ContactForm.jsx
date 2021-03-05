@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { FormGroup } from '@components/FormGroup';
 import { TextInput } from '@components/TextInput';
 
@@ -76,13 +76,14 @@ export const ContactForm = () => {
           />
         </FormGroup>
 
-        <FloatingButton
+        <CallToActionButton
           backgroundColor={recentlySubmitted ? 'green' : 'primary'}
           disabled={recentlySubmitted}
+          isSticky={false}
           type="submit"
         >
           {recentlySubmitted ? 'Message sent' : 'Send message'}
-        </FloatingButton>
+        </CallToActionButton>
       </form>
     </>
   );

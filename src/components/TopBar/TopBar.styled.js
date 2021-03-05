@@ -3,7 +3,8 @@ import { transparentize } from 'polished';
 import { Link as RouterLink } from 'react-router-dom';
 import { animated } from 'react-spring';
 
-export const Wrapper = styled.div(({ theme: { palette: { white } } }) => ({
+export const Wrapper = styled.div(({ theme: { maxWidth } }) => ({
+  maxWidth,
   width: '100%',
   zIndex: 1,
 }));

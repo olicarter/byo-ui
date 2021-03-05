@@ -19,7 +19,7 @@ const { pages } = config;
 
 export const App = () => {
   const { isAuthenticated } = useAuth();
-  const { portalNodes } = useApp();
+  const { portalRefs } = useApp();
 
   const {
     loading: getSettingsLoading,
@@ -87,7 +87,9 @@ export const App = () => {
             })}
           </Styled.Main>
 
-          <Styled.FloatingButtonPortal ref={portalNodes.floatingButton} />
+          <Styled.CallToActionButtonPortal
+            ref={portalRefs.callToActionButton}
+          />
 
           <Footer />
         </Styled.App>

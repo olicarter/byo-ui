@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/react';
 
 import { getUnsubmittedOrderFromUser } from '@helpers';
 import { BasketTotal } from '@components/BasketTotal';
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { Grid } from '@components/Grid';
 import { ProductCard } from '@components/ProductCard';
 
@@ -42,12 +42,12 @@ export const Basket = () => {
           </Sentry.ErrorBoundary>
         ))}
       </Grid>
-      <FloatingButton
+      <CallToActionButton
         disabled={!meetsMinOrderValue}
         onClick={() => push('/checkout')}
       >
         Continue to checkout
-      </FloatingButton>
+      </CallToActionButton>
     </>
   );
 };
