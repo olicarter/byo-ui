@@ -1,24 +1,27 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-export const FloatingButtonWrapper = styled.div(() => ({
-  backdropFilter: 'blur(1rem)',
+export const CallToActionButtonWrapper = styled.div(({ isSticky }) => ({
+  backdropFilter: 'blur(4rem)',
   bottom: 0,
+  display: 'flex',
+  justifyContent: 'center',
   left: 0,
-  padding: '1rem 0 21px',
-  position: 'sticky',
+  padding: '1rem 1rem 21px',
+  position: isSticky ? 'sticky' : 'relative',
   right: 0,
   width: '100%',
   zIndex: 1,
 }));
 
-export const FloatingButton = styled.button(
+export const CallToActionButton = styled.button(
   ({
     backgroundColor,
     borderRadius,
     disabled,
     flex,
     theme: {
+      maxWidth,
       palette,
       palette: { primary, readableColor },
     },
@@ -38,6 +41,7 @@ export const FloatingButton = styled.button(
       height: '3rem',
       justifyContent: 'center',
       lineHeight: '2rem',
+      maxWidth: `calc(${maxWidth} - 2rem)`,
       opacity: disabled ? 0.66 : 1,
       outline: 'none',
       padding: '0 0.75rem',

@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AddressSelect } from '@components/AddressSelect';
 import { BasketTotal } from '@components/BasketTotal';
 import { DeliverySlotPicker } from '@components/DeliverySlotPicker';
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { FormGroup } from '@components/FormGroup';
 import { getUnsubmittedOrderFromUser, sumOrderItems } from '@helpers';
 
@@ -236,13 +236,13 @@ export const CheckoutForm = () => {
           info={total >= minOrderValue ? orderSubmissionInfo : undefined}
         ></FormGroup>
 
-        <FloatingButton
+        <CallToActionButton
           loading={submitOrderLoading || updateAuthenticatedUserLoading}
           type="submit"
         >
           Place order for{' '}
           <BasketTotal includeDeliveryCharge showCurrencySymbol />
-        </FloatingButton>
+        </CallToActionButton>
       </form>
     </FormProvider>
   );

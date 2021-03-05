@@ -1,9 +1,11 @@
 import React from 'react';
 
+import { BlogPosts } from '@components/BlogPosts';
 import { CheckoutForm, ContactForm } from '@forms';
 import {
   AccountPage,
   BasketPage,
+  PostPage,
   HomePage,
   LoginPage,
   ProductPage,
@@ -22,6 +24,16 @@ export const config = {
     about: {
       path: '/about',
       exact: true,
+    },
+    posts: {
+      path: '/blog',
+      exact: true,
+      component: <BlogPosts />,
+    },
+    post: {
+      path: '/blog/:postSlug',
+      exact: true,
+      component: <PostPage />,
     },
     contact: {
       path: '/contact',

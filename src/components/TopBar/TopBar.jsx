@@ -12,7 +12,7 @@ import {
   mdiInformationOutline,
   mdiInstagram,
   mdiMenu,
-  // mdiPostOutline,
+  mdiPostOutline,
   mdiStoreOutline,
   // mdiThemeLightDark,
 } from '@mdi/js';
@@ -64,17 +64,17 @@ export const TopBar = () => {
       to: '/products',
     },
     {
+      key: 'blog',
+      icon: mdiPostOutline,
+      title: 'Blog',
+      to: '/blog',
+    },
+    {
       key: 'about',
       icon: mdiInformationOutline,
       title: 'About',
       to: '/about',
     },
-    // {
-    //   key: 'blog',
-    //   icon: mdiPostOutline,
-    //   title: 'Blog',
-    //   to: '/blog',
-    // },
     {
       key: 'contact',
       icon: mdiEmailOutline,

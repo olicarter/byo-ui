@@ -3,6 +3,8 @@ import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
+import Mustache from 'mustache';
+import { capitalCase } from 'change-case';
 
 import { Callout } from '@components/Callout';
 import { Markdown } from '@components/Markdown';
@@ -14,7 +16,7 @@ import { GET_ALL_PAGES } from './Page.gql';
 
 export const Page = ({ children }) => {
   const { search } = useLocation();
-  const { productSlug } = useParams();
+  const { postSlug, productSlug } = useParams();
   const { path } = useRouteMatch();
 
   const { category: categorySlug } = parse(search, {
@@ -29,13 +31,19 @@ export const Page = ({ children }) => {
   const computedHeading =
     heading ||
     (categorySlug || '').replaceAll('-', ' ') ||
+    (postSlug || '').replaceAll('-', ' ') ||
     (productSlug || '').replaceAll('-', ' ') ||
-    '-';
+    '';
+
+  const computedTitle = Mustache.render(title, {
+    postSlug: capitalCase(postSlug || ''),
+    productSlug: capitalCase(productSlug || ''),
+  });
 
   return (
     <>
       <Helmet>
-        <title>{title}</title>
+        <title>{computedTitle}</title>
       </Helmet>
 
       <Layout>
@@ -45,9 +53,11 @@ export const Page = ({ children }) => {
           </Section>
         ) : null}
 
-        <Section>
-          <Title>{computedHeading}</Title>
-        </Section>
+        {computedHeading ? (
+          <Section>
+            <Title>{computedHeading}</Title>
+          </Section>
+        ) : null}
 
         {info ? (
           <Section>

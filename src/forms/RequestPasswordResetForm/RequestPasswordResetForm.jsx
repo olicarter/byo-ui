@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { stringify } from 'qs';
 
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { FormGroup } from '@components/FormGroup';
 import { TextInput } from '@components/TextInput';
 
@@ -44,7 +44,7 @@ export const RequestPasswordResetForm = () => {
           />
         </FormGroup>
 
-        <FloatingButton type="submit">Reset password</FloatingButton>
+        <CallToActionButton type="submit">Reset password</CallToActionButton>
       </form>
     </>
   );

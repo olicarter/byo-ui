@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
 import * as Sentry from '@sentry/react';
 
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { Grid } from '@components/Grid';
 import { ProductCard } from '@components/ProductCard';
 import { SubTitle } from '@components/Typography';
@@ -122,13 +122,13 @@ export const Products = () => {
       </Grid>
 
       {isAuthenticated ? (
-        <FloatingButton onClick={() => push('/basket')}>
+        <CallToActionButton onClick={() => push('/basket')}>
           View basket
-        </FloatingButton>
+        </CallToActionButton>
       ) : (
-        <FloatingButton onClick={() => push('/login?from=/products')}>
+        <CallToActionButton onClick={() => push('/login?from=/products')}>
           Log in to order
-        </FloatingButton>
+        </CallToActionButton>
       )}
     </>
   );

@@ -6,7 +6,7 @@ import * as Styled from './Button.styled';
 
 export const Button = ({
   backgroundColor = 'primary',
-  borderRadius = false,
+  borderRadius = true,
   children,
   disabled = false,
   flex = 1,

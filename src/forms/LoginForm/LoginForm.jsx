@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { parse } from 'qs';
 
 import { useAuth } from '@contexts';
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { FormGroup } from '@components/FormGroup';
 import { Label } from '@components/Label';
 import { TextInput } from '@components/TextInput';
@@ -72,9 +72,9 @@ export const LoginForm = () => {
         </FormGroup>
 
         <FormGroup>
-          <FloatingButton loading={authenticateUserLoading} type="submit">
+          <CallToActionButton loading={authenticateUserLoading} type="submit">
             Log in
-          </FloatingButton>
+          </CallToActionButton>
         </FormGroup>
       </form>
 

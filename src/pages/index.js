@@ -1,6 +1,6 @@
 export * from './AccountPage';
 export * from './BasketPage';
-export * from './BlogPage';
+export * from './PostPage';
 export * from './HomePage';
 export * from './LoadingPage';
 export * from './LoginPage';

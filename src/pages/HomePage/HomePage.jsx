@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 
 export const HomePage = () => {
   const { push } = useHistory();
 
   return (
-    <FloatingButton onClick={() => push('/products?category=baking')}>
+    <CallToActionButton onClick={() => push('/products?category=baking')}>
       Go to shop
-    </FloatingButton>
+    </CallToActionButton>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAuth } from '@contexts';
-import { FloatingButton } from '@components/FloatingButton';
+import { CallToActionButton } from '@components/CallToActionButton';
 import { Section } from '@components/Section';
 import { UserOrders } from '@components/UserOrders';
 
@@ -15,9 +15,9 @@ export const AccountPage = () => {
       </Section>
 
       <Section>
-        <FloatingButton backgroundColor="red" onClick={() => logout('/')}>
+        <CallToActionButton backgroundColor="red" onClick={() => logout('/')}>
           Log out
-        </FloatingButton>
+        </CallToActionButton>
       </Section>
     </>
   );

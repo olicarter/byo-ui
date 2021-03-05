@@ -5,6 +5,8 @@ export const BlogPost = gql`
     id
     title
     content
+    createdAt
+    slug
     status
   }
 `;

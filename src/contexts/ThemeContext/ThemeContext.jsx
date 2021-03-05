@@ -24,7 +24,7 @@ const GET_PRIMARY_COLOR = gql`
 `;
 
 const commonProperties = {
-  maxWidth: '1280px',
+  maxWidth: '1200px',
 };
 
 const Global = createGlobalStyle(({ theme: { palette: { white } } }) => ({
