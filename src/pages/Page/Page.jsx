@@ -3,6 +3,8 @@ import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useQuery } from '@apollo/client';
 import { parse } from 'qs';
+import Mustache from 'mustache';
+import { capitalCase } from 'change-case';
 
 import { Callout } from '@components/Callout';
 import { Markdown } from '@components/Markdown';
@@ -33,10 +35,15 @@ export const Page = ({ children }) => {
     (productSlug || '').replaceAll('-', ' ') ||
     '';
 
+  const computedTitle = Mustache.render(title, {
+    postSlug: capitalCase(postSlug || ''),
+    productSlug: capitalCase(productSlug || ''),
+  });
+
   return (
     <>
       <Helmet>
-        <title>{title}</title>
+        <title>{computedTitle}</title>
       </Helmet>
 
       <Layout>
