@@ -80,7 +80,7 @@ export const ContactForm = () => {
           backgroundColor={recentlySubmitted ? 'green' : 'primary'}
           disabled={recentlySubmitted}
           isSticky={false}
-          type="submit"
+          onClick={handleSubmit(onSubmit)}
         >
           {recentlySubmitted ? 'Message sent' : 'Send message'}
         </CallToActionButton>

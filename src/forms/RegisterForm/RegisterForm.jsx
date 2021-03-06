@@ -115,7 +115,9 @@ export const RegisterForm = () => {
           />
         </FormGroup>
 
-        <CallToActionButton type="submit">Register</CallToActionButton>
+        <CallToActionButton onClick={handleSubmit(onSubmit)}>
+          Register
+        </CallToActionButton>
       </form>
 
       {registerError ? (
