@@ -46,7 +46,9 @@ export const ResetPasswordForm = () => {
           />
         </FormGroup>
 
-        <CallToActionButton type="submit">Update password</CallToActionButton>
+        <CallToActionButton onClick={handleSubmit(onSubmit)}>
+          Update password
+        </CallToActionButton>
       </form>
     </>
   );

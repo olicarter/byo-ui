@@ -72,7 +72,10 @@ export const LoginForm = () => {
         </FormGroup>
 
         <FormGroup>
-          <CallToActionButton loading={authenticateUserLoading} type="submit">
+          <CallToActionButton
+            loading={authenticateUserLoading}
+            onClick={handleSubmit(onSubmit)}
+          >
             Log in
           </CallToActionButton>
         </FormGroup>

@@ -238,7 +238,7 @@ export const CheckoutForm = () => {
 
         <CallToActionButton
           loading={submitOrderLoading || updateAuthenticatedUserLoading}
-          type="submit"
+          onClick={handleSubmit(onValid)}
         >
           Place order for{' '}
           <BasketTotal includeDeliveryCharge showCurrencySymbol />
