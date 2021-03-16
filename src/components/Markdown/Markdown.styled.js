@@ -16,12 +16,18 @@ export const Markdown = styled(MarkdownToJSX)(
   }),
 );
 
-export const Image = styled.img(() => ({
+export const ImageWrapper = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
   width: '100%',
   ':not(:first-of-type)': {
     margin: '1rem 0',
   },
-}));
+});
+
+export const Image = styled.img({
+  maxWidth: '100%',
+});
 
 export const Paragraph = styled.p(({ theme: { palette: { black } } }) => ({
   color: black,

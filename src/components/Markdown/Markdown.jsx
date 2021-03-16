@@ -14,7 +14,11 @@ export const Markdown = ({ children = '', lines = 0, overrides = {} }) => (
         Callout,
         h1: Title,
         h2: SubTitle,
-        img: Styled.Image,
+        img: props => (
+          <Styled.ImageWrapper>
+            <Styled.Image {...props} />
+          </Styled.ImageWrapper>
+        ),
         ol: Styled.OrderedList,
         p: Styled.Paragraph,
         ul: Styled.UnorderedList,
