@@ -31,7 +31,6 @@ export const Page = ({ children }) => {
   const computedHeading =
     heading ||
     (categorySlug || '').replaceAll('-', ' ') ||
-    (postSlug || '').replaceAll('-', ' ') ||
     (productSlug || '').replaceAll('-', ' ') ||
     '';
 

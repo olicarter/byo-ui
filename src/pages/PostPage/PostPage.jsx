@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/client';
 
 import { CallToActionButton } from '@components/CallToActionButton';
 import { Markdown } from '@components/Markdown';
+import { Section } from '@components/Section';
+import { Title } from '@components/Typography';
 
 import { GET_BLOG_POST_BY_SLUG } from './PostPage.gql';
 
@@ -20,10 +22,13 @@ export const PostPage = () => {
 
   if (!blogPost) return null;
 
-  const { content } = blogPost || {};
+  const { content, title } = blogPost || {};
 
   return (
     <>
+      <Section>
+        <Title>{title}</Title>
+      </Section>
       <Markdown>{content}</Markdown>
       <CallToActionButton isSticky={false} onClick={() => push('/blog')}>
         Return to all posts
